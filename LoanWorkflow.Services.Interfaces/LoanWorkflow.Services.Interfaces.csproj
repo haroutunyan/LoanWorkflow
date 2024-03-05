@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LoanWorkflow.DAL.Entities\LoanWorkflow.DAL.Entities.csproj" />
+  </ItemGroup>
+
 </Project>
