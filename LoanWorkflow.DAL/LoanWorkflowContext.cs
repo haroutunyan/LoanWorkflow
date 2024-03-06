@@ -1,4 +1,5 @@
-﻿using LoanWorkflow.DAL.Entities.User;
+﻿using LoanWorkflow.DAL.Entities.File;
+using LoanWorkflow.DAL.Entities.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,6 +15,8 @@ namespace LoanWorkflow.DAL
         DbContextOptions<LoanWorkflowContext> options)
         : IdentityDbContext<User, Role, long, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>(options)
     {
+        public DbSet<Entities.File.File> Files { get; set; }
+        
         public int SaveChanges(long initiator, bool acceptAllChangesOnSuccess)
         {
             SetAuditData(initiator);

@@ -20,17 +20,17 @@ namespace LoanWorkflow.Api.Controllers
             return res;
         }
 
-        //[HttpPost]
-        //public Task<byte[]> GetFile(Guid Id)
-        //{
-        //    return await service.GetFileDataAsync(Id);
-        //}
+        [HttpPost]
+        public async Task<byte[]> GetFile(Guid Id)
+        {
+            return await service.GetFileDataAsync(Id);
+        }
 
-        //[HttpPost]
-        //public Task<List<byte[]>> GetAllFiles(List<Guid> Ids)
-        //{
-        //    return await service.GetFileDataAsync(Ids);
-        //}
+        [HttpPost]
+        public async Task<List<byte[]>> GetAllFiles(List<Guid> Ids)
+        {
+            return await service.GetFileDataAsync(Ids);
+        }
 
     }
 }
