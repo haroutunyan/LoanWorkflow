@@ -10,6 +10,9 @@ namespace LoanWorkflow.Services.Core
 {
     internal partial class ServicesRegistrator
     {
-        private static IEnumerable<InternalServiceDescriptor> servicesDescriptors = [];
+        private static IEnumerable<InternalServiceDescriptor> servicesDescriptors = 
+            [
+                new(typeof(IFileManagmentService), typeof(FileManagmentService))
+            ];
     }
 }

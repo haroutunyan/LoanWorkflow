@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LoanWorkflow.Api.Abstractions
 {
-    [ApiAuthorize]
+    //[ApiAuthorize]
     [ApiController]
     [Route("api/[controller]/[action]")]
     [Route("api/v{version:apiVersion}/[controller]/[action]")]

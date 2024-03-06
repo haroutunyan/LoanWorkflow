@@ -31,7 +31,7 @@ namespace LoanWorkflow.DAL.Core
                 }, ServiceLifetime.Scoped);
             services.AddIdentity<User, Role>(identityOptions =>
             {
-
+                
             }).AddEntityFrameworkStores<LoanWorkflowContext>()
             .AddDefaultTokenProviders();
 
