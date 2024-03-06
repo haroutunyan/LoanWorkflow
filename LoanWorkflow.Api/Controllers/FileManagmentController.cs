@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LoanWorkflow.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class FileMangmentController(
+    public class FileManagmentController(
         ApiContext apiContext,
         IFileManagmentService service)
         : ApiControllerBase(apiContext)
