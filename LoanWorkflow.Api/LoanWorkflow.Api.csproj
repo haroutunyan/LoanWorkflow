@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LoanWorkflow.Api.Mappings\LoanWorkflow.Api.Mappings.csproj" />
     <ProjectReference Include="..\LoanWorkflow.Api.Middlewares\LoanWorkflow.Api.Middlewares.csproj" />
     <ProjectReference Include="..\LoanWorkflow.Api.Validations\LoanWorkflow.Api.Validations.csproj" />
     <ProjectReference Include="..\LoanWorkflow.Core.Extensions\LoanWorkflow.Core.Extensions.csproj" />

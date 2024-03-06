@@ -11,6 +11,6 @@ namespace LoanWorkflow.DAL.Entities.User
         public DateTime Modified { get; set; }
         public DateTime? Deleted { get; set; }
 
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
     }
 }

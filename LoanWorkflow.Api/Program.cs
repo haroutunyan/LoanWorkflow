@@ -11,11 +11,14 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Asp.Versioning;
 using LoanWorkflow.Core.Extensions;
 using LoanWorkflow.Api.Abstractions;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(cfg => { },
+    Assembly.GetAssembly(typeof(LoanWorkflow.Api.Mappings.AssemblyReference)));
 builder.Services.ConfigureDal(dalOptions =>
 {
     dalOptions.ConnectionString = builder.Configuration.GetConnectionString("DbConnectionString");
