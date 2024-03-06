@@ -16,6 +16,7 @@ namespace LoanWorkflow.DAL
         : IdentityDbContext<User, Role, long, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>(options)
     {
         public DbSet<Entities.File.File> Files { get; set; }
+        public DbSet<Entities.File.DocType> DocTypes { get; set; }
         
         public int SaveChanges(long initiator, bool acceptAllChangesOnSuccess)
         {

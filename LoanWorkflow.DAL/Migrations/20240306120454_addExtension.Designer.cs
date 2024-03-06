@@ -4,6 +4,7 @@ using LoanWorkflow.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    partial class LoanWorkflowContextModelSnapshot : ModelSnapshot
+    [Migration("20240306120454_addExtension")]
+    partial class addExtension
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,7 +93,7 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Property<DateTime?>("Deleted")
                         .HasColumnType("datetime2");
 
-                    b.Property<short>("DocTypeId")
+                    b.Property<short>("DocType")
                         .HasColumnType("smallint");
 
                     b.Property<string>("Extension")
@@ -113,8 +116,6 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.HasIndex("Deleted")
                         .HasFilter("[Deleted] IS NULL");
-
-                    b.HasIndex("DocTypeId");
 
                     b.ToTable("Files", t =>
                         {
@@ -500,17 +501,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.File", b =>
-                {
-                    b.HasOne("LoanWorkflow.DAL.Entities.File.DocType", "DocType")
-                        .WithMany("Files")
-                        .HasForeignKey("DocTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("DocType");
-                });
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.RoleClaim", b =>
                 {
                     b.HasOne("LoanWorkflow.DAL.Entities.User.Role", null)
@@ -564,11 +554,6 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.DocType", b =>
-                {
-                    b.Navigation("Files");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.Role", b =>

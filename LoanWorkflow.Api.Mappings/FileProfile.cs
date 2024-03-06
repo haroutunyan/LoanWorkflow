@@ -1,9 +1,5 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LoanWorkflow.Api.Models.File.Response;
 
 namespace LoanWorkflow.Api.Mappings
 {
@@ -11,7 +7,8 @@ namespace LoanWorkflow.Api.Mappings
     {
         public FileProfile()
         {
-            
+            CreateMap<DAL.Entities.File.File, FileInfoResponse>()
+                .ForMember(e => e.DocTypeName, d => d.MapFrom(o => o.DocType.Name));
         }
     }
 }

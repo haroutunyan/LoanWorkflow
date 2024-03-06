@@ -4,6 +4,7 @@ using LoanWorkflow.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    partial class LoanWorkflowContextModelSnapshot : ModelSnapshot
+    [Migration("20240306111952_FileType")]
+    partial class FileType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,54 +24,6 @@ namespace LoanWorkflow.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.DocType", b =>
-                {
-                    b.Property<short>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DocTypes", t =>
-                        {
-                            t.HasTrigger("DocTypes_Trigger");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = (short)1,
-                            Description = "Անձնագիր",
-                            Name = "Անձնագիր"
-                        },
-                        new
-                        {
-                            Id = (short)2,
-                            Description = "Սոցիալական քարտ",
-                            Name = "Սոց․ քարտ"
-                        },
-                        new
-                        {
-                            Id = (short)3,
-                            Description = "Նույնականացման քարտ",
-                            Name = "Նույնականացման քարտ"
-                        });
-                });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.File", b =>
                 {
@@ -85,15 +40,15 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Property<string>("Data")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("varchar");
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<DateTime?>("Deleted")
                         .HasColumnType("datetime2");
 
-                    b.Property<short>("DocTypeId")
+                    b.Property<short>("DocType")
                         .HasColumnType("smallint");
 
-                    b.Property<string>("Extension")
+                    b.Property<string>("FileType")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
@@ -113,8 +68,6 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.HasIndex("Deleted")
                         .HasFilter("[Deleted] IS NULL");
-
-                    b.HasIndex("DocTypeId");
 
                     b.ToTable("Files", t =>
                         {
@@ -500,17 +453,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.File", b =>
-                {
-                    b.HasOne("LoanWorkflow.DAL.Entities.File.DocType", "DocType")
-                        .WithMany("Files")
-                        .HasForeignKey("DocTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("DocType");
-                });
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.RoleClaim", b =>
                 {
                     b.HasOne("LoanWorkflow.DAL.Entities.User.Role", null)
@@ -564,11 +506,6 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.DocType", b =>
-                {
-                    b.Navigation("Files");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.Role", b =>

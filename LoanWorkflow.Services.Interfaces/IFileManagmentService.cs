@@ -5,8 +5,9 @@ namespace LoanWorkflow.Services
 {
     public interface IFileManagmentService : IService<DAL.Entities.File.File>
     {
-        Task<bool> SaveFileAsync(IFormFile file);
-        Task<byte[]> GetFileDataAsync(Guid Id);
-        Task<List<byte[]>> GetFileDataAsync(List<Guid> Ids);
+        Task<bool> SaveFileAsync(IFormFile file, short type);
+        Task<DAL.Entities.File.File> GetFileInfoAsync(Guid id);
+        Task<List<DAL.Entities.File.File>> GetAllFileInfoAsync();
+        Task<(byte[],string)> Download(Guid id);
     }
 }

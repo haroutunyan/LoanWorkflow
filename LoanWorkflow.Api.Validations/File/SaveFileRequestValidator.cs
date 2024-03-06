@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using LoanWorkflow.Api.Models.File;
+using LoanWorkflow.Api.Models.File.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
