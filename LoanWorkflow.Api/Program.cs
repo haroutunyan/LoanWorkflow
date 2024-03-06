@@ -25,7 +25,7 @@ builder.Services.ConfigureDal(dalOptions =>
 });
 builder.Services.ConfigureCoreBLL(options =>
 {
-    options.UnionUrl = builder.Configuration["Union:URL"];
+    options.UnionUrl = builder.Configuration["ExternalServices:EkengURL"];
 });
 builder.Services.AddScoped(typeof(ApiContext));
 builder.Services.AddAuthorization();
