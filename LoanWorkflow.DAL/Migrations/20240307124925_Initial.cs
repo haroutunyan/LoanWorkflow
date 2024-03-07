@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace LoanWorkflow.DAL.Migrations
 {
     /// <inheritdoc />
@@ -11,6 +13,20 @@ namespace LoanWorkflow.DAL.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "DocTypes",
+                columns: table => new
+                {
+                    Id = table.Column<short>(type: "smallint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocTypes", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Role",
                 columns: table => new
@@ -63,6 +79,32 @@ namespace LoanWorkflow.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Extension = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    DocTypeId = table.Column<short>(type: "smallint", nullable: false),
+                    Data = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<long>(type: "bigint", nullable: false),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Deleted = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Files_DocTypes_DocTypeId",
+                        column: x => x.DocTypeId,
+                        principalTable: "DocTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -197,6 +239,27 @@ namespace LoanWorkflow.DAL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "DocTypes",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { (short)1, "Անձնագիր", "Անձնագիր" },
+                    { (short)2, "Սոցիալական քարտ", "Սոց․ քարտ" },
+                    { (short)3, "Նույնականացման քարտ", "Նույնականացման քարտ" }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Files_Deleted",
+                table: "Files",
+                column: "Deleted",
+                filter: "[Deleted] IS NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Files_DocTypeId",
+                table: "Files",
+                column: "DocTypeId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Role_Deleted",
                 table: "Role",
@@ -283,6 +346,9 @@ namespace LoanWorkflow.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Files");
+
+            migrationBuilder.DropTable(
                 name: "RoleClaim");
 
             migrationBuilder.DropTable(
@@ -296,6 +362,9 @@ namespace LoanWorkflow.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserToken");
+
+            migrationBuilder.DropTable(
+                name: "DocTypes");
 
             migrationBuilder.DropTable(
                 name: "Role");
