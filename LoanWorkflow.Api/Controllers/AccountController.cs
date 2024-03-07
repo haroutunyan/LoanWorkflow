@@ -99,6 +99,7 @@ namespace LoanWorkflow.Api.Controllers
             };
 
             await userManager.CreateAsync(employee, model.Password);
+            await SaveChangesAsync(0);
             return Ok(new ApiResponse<bool>(true));
         }
     }
