@@ -8,8 +8,9 @@ namespace LoanWorkflow.Services.Core
 {
     public class BLLConfigurationBuilder
     {
-        public string UnionUrl { get; set; }
-
+        public string EkengUrl { get; set; }
+        public string AcraUrl { get; set; }
+        
         public void Validate()
         {
 

@@ -12,6 +12,7 @@ namespace LoanWorkflow.Services.Core
             }
             return services;
         }
+
         private class InternalServiceDescriptor(
             Type serviceType,
             Type implementationType,

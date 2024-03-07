@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LoanWorkflow.Services.Ekeng;
+using LoanWorkflow.Services.Interfaces.Ekeng;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Primitives;
 
 namespace LoanWorkflow.Services.Core
 {
@@ -13,20 +13,12 @@ namespace LoanWorkflow.Services.Core
             var options = new BLLConfigurationBuilder();
             setupAction?.Invoke(options ?? throw new ArgumentNullException(nameof(setupAction)));
 
-            if (!string.IsNullOrEmpty(options.UnionUrl))
+            if (!string.IsNullOrEmpty(options.EkengUrl))
             {
                 services.AddHttpContextAccessor();
-                services.AddHttpClient<ITempService, TempService>((provider, client) =>
+                services.AddHttpClient<IEkengService, EkengService>((provider, client) =>
                 {
-                    const string corellationHeader = "X-Correlation-ID";
-                    var context = provider.GetRequiredService<IHttpContextAccessor>();
-                    var header = new StringValues();
-
-                    if (!context.HttpContext.Request.Headers.TryGetValue(corellationHeader, out header))
-                    {
-                        client.DefaultRequestHeaders.Add(corellationHeader, context.HttpContext.TraceIdentifier);
-                    }
-                    client.BaseAddress = new Uri(options.UnionUrl);
+                    client.BaseAddress = new Uri(options.EkengUrl);
                 });
             }
 
@@ -34,7 +26,4 @@ namespace LoanWorkflow.Services.Core
             return services;
         }
     }
-
-    public interface ITempService { }
-    public class TempService : ITempService { }
 }

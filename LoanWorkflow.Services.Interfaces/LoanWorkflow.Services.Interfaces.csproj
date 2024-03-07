@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LoanWorkflow.DAL.Entities\LoanWorkflow.DAL.Entities.csproj" />
+    <ProjectReference Include="..\LoanWorkflow.Services.DTO\LoanWorkflow.Services.DTO.csproj" />
   </ItemGroup>
 
 </Project>

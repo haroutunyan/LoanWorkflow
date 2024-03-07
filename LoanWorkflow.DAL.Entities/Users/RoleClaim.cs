@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LoanWorkflow.DAL.Entities.User
+namespace LoanWorkflow.DAL.Entities.Users
 {
-    public class UserLogin : IdentityUserLogin<long>, IEntity
+    public class RoleClaim : IdentityRoleClaim<long>, IEntity
     {
         public long CreatedBy { get; set; }
         public DateTime Created { get; set; }

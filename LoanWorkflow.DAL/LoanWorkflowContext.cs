@@ -1,13 +1,7 @@
-﻿using LoanWorkflow.DAL.Entities.File;
-using LoanWorkflow.DAL.Entities.User;
+﻿using LoanWorkflow.DAL.Entities.Users;
+using LoanWorkflow.DAL.Entities.File;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LoanWorkflow.DAL
 {

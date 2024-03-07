@@ -1,4 +1,4 @@
-﻿using LoanWorkflow.DAL.Entities.User;
+﻿using LoanWorkflow.DAL.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

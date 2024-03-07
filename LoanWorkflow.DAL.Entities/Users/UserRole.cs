@@ -1,14 +1,22 @@
 ﻿using LoanWorkflow.DAL.Entities.Abstractions;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace LoanWorkflow.DAL.Entities.User
+namespace LoanWorkflow.DAL.Entities.Users
 {
-    public class UserClaim : IdentityUserClaim<long>, IEntity
+    public class UserRole : IdentityUserRole<long>, IEntity
     {
         public long CreatedBy { get; set; }
         public DateTime Created { get; set; }
         public long ModifiedBy { get; set; }
         public DateTime Modified { get; set; }
         public DateTime? Deleted { get; set; }
+
+        public User User { get; set; }
+        public Role Role { get; set; }
     }
 }
