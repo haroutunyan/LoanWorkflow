@@ -7,12 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoanWorkflow.Services.FileManagment
 {
-    public class FileManagmentService : Service<DAL.Entities.File.File>, IFileManagmentService
+    public class FileManagmentService(IDbSetAccessor<DAL.Entities.File.File> dbSetAccessor) 
+        : Service<DAL.Entities.File.File>(dbSetAccessor), IFileManagmentService
     {
-        public FileManagmentService(IDbSetAccessor<DAL.Entities.File.File> dbSetAccessor) : base(dbSetAccessor)
-        {
-        }
-
         public async Task<bool> SaveFileAsync(IFormFile file, short docType)
         {
             byte[] fileBytes;
