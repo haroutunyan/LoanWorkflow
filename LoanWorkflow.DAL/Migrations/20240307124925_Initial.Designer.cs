@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    [Migration("20240306095019_Files")]
-    partial class Files
+    [Migration("20240307124925_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,54 @@ namespace LoanWorkflow.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.DocType", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocTypes", t =>
+                        {
+                            t.HasTrigger("DocTypes_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = (short)1,
+                            Description = "Անձնագիր",
+                            Name = "Անձնագիր"
+                        },
+                        new
+                        {
+                            Id = (short)2,
+                            Description = "Սոցիալական քարտ",
+                            Name = "Սոց․ քարտ"
+                        },
+                        new
+                        {
+                            Id = (short)3,
+                            Description = "Նույնականացման քարտ",
+                            Name = "Նույնականացման քարտ"
+                        });
+                });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.File", b =>
                 {
@@ -40,10 +88,18 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Property<string>("Data")
                         .IsRequired()
                         .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("varchar");
 
                     b.Property<DateTime?>("Deleted")
                         .HasColumnType("datetime2");
+
+                    b.Property<short>("DocTypeId")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("Extension")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
@@ -56,13 +112,12 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<short>("Type")
-                        .HasColumnType("smallint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Deleted")
                         .HasFilter("[Deleted] IS NULL");
+
+                    b.HasIndex("DocTypeId");
 
                     b.ToTable("Files", t =>
                         {
@@ -72,7 +127,7 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.Role", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.Role", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -125,7 +180,7 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.RoleClaim", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -172,7 +227,7 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.User", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -274,7 +329,7 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.UserClaim", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.UserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -321,7 +376,7 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.UserLogin", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.UserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -365,7 +420,7 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.UserRole", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.UserRole", b =>
                 {
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -403,7 +458,7 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.UserToken", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.UserToken", b =>
                 {
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -448,42 +503,53 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.RoleClaim", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.File", b =>
                 {
-                    b.HasOne("LoanWorkflow.DAL.Entities.User.Role", null)
+                    b.HasOne("LoanWorkflow.DAL.Entities.File.DocType", "DocType")
+                        .WithMany("Files")
+                        .HasForeignKey("DocTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DocType");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.RoleClaim", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Users.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.UserClaim", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.UserClaim", b =>
                 {
-                    b.HasOne("LoanWorkflow.DAL.Entities.User.User", null)
+                    b.HasOne("LoanWorkflow.DAL.Entities.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.UserLogin", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.UserLogin", b =>
                 {
-                    b.HasOne("LoanWorkflow.DAL.Entities.User.User", null)
+                    b.HasOne("LoanWorkflow.DAL.Entities.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.UserRole", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.UserRole", b =>
                 {
-                    b.HasOne("LoanWorkflow.DAL.Entities.User.Role", "Role")
+                    b.HasOne("LoanWorkflow.DAL.Entities.Users.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LoanWorkflow.DAL.Entities.User.User", "User")
+                    b.HasOne("LoanWorkflow.DAL.Entities.Users.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -494,21 +560,26 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.UserToken", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.UserToken", b =>
                 {
-                    b.HasOne("LoanWorkflow.DAL.Entities.User.User", null)
+                    b.HasOne("LoanWorkflow.DAL.Entities.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.Role", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.DocType", b =>
+                {
+                    b.Navigation("Files");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.Role", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.User.User", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.User", b =>
                 {
                     b.Navigation("UserRoles");
                 });

@@ -1,6 +1,4 @@
 ﻿using LoanWorkflow.DAL.Core.Abstractions;
-using LoanWorkflow.DAL.Entities.File;
-using LoanWorkflow.DAL.Migrations;
 using LoanWorkflow.Services.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +21,6 @@ namespace LoanWorkflow.Services.FileManagment
 
             await Repository.AddAsync(new DAL.Entities.File.File
             {
-                Id = new Guid(),
                 Name = Path.GetFileNameWithoutExtension(file.FileName),
                 Extension = Path.GetExtension(file.FileName),
                 DocTypeId = docType,

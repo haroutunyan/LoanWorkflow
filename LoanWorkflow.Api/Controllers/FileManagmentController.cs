@@ -15,7 +15,7 @@ namespace LoanWorkflow.Api.Controllers
         public async Task<bool> FileUpload([FromForm] SaveFileRequest request)
         {
             var res = await service.SaveFileAsync(request.File,request.DocType);
-            await SaveChangesAsync(0);//UserContext.UserId);
+            await SaveChangesAsync(UserContext.UserId);
             return res;
         }
 

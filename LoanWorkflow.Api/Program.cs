@@ -14,9 +14,12 @@ using LoanWorkflow.Api.Abstractions;
 using System.Reflection;
 using LoanWorkflow.Core.Options;
 using LoanWorkflow.Services.Users;
+using LoanWorkflow.Api.ExceptionHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddExceptionHandler<LoanWorkflowExceptionHandler>();
+builder.Services.AddProblemDetails();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -116,5 +119,6 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 app.UseCorrelationId();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseExceptionHandler();
 app.MapControllers();
 app.Run();
