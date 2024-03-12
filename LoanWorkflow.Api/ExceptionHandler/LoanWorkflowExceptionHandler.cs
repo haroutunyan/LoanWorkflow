@@ -12,22 +12,17 @@ namespace LoanWorkflow.Api.ExceptionHandler
             Exception exception,
             CancellationToken cancellationToken)
         {
-            var errorResponse = new ProblemDetails();
-            switch (exception)
+            var errorResponse = new ProblemDetails
             {
-                case UnauthorizedException:
-                    errorResponse.Status = (int)HttpStatusCode.Unauthorized;
-                    errorResponse.Title = exception.GetType().Name;
-                    break;
-                case LoanWorkflowException:
-                    errorResponse.Status = (int)HttpStatusCode.OK;
-                    errorResponse.Title = exception.GetType().Name;                    
-                    break;
-                default:
-                    errorResponse.Status = (int)HttpStatusCode.InternalServerError;
-                    errorResponse.Title = "Internal Server Error";
-                    break;
-            }
+                Title = exception.GetType().Name,
+                Status = exception switch
+                {
+                    UnauthorizedException => (int)HttpStatusCode.Unauthorized,
+                    LoanWorkflowException => (int)HttpStatusCode.OK,
+                    _ => (int?)(int)HttpStatusCode.InternalServerError,
+                }
+            };
+
             httpContext.Response.StatusCode = errorResponse.Status.Value;
             await httpContext.Response
                 .WriteAsJsonAsync(errorResponse, cancellationToken);
