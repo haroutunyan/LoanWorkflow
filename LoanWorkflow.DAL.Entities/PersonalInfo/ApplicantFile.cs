@@ -1,7 +1,6 @@
 ﻿using LoanWorkflow.DAL.Entities.Abstractions;
-using LoanWorkflow.DAL.Entities.PersonalInfo;
 
-namespace LoanWorkflow.DAL.Configurations
+namespace LoanWorkflow.DAL.Entities.PersonalInfo
 {
     public class ApplicantFile : Entity
     {

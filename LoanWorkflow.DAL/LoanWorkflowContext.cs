@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using LoanWorkflow.DAL.Entities.Clients;
 using LoanWorkflow.DAL.Entities.PersonalInfo;
-using LoanWorkflow.DAL.Configurations;
+using LoanWorkflow.DAL.Entities.Loan;
 
 namespace LoanWorkflow.DAL
 {

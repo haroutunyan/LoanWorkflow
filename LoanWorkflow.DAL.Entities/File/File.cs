@@ -1,5 +1,5 @@
-﻿using LoanWorkflow.DAL.Configurations;
-using LoanWorkflow.DAL.Entities.Abstractions;
+﻿using LoanWorkflow.DAL.Entities.Abstractions;
+using LoanWorkflow.DAL.Entities.PersonalInfo;
 using LoanWorkflow.DAL.Entities.Pledge;
 
 namespace LoanWorkflow.DAL.Entities.File

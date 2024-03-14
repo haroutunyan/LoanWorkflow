@@ -1,5 +1,4 @@
 ﻿using LoanWorkflow.Core.Enums;
-using LoanWorkflow.DAL.Configurations;
 using LoanWorkflow.DAL.Entities.Abstractions;
 using LoanWorkflow.DAL.Entities.Clients;
 using LoanWorkflow.DAL.Entities.Loan;
