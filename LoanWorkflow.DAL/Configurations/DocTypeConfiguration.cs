@@ -7,7 +7,7 @@ using System.Diagnostics.Metrics;
 
 namespace LoanWorkflow.DAL.Configurations
 {
-    public class DocTypeConfiguration : IEntityTypeConfiguration<Entities.File.DocType>
+    public class DocTypeConfiguration : IEntityTypeConfiguration<DocType>
     {
         public void Configure(EntityTypeBuilder<DocType> builder)
         {
