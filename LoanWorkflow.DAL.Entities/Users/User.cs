@@ -1,4 +1,5 @@
 ﻿using LoanWorkflow.DAL.Entities.Abstractions;
+using LoanWorkflow.DAL.Entities.Approvers;
 using Microsoft.AspNetCore.Identity;
 
 namespace LoanWorkflow.DAL.Entities.Users
@@ -14,5 +15,6 @@ namespace LoanWorkflow.DAL.Entities.Users
         public string LastName { get; set; }
         public DateTime? PasswordChangeDate { get; set; }
         public ICollection<UserRole> UserRoles { get; set; }
+        public ICollection<RoleApprover> Approvers { get; set; }
     }
 }

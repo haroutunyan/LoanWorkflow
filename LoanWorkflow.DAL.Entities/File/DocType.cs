@@ -1,8 +1,10 @@
-﻿namespace LoanWorkflow.DAL.Entities.File
+﻿using LoanWorkflow.Core.Enums;
+
+namespace LoanWorkflow.DAL.Entities.File
 {
     public class DocType
     {
-        public short Id { get; set; }
+        public DocumentType Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public ICollection<File> Files { get; set; }

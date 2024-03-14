@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace LoanWorkflow.Core.Enums
 {
-    public enum DocumentType
+    public enum ActivityState
     {
-        IdCard = 1,
-        Passport = 2,
-        SocialCard = 3
+        Approve = 1,
+        Reject = 2,
+        Pending = 3
     }
 }

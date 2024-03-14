@@ -1,5 +1,6 @@
 ﻿using LoanWorkflow.DAL.Configurations;
 using LoanWorkflow.DAL.Entities.Abstractions;
+using LoanWorkflow.DAL.Entities.Pledge;
 
 namespace LoanWorkflow.DAL.Entities.File
 {
@@ -13,5 +14,6 @@ namespace LoanWorkflow.DAL.Entities.File
         public DocType DocType { get; set; }
 
         public ICollection<ApplicantFile> ApplicantFiles { get; set; }
+        public ICollection<PledgeFile> PledgeFiles { get; set; }
     }
 }

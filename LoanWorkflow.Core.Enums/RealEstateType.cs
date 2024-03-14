@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace LoanWorkflow.Core.Enums
 {
-    public enum DocumentType
+    public enum RealEstateType
     {
-        IdCard = 1,
-        Passport = 2,
-        SocialCard = 3
+        Apartment = 1,
+        House = 2,
+        Land = 3,
+        Area = 4,
+        Garage = 5,
+        HalfBuilt = 6
     }
 }

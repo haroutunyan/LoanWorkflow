@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace LoanWorkflow.Core.Enums
 {
-    public enum DocumentType
+    public enum CommunicationType
     {
-        IdCard = 1,
-        Passport = 2,
-        SocialCard = 3
+        Email = 1,
+        Post = 2
     }
 }
