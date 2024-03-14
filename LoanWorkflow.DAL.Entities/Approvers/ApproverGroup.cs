@@ -21,5 +21,6 @@ namespace LoanWorkflow.DAL.Entities.Approvers
         public LoanType LoanType { get; set; }
 
         public ICollection<RoleApprover> Approvers { get; set; }
+        public ICollection<ApproverActivity> ApproverActivities { get; set; }
     }
 }

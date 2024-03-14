@@ -6,7 +6,6 @@ namespace LoanWorkflow.DAL.Entities.Loan
     public class LoanSetting: Entity
     {
         public int Id { get; set; }
-        public short LoanProductId { get; set; }
         public string Currency { get; set; }
         public decimal Percent { get; set; }
         public DateRangeType DateRangeType { get; set; }
@@ -32,6 +31,6 @@ namespace LoanWorkflow.DAL.Entities.Loan
         public decimal PercentPenalty { get; set; }
         public LoanProvidingType LoanProvidingType { get; set; }
         public bool IsActive { get; set; }
-        public ICollection<LoanProductSetting> LoanProductSetting { get; set; }
+        public ICollection<LoanProductSetting> LoanProductSettings { get; set; }
     }
 }

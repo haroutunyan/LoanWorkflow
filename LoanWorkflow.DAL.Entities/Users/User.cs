@@ -16,5 +16,6 @@ namespace LoanWorkflow.DAL.Entities.Users
         public DateTime? PasswordChangeDate { get; set; }
         public ICollection<UserRole> UserRoles { get; set; }
         public ICollection<RoleApprover> Approvers { get; set; }
+        public ICollection<ApproverActivity> ApproverActivities { get; set; }
     }
 }
