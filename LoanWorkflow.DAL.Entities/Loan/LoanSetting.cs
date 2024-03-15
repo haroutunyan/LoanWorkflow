@@ -21,7 +21,7 @@ namespace LoanWorkflow.DAL.Entities.Loan
         public decimal MaxActualRate { get; set; }
         public decimal SumIncrementStep { get; set; }
         public int MonthIncrementStep { get; set; }
-        public decimal MinMonthlyPrincipal { get; set; }
+        public decimal? MinMonthlyPrincipal { get; set; }
         public decimal Commision { get; set; }
         public CommissionChargeType CommissionChargeType { get; set; }
         public RepaymentChargeType RepaymentChargeType { get; set; }
