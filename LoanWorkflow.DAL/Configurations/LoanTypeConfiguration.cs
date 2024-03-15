@@ -15,8 +15,8 @@ namespace LoanWorkflow.DAL.Configurations
                 .IsRequired();
 
             builder.HasOne(x => x.Parent)
-                .WithOne()
-                .HasForeignKey<LoanType>(x => x.ParentId)
+                .WithMany(x=>x.Childs)
+                .HasForeignKey(x => x.ParentId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }
