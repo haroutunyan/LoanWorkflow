@@ -1,4 +1,5 @@
-﻿using LoanWorkflow.DAL.Core.Abstractions;
+﻿using LoanWorkflow.Core.Enums;
+using LoanWorkflow.DAL.Core.Abstractions;
 using LoanWorkflow.Services.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ namespace LoanWorkflow.Services.FileManagment
             {
                 Name = Path.GetFileNameWithoutExtension(file.FileName),
                 Extension = Path.GetExtension(file.FileName),
-                DocTypeId = docType,
+                DocTypeId = (DocumentType)docType,
                 Data = base64String,
             });
 

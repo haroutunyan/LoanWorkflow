@@ -20,9 +20,6 @@ namespace LoanWorkflow.DAL.Configurations
                 .HasMaxLength(10)
                 .IsRequired();
 
-            builder.Property(e => e.DocTypeId)
-                .IsRequired();
-
             builder.Property(e => e.Data)
                 .HasColumnType("varchar")
                 .HasMaxLength(250)

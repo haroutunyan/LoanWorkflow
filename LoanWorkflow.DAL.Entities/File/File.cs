@@ -1,5 +1,6 @@
-﻿using LoanWorkflow.DAL.Entities.Abstractions;
-using LoanWorkflow.DAL.Entities.PersonalInfo;
+﻿using LoanWorkflow.Core.Enums;
+using LoanWorkflow.DAL.Entities.Abstractions;
+using LoanWorkflow.DAL.Entities.Loan;
 using LoanWorkflow.DAL.Entities.Pledge;
 
 namespace LoanWorkflow.DAL.Entities.File
@@ -9,8 +10,9 @@ namespace LoanWorkflow.DAL.Entities.File
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Extension { get; set; }
-        public short DocTypeId { get; set; }
         public string Data { get; set; }
+
+        public DocumentType DocTypeId { get; set; }
         public DocType DocType { get; set; }
 
         public ICollection<ApplicantFile> ApplicantFiles { get; set; }

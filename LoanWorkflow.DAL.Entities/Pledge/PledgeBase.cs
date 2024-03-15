@@ -1,6 +1,6 @@
 ﻿using LoanWorkflow.Core.Enums;
 using LoanWorkflow.DAL.Entities.Abstractions;
-using LoanWorkflow.DAL.Entities.PersonalInfo;
+using LoanWorkflow.DAL.Entities.Loan;
 
 namespace LoanWorkflow.DAL.Entities.Pledge
 {

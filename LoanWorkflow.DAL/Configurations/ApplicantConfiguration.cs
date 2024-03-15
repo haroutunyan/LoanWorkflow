@@ -1,5 +1,5 @@
 ﻿using LoanWorkflow.Core.Enums;
-using LoanWorkflow.DAL.Entities.PersonalInfo;
+using LoanWorkflow.DAL.Entities.Loan;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,6 +19,11 @@ namespace LoanWorkflow.DAL.Configurations
                 .WithMany(x => x.Applicants)
                 .HasForeignKey(x => x.ClientId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(x => x.Parent)
+                .WithOne()
+                .HasForeignKey<Applicant>(x => x.ParentId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

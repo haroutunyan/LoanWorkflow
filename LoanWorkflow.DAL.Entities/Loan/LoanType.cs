@@ -11,10 +11,10 @@ namespace LoanWorkflow.DAL.Entities.Loan
         public bool HasPledge { get; set; }
 
         public short? ParentId { get; set; }        
-        public ICollection<LoanProductType> LoanProductTypes { get; set; }
-        public ICollection<LoanProductSetting> LoanProductSetting { get; set; }
         public LoanType Parent { get; set; }
 
+        public ICollection<LoanProductType> LoanProductTypes { get; set; }
+        public ICollection<LoanProductSetting> LoanProductSetting { get; set; }
         public ICollection<ApproverGroup> ApproverGroups { get; set; }
     }
 }
