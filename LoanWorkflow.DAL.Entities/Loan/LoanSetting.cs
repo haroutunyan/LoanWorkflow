@@ -26,6 +26,7 @@ namespace LoanWorkflow.DAL.Entities.Loan
         public CommissionChargeType CommissionChargeType { get; set; }
         public RepaymentChargeType RepaymentChargeType { get; set; }
         public decimal ProvisionFeePercent { get; set; }
+        public decimal ProvisionMaxPercent { get; set; }
         // public int PrivilegedMonths { get; set; }  apariki hamar minjev qani amise chmuci tokos
         public decimal PrincipalPenalty { get; set; }
         public decimal PercentPenalty { get; set; }
