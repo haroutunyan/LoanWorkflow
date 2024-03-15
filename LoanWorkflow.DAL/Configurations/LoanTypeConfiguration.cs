@@ -11,7 +11,7 @@ namespace LoanWorkflow.DAL.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name)
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .IsRequired();
 
             builder.HasOne(x => x.Parent)
