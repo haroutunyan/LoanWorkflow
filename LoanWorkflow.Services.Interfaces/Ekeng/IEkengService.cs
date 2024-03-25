@@ -1,4 +1,4 @@
-﻿using LoanWorkflow.Services.DTO.Ekeng;
+﻿using LoanWorkflow.Services.DTO.Ekeng.AVV;
 
 namespace LoanWorkflow.Services.Interfaces.Ekeng
 {
