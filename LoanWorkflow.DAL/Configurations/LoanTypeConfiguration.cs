@@ -18,6 +18,12 @@ namespace LoanWorkflow.DAL.Configurations
                 .WithMany(x=>x.Childs)
                 .HasForeignKey(x => x.ParentId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(x=>x.File)
+                .WithOne(x=>x.LoanType)
+                .HasForeignKey<LoanType>(x=>x.FileId)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

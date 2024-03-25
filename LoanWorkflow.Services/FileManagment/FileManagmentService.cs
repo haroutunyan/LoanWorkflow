@@ -3,30 +3,36 @@ using LoanWorkflow.DAL.Core.Abstractions;
 using LoanWorkflow.Services.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace LoanWorkflow.Services.FileManagment
 {
     public class FileManagmentService(
-        IDbSetAccessor<DAL.Entities.File.File> dbSetAccessor)
+        IDbSetAccessor<DAL.Entities.File.File> dbSetAccessor,
+        IConfiguration configuration)
         : Service<DAL.Entities.File.File>(dbSetAccessor), IFileManagmentService
     {
         public async Task<bool> SaveFileAsync(IFormFile file, short docType)
         {
-            byte[] fileBytes;
-            using (var ms = new MemoryStream())
-            {
-                file.CopyTo(ms);
-                fileBytes = ms.ToArray();
-            }
-            string base64String = Convert.ToBase64String(fileBytes);
+            var filePath = configuration.GetSection("FilePath").Value ?? string.Empty;
 
+            var newFileName = Guid.NewGuid().ToString();
+            var extension = Path.GetExtension(file.FileName);
+            
+            if(!Directory.Exists(filePath))
+                Directory.CreateDirectory(filePath);
+
+            await using (var fileStream = new FileStream(Path.Combine(filePath, newFileName + extension), FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
 
             await Repository.AddAsync(new DAL.Entities.File.File
             {
                 Name = Path.GetFileNameWithoutExtension(file.FileName),
-                Extension = Path.GetExtension(file.FileName),
+                Extension = extension,
                 DocTypeId = (DocumentType)docType,
-                Data = base64String,
+                Path = newFileName + extension,
             });
 
             return true;
@@ -47,11 +53,11 @@ namespace LoanWorkflow.Services.FileManagment
                 ?? throw new Exception(); // there handle custom exceptions
         }
 
-        public async Task<(byte[], string)> Download(Guid id)
+        public async Task<string> Download(Guid id)
         {
             var data = await Repository.FirstOrDefaultAsync(f => f.Id == id)
                 ?? throw new Exception(); // there handle custom exceptions
-            return (Convert.FromBase64String(data.Data), data.Name + data.Extension);
+            return Path.Combine(configuration.GetSection("FilePath").Value ?? string.Empty , data.Path);
         }
     }
 }

@@ -15,8 +15,6 @@ namespace LoanWorkflow.Api.Mappings
             CreateMap<LoanProductType, LoanProductTypeDTO>();
             CreateMap<LoanType, ChildLoanTypesDTO>();
             CreateMap<LoanType, LoanTypesResponse>();
-             //   .ForMember(d => d.Childs, opt => opt.MapFrom(s => s));
-
         }
     }
 }

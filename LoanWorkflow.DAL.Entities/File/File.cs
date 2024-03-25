@@ -10,11 +10,12 @@ namespace LoanWorkflow.DAL.Entities.File
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Extension { get; set; }
-        public string Data { get; set; }
+        public string Path { get; set; }
 
         public DocumentType DocTypeId { get; set; }
         public DocType DocType { get; set; }
 
+        public LoanType? LoanType { get; set; }
         public ICollection<ApplicantFile> ApplicantFiles { get; set; }
         public ICollection<PledgeFile> PledgeFiles { get; set; }
     }
