@@ -12,6 +12,10 @@ namespace LoanWorkflow.DAL.Entities.Loan
 
         public short? ParentId { get; set; }    
         public LoanType? Parent { get; set; }
+
+        public Guid? FileId { get; set; }
+        public File.File? File { get; set; }
+
         public ICollection<LoanType> Childs { get; set; }
         public ICollection<LoanProductType> LoanProductTypes { get; set; }
         public ICollection<LoanProductSetting> LoanProductSetting { get; set; }

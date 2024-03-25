@@ -8,6 +8,6 @@ namespace LoanWorkflow.Services
         Task<bool> SaveFileAsync(IFormFile file, short type);
         Task<DAL.Entities.File.File> GetFileInfoAsync(Guid id);
         Task<List<DAL.Entities.File.File>> GetAllFileInfoAsync();
-        Task<(byte[],string)> Download(Guid id);
+        Task<string> Download(Guid id);
     }
 }

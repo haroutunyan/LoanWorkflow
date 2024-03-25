@@ -34,8 +34,10 @@ namespace LoanWorkflow.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Download(Guid id)
         {
-            (byte[] bytes, string name)  = await service.Download(id);
-            return File(bytes, "application/octet-stream",name);
+            var filePath = await service.Download(id);
+            if(!System.IO.File.Exists(filePath))
+                 throw new Exception(); // there handle custom exceptions
+            return File(System.IO.File.ReadAllBytes(filePath), "application/octet-stream",Path.GetFileName(filePath));
         }
 
     }

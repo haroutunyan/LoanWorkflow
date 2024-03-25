@@ -14,6 +14,10 @@ namespace LoanWorkflow.DAL.Entities.Users
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? PasswordChangeDate { get; set; }
+
+        public long PartnerId { get; set; }
+        public Partner Partner { get; set; }
+
         public ICollection<UserRole> UserRoles { get; set; }
         public ICollection<RoleApprover> Approvers { get; set; }
         public ICollection<ApproverActivity> ApproverActivities { get; set; }
