@@ -1,11 +1,10 @@
 ﻿using LoanWorkflow.Core.Enums;
-using LoanWorkflow.DAL.Configurations;
 using LoanWorkflow.DAL.Entities.Abstractions;
 using LoanWorkflow.DAL.Entities.Clients;
-using LoanWorkflow.DAL.Entities.Loan;
+using LoanWorkflow.DAL.Entities.PersonalInfo;
 using LoanWorkflow.DAL.Entities.Pledge;
 
-namespace LoanWorkflow.DAL.Entities.PersonalInfo
+namespace LoanWorkflow.DAL.Entities.Loan
 {
     public class Applicant : Entity
     {

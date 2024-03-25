@@ -1,4 +1,5 @@
 ﻿using LoanWorkflow.DAL.Entities.Abstractions;
+using LoanWorkflow.DAL.Entities.Loan;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace LoanWorkflow.DAL.Entities.PersonalInfo
     public class ApplicantPersonalInfo : Entity
     {
         public long Id { get; set; }
-        public Guid ApplicantId { get; set; }
+        public long ApplicantId { get; set; }
         public Applicant Applicant { get; set; }
 
         public Guid PersonalInfoId { get; set; }

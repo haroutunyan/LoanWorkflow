@@ -1,14 +1,9 @@
 ﻿using LoanWorkflow.Services.FileManagment;
-using Microsoft.AspNetCore.Cors.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
 using LoanWorkflow.Services.Interfaces.Settings;
 using LoanWorkflow.Services.Interfaces.Users;
 using LoanWorkflow.Services.Users;
+using LoanWorkflow.Services.Interfaces.Loan;
+using LoanWorkflow.Services.Loan;
 
 namespace LoanWorkflow.Services.Core
 {
@@ -21,6 +16,7 @@ namespace LoanWorkflow.Services.Core
                 new(typeof(IUserTokenService), typeof(UserTokenService)),
                 new(typeof(ISettings), typeof(Settings.Settings)),
                 new(typeof(IUserLoginService), typeof(UserLoginService)),
+                new(typeof(ILoanTypeService), typeof(LoanTypeService)),
             ];
     }
 }

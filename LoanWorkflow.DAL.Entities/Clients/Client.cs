@@ -1,6 +1,6 @@
 ﻿using LoanWorkflow.Core.Enums;
 using LoanWorkflow.DAL.Entities.Abstractions;
-using LoanWorkflow.DAL.Entities.PersonalInfo;
+using LoanWorkflow.DAL.Entities.Loan;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,6 @@ namespace LoanWorkflow.DAL.Entities.Clients
         public Gender Gender { get; set; }
         public string SSN { get; set; }
         public string Document { get; set; }
-        public DocumentType DocumentType { get; set; }
         public string DocIssuer { get; set; }
         public DateTime DocIssuedDate { get; set; }
         public DateTime DocValidityDate { get; set; }

@@ -22,7 +22,7 @@ namespace LoanWorkflow.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Configurations.ApplicantFile", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Approvers.ApproverActivity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,8 +30,11 @@ namespace LoanWorkflow.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<Guid>("ApplicantId")
+                    b.Property<Guid>("ApplicationId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("ApproverGroupId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -42,8 +45,74 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Property<DateTime?>("Deleted")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("FileId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.HasIndex("ApproverGroupId");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ApproverActivity", t =>
+                        {
+                            t.HasTrigger("ApproverActivity_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Approvers.ApproverGroup", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("ApproveCountByPercent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<byte>("ApproveCountPerRole")
+                        .HasColumnType("tinyint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRequired")
+                        .HasColumnType("bit");
+
+                    b.Property<short>("LoanTypeId")
+                        .HasColumnType("smallint");
+
+                    b.Property<decimal>("MaxApprovableAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
@@ -51,18 +120,75 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Property<long>("ModifiedBy")
                         .HasColumnType("bigint");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.HasIndex("ApplicantId");
+                    b.Property<byte>("Order")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Deleted")
                         .HasFilter("[Deleted] IS NULL");
 
-                    b.HasIndex("FileId");
+                    b.HasIndex("LoanTypeId");
 
-                    b.ToTable("ApplicantFiles", t =>
+                    b.ToTable("ApproverGroup", t =>
                         {
-                            t.HasTrigger("ApplicantFiles_Trigger");
+                            t.HasTrigger("ApproverGroup_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Approvers.RoleApprover", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ApproverGroupId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApproverGroupId");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RoleApprover", t =>
+                        {
+                            t.HasTrigger("RoleApprover_Trigger");
                         });
 
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
@@ -244,11 +370,8 @@ namespace LoanWorkflow.DAL.Migrations
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.DocType", b =>
                 {
-                    b.Property<short>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("Id"));
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -272,21 +395,21 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = (short)1,
+                            Id = 1,
+                            Description = "Նույնականացման քարտ",
+                            Name = "Նույնականացման քարտ"
+                        },
+                        new
+                        {
+                            Id = 2,
                             Description = "Անձնագիր",
                             Name = "Անձնագիր"
                         },
                         new
                         {
-                            Id = (short)2,
+                            Id = 3,
                             Description = "Սոցիալական քարտ",
                             Name = "Սոց․ քարտ"
-                        },
-                        new
-                        {
-                            Id = (short)3,
-                            Description = "Նույնականացման քարտ",
-                            Name = "Նույնականացման քարտ"
                         });
                 });
 
@@ -310,8 +433,8 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Property<DateTime?>("Deleted")
                         .HasColumnType("datetime2");
 
-                    b.Property<short>("DocTypeId")
-                        .HasColumnType("smallint");
+                    b.Property<int>("DocTypeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Extension")
                         .IsRequired()
@@ -344,11 +467,13 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.Applicant", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.Applicant", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("ClientId")
                         .HasColumnType("bigint");
@@ -368,6 +493,9 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Property<long>("ModifiedBy")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -379,9 +507,445 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasIndex("Deleted")
                         .HasFilter("[Deleted] IS NULL");
 
+                    b.HasIndex("ParentId")
+                        .IsUnique()
+                        .HasFilter("[ParentId] IS NOT NULL");
+
                     b.ToTable("Applicants", t =>
                         {
                             t.HasTrigger("Applicants_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.ApplicantFile", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ApplicantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("FileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.HasIndex("FileId");
+
+                    b.ToTable("ApplicantFiles", t =>
+                        {
+                            t.HasTrigger("ApplicantFiles_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.Application", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("ActualAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<short?>("ActualDateRange")
+                        .HasColumnType("smallint");
+
+                    b.Property<decimal>("AdvancePayment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("ApplicantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal?>("ApprovedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<short?>("ApprovedDateRange")
+                        .HasColumnType("smallint");
+
+                    b.Property<decimal?>("ApprovedPercent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CommunicationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ConfirmationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateOnly?>("ContractEndDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("ContractNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("DateRangeType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsExpired")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsNotified")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LoanProductSettingId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("OTP")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte>("OTPAttemptCount")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte>("PercentConfirmationCount")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte?>("PreferredDay")
+                        .HasColumnType("tinyint");
+
+                    b.Property<decimal?>("RequestAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<short?>("RequestDateRange")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.HasIndex("LoanProductSettingId");
+
+                    b.ToTable("Application", t =>
+                        {
+                            t.HasTrigger("Application_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanProductSetting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AsLoanCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<short?>("LoanTypeId")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<short>("ProductTypeId")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("RepaymentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SettingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.HasIndex("LoanTypeId");
+
+                    b.HasIndex("ProductTypeId");
+
+                    b.HasIndex("SettingId");
+
+                    b.ToTable("LoanProductSetting", t =>
+                        {
+                            t.HasTrigger("LoanProductSetting_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanProductType", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("Id"));
+
+                    b.Property<int>("AgrrementId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<short>("LoanTypeId")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("TemplateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TermsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.HasIndex("LoanTypeId");
+
+                    b.ToTable("LoanProductType", t =>
+                        {
+                            t.HasTrigger("LoanProductType_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanSetting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Commision")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CommissionChargeType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("DateRangeType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LoanProvidingType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("MaxActualRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<short>("MaxAge")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("MaxDateRange")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("MaxSum")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("MinActualRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<short>("MinAge")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("MinDateRange")
+                        .HasColumnType("smallint");
+
+                    b.Property<decimal?>("MinMonthlyPrincipal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("MinSum")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("MonthIncrementStep")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Percent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PercentPenalty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PrincipalPenalty")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ProvisionFeePercent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ProvisionMaxPercent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("RepaymentChargeType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("SumIncrementStep")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.ToTable("LoanSetting", t =>
+                        {
+                            t.HasTrigger("LoanSetting_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanType", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("HasPledge")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<short?>("ParentId")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("LoanType", t =>
+                        {
+                            t.HasTrigger("LoanType_Trigger");
                         });
 
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
@@ -395,8 +959,8 @@ namespace LoanWorkflow.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<Guid>("ApplicantId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("ApplicantId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -471,6 +1035,204 @@ namespace LoanWorkflow.DAL.Migrations
                     b
                         .UseTptMappingStrategy()
                         .HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.MovableEstateType", b =>
+                {
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.HasKey("Type");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.ToTable("MovableEstateType", t =>
+                        {
+                            t.HasTrigger("MovableEstateType_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.PledgeBase", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("ApplicantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("AppraisalCompany")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateOnly>("AppraisalDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly>("ContractDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("ContractNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("UnifiedInfoIssueDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("UnifiedInfoNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.ToTable("PledgeBase", t =>
+                        {
+                            t.HasTrigger("PledgeBase_Trigger");
+                        });
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("PledgeBase");
+
+                    b
+                        .UseTphMappingStrategy()
+                        .HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.PledgeFile", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("FileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("PledgId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.HasIndex("FileId");
+
+                    b.HasIndex("PledgId");
+
+                    b.ToTable("PledgeFile", t =>
+                        {
+                            t.HasTrigger("PledgeFile_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.RealEstateType", b =>
+                {
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.HasKey("Type");
+
+                    b.HasIndex("Deleted")
+                        .HasFilter("[Deleted] IS NULL");
+
+                    b.ToTable("RealEstateType", t =>
+                        {
+                            t.HasTrigger("RealEstateType_Trigger");
+                        });
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.Role", b =>
@@ -875,23 +1637,172 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Configurations.ApplicantFile", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.MovableEstatePledge", b =>
                 {
-                    b.HasOne("LoanWorkflow.DAL.Entities.PersonalInfo.Applicant", "Applicant")
-                        .WithMany("ApplicantFiles")
-                        .HasForeignKey("ApplicantId")
+                    b.HasBaseType("LoanWorkflow.DAL.Entities.Pledge.PledgeBase");
+
+                    b.Property<string>("BodyType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CarCertificateNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("MakeYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("MovableEstateType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MovableEstateTypeType")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PlateNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.HasIndex("MovableEstateTypeType");
+
+                    b.HasDiscriminator().HasValue("MovableEstatePledge");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.RealEstatePledge", b =>
+                {
+                    b.HasBaseType("LoanWorkflow.DAL.Entities.Pledge.PledgeBase");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("AppraisalActNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<decimal>("AppraisedValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("ClosedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("LiquidValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateOnly>("OwnershipIssueDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("OwnershipNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PledgeCertificateNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("RealEstateType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RealEstateTypeType")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Square")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasIndex("RealEstateTypeType");
+
+                    b.HasDiscriminator().HasValue("RealEstatePledge");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Approvers.ApproverActivity", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.Application", "Application")
+                        .WithMany("ApproverActivities")
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LoanWorkflow.DAL.Entities.Approvers.ApproverGroup", "ApproverGroup")
+                        .WithMany("ApproverActivities")
+                        .HasForeignKey("ApproverGroupId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LoanWorkflow.DAL.Entities.File.File", "File")
-                        .WithMany("ApplicantFiles")
-                        .HasForeignKey("FileId")
+                    b.HasOne("LoanWorkflow.DAL.Entities.Users.User", "User")
+                        .WithMany("ApproverActivities")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Applicant");
+                    b.Navigation("Application");
 
-                    b.Navigation("File");
+                    b.Navigation("ApproverGroup");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Approvers.ApproverGroup", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.LoanType", "LoanType")
+                        .WithMany("ApproverGroups")
+                        .HasForeignKey("LoanTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("LoanType");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Approvers.RoleApprover", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Approvers.ApproverGroup", "ApproverGroup")
+                        .WithMany("Approvers")
+                        .HasForeignKey("ApproverGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LoanWorkflow.DAL.Entities.Users.Role", "Role")
+                        .WithMany("RoleApprovers")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LoanWorkflow.DAL.Entities.Users.User", null)
+                        .WithMany("Approvers")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ApproverGroup");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Clients.Income", b =>
@@ -916,7 +1827,7 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Navigation("DocType");
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.Applicant", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.Applicant", b =>
                 {
                     b.HasOne("LoanWorkflow.DAL.Entities.Clients.Client", "Client")
                         .WithMany("Applicants")
@@ -924,12 +1835,101 @@ namespace LoanWorkflow.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.Applicant", "Parent")
+                        .WithOne()
+                        .HasForeignKey("LoanWorkflow.DAL.Entities.Loan.Applicant", "ParentId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("Client");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.ApplicantFile", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.Applicant", "Applicant")
+                        .WithMany("ApplicantFiles")
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LoanWorkflow.DAL.Entities.File.File", "File")
+                        .WithMany("ApplicantFiles")
+                        .HasForeignKey("FileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+
+                    b.Navigation("File");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.Application", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.Applicant", "Applicant")
+                        .WithMany("LoanApplications")
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.LoanProductSetting", "LoanProductSetting")
+                        .WithMany("LoanApplications")
+                        .HasForeignKey("LoanProductSettingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+
+                    b.Navigation("LoanProductSetting");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanProductSetting", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.LoanType", null)
+                        .WithMany("LoanProductSetting")
+                        .HasForeignKey("LoanTypeId");
+
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.LoanProductType", "LoanProductType")
+                        .WithMany("LoanProductSettings")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.LoanSetting", "LoanSetting")
+                        .WithMany("LoanProductSettings")
+                        .HasForeignKey("SettingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("LoanProductType");
+
+                    b.Navigation("LoanSetting");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanProductType", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.LoanType", "LoanType")
+                        .WithMany("LoanProductTypes")
+                        .HasForeignKey("LoanTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LoanType");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanType", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.LoanType", "Parent")
+                        .WithMany("Childs")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.ApplicantPersonalInfo", b =>
                 {
-                    b.HasOne("LoanWorkflow.DAL.Entities.PersonalInfo.Applicant", "Applicant")
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.Applicant", "Applicant")
                         .WithMany("ApplicantPersonalInfos")
                         .HasForeignKey("ApplicantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -944,6 +1944,36 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Navigation("Applicant");
 
                     b.Navigation("PersonalInfo");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.PledgeBase", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.Applicant", "Applicant")
+                        .WithMany("Pledges")
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.PledgeFile", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.File.File", "File")
+                        .WithMany("PledgeFiles")
+                        .HasForeignKey("FileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LoanWorkflow.DAL.Entities.Pledge.PledgeBase", "Pledge")
+                        .WithMany("Files")
+                        .HasForeignKey("PledgId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("File");
+
+                    b.Navigation("Pledge");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.RoleClaim", b =>
@@ -1479,6 +2509,27 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Navigation("AvvDocuments");
                 });
 
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.MovableEstatePledge", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Pledge.MovableEstateType", null)
+                        .WithMany("Pledges")
+                        .HasForeignKey("MovableEstateTypeType");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.RealEstatePledge", b =>
+                {
+                    b.HasOne("LoanWorkflow.DAL.Entities.Pledge.RealEstateType", null)
+                        .WithMany("Pledges")
+                        .HasForeignKey("RealEstateTypeType");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Approvers.ApproverGroup", b =>
+                {
+                    b.Navigation("ApproverActivities");
+
+                    b.Navigation("Approvers");
+                });
+
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Clients.Client", b =>
                 {
                     b.Navigation("Applicants");
@@ -1494,13 +2545,50 @@ namespace LoanWorkflow.DAL.Migrations
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.File.File", b =>
                 {
                     b.Navigation("ApplicantFiles");
+
+                    b.Navigation("PledgeFiles");
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.Applicant", b =>
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.Applicant", b =>
                 {
                     b.Navigation("ApplicantFiles");
 
                     b.Navigation("ApplicantPersonalInfos");
+
+                    b.Navigation("LoanApplications");
+
+                    b.Navigation("Pledges");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.Application", b =>
+                {
+                    b.Navigation("ApproverActivities");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanProductSetting", b =>
+                {
+                    b.Navigation("LoanApplications");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanProductType", b =>
+                {
+                    b.Navigation("LoanProductSettings");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanSetting", b =>
+                {
+                    b.Navigation("LoanProductSettings");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanType", b =>
+                {
+                    b.Navigation("ApproverGroups");
+
+                    b.Navigation("Childs");
+
+                    b.Navigation("LoanProductSetting");
+
+                    b.Navigation("LoanProductTypes");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase", b =>
@@ -1508,13 +2596,34 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Navigation("ApplicantPersonalInfos");
                 });
 
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.MovableEstateType", b =>
+                {
+                    b.Navigation("Pledges");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.PledgeBase", b =>
+                {
+                    b.Navigation("Files");
+                });
+
+            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.RealEstateType", b =>
+                {
+                    b.Navigation("Pledges");
+                });
+
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.Role", b =>
                 {
+                    b.Navigation("RoleApprovers");
+
                     b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Users.User", b =>
                 {
+                    b.Navigation("ApproverActivities");
+
+                    b.Navigation("Approvers");
+
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

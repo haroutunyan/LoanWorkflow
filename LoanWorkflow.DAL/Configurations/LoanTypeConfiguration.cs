@@ -1,12 +1,6 @@
-﻿using LoanWorkflow.DAL.Entities.Abstractions;
-using LoanWorkflow.DAL.Entities.Loan;
+﻿using LoanWorkflow.DAL.Entities.Loan;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LoanWorkflow.DAL.Configurations
 {
@@ -17,8 +11,13 @@ namespace LoanWorkflow.DAL.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name)
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .IsRequired();
+
+            builder.HasOne(x => x.Parent)
+                .WithMany(x=>x.Childs)
+                .HasForeignKey(x => x.ParentId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
