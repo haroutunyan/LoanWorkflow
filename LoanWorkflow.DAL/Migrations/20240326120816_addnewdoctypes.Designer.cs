@@ -4,6 +4,7 @@ using LoanWorkflow.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    partial class LoanWorkflowContextModelSnapshot : ModelSnapshot
+    [Migration("20240326120816_addnewdoctypes")]
+    partial class addnewdoctypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -373,25 +376,10 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("ModifiedBy")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -399,9 +387,6 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Deleted")
-                        .HasFilter("[Deleted] IS NULL");
 
                     b.ToTable("DocTypes", t =>
                         {
@@ -414,101 +399,61 @@ namespace LoanWorkflow.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0L,
                             Description = "Նույնականացման քարտ",
-                            Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedBy = 0L,
                             Name = "Նույնականացման քարտ"
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0L,
                             Description = "Անձնագիր",
-                            Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedBy = 0L,
                             Name = "Անձնագիր"
                         },
                         new
                         {
                             Id = 3,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0L,
                             Description = "Սոցիալական քարտ",
-                            Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedBy = 0L,
                             Name = "Սոց․ քարտ"
                         },
                         new
                         {
                             Id = 4,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0L,
                             Description = "Համաձայնագիր ԱՔՌԱ,ՆՈՐՔ , ԷԿԵՆԳ հարցումների համար",
-                            Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedBy = 0L,
                             Name = "Համաձայնագիր"
                         },
                         new
                         {
                             Id = 5,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0L,
                             Description = "Դիմում-Հայտ",
-                            Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedBy = 0L,
                             Name = "Դիմում-Հայտ"
                         },
                         new
                         {
                             Id = 6,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0L,
                             Description = "Տեղեկանք եկամտի մասին",
-                            Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedBy = 0L,
                             Name = "Տեղեկանք եկամտի մասին"
                         },
                         new
                         {
                             Id = 7,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0L,
                             Description = "Ամուսնության վկայական",
-                            Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedBy = 0L,
                             Name = "Ամուսնության վկայական"
                         },
                         new
                         {
                             Id = 8,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0L,
                             Description = "Միասնական տեղեկանք",
-                            Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedBy = 0L,
                             Name = "Միասնական տեղեկանք"
                         },
                         new
                         {
                             Id = 9,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0L,
                             Description = "Գրավի վկայական",
-                            Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedBy = 0L,
                             Name = "Գրավի վկայական"
                         },
                         new
                         {
                             Id = 10,
-                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = 0L,
                             Description = "Այլ",
-                            Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedBy = 0L,
                             Name = "Այլ"
                         });
                 });

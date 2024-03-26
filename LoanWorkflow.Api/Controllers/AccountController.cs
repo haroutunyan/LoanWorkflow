@@ -97,7 +97,7 @@ namespace LoanWorkflow.Api.Controllers
                 PhoneNumber = model.PhoneNumber,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                //PartnerId = model.PartnerId
+                PartnerId = model.PartnerId
             };
 
             await userManager.CreateAsync(employee, model.Password);

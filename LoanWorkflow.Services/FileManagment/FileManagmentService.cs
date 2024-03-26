@@ -1,6 +1,7 @@
 ﻿using LoanWorkflow.Core.Enums;
 using LoanWorkflow.DAL.Core.Abstractions;
 using LoanWorkflow.Services.Abstractions;
+using LoanWorkflow.Services.Interfaces.FileManagment;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
