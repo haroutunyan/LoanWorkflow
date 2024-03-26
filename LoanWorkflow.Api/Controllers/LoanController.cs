@@ -8,10 +8,10 @@ namespace LoanWorkflow.Api.Controllers
 {
     public class LoanController(
         ApiContext apiContext,
-        ILoanTypeService _loanTypeservice
+        ILoanTypeService _loanTypeservice,
+        ILoanProductTypeService _loanProductTypeService,
+        ILoanProductSettingService _loanProductSettingService
         //ILoanSettingService _loanSettingService,
-        //ILoanProductTypeService _loanProductTypeService,
-        //ILoanProductSettingService _loanProductSettingService
         ): ApiControllerBase(apiContext)
     {
         [HttpPost]
@@ -20,6 +20,20 @@ namespace LoanWorkflow.Api.Controllers
             return new ApiResponse<List<LoanTypesResponse>>
                 (ApiContext.Mapper.Map<List<LoanTypesResponse>>
                 (await _loanTypeservice.GetAllLoanTypes()));
+        }
+        [HttpPost]
+        public async Task<ApiResponse<List<LoanRepaymentTypesDTO>>> GetRepaymentTypes(short productTypeId)
+        {
+            return new ApiResponse<List<LoanRepaymentTypesDTO>>
+                (ApiContext.Mapper.Map<List<LoanRepaymentTypesDTO>>
+                (await _loanProductTypeService.GetRepaymentTypes(productTypeId)));
+        }
+        [HttpPost]
+        public async Task<ApiResponse<List<LoanCurrenciesByRepaymentTypeIdDTO>>> GetCurrenciesByRepaymentTypes(short repaymentTypeId, short productTypeId)
+        {
+            return new ApiResponse<List<LoanCurrenciesByRepaymentTypeIdDTO>>
+                (ApiContext.Mapper.Map<List<LoanCurrenciesByRepaymentTypeIdDTO>>
+                (await _loanProductSettingService.GetCurrenciesByRepaymentTypes(repaymentTypeId,productTypeId)));
         }
     }
 }

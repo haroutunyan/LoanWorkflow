@@ -17,6 +17,8 @@ namespace LoanWorkflow.Services.Core
                 new(typeof(ISettings), typeof(Settings.Settings)),
                 new(typeof(IUserLoginService), typeof(UserLoginService)),
                 new(typeof(ILoanTypeService), typeof(LoanTypeService)),
+                new(typeof(ILoanProductTypeService), typeof(LoanProductTypeService)),
+                new(typeof(ILoanProductSettingService), typeof(LoanProductSettingService)),
             ];
     }
 }

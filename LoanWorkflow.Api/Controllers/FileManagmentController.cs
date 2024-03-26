@@ -2,6 +2,7 @@
 using LoanWorkflow.Api.Models.File.Request;
 using LoanWorkflow.Api.Models.File.Response;
 using LoanWorkflow.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoanWorkflow.Api.Controllers
@@ -11,11 +12,12 @@ namespace LoanWorkflow.Api.Controllers
         IFileManagmentService service)
         : ApiControllerBase(apiContext)
     {
+        [AllowAnonymous]
         [HttpPost]
         public async Task<bool> FileUpload([FromForm] SaveFileRequest request)
         {
             var res = await service.SaveFileAsync(request.File,request.DocType);
-            await SaveChangesAsync(UserContext.UserId);
+            await SaveChangesAsync(0);
             return res;
         }
 

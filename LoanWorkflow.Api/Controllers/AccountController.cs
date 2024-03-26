@@ -2,6 +2,7 @@
 using LoanWorkflow.Api.Models.UserAccount;
 using LoanWorkflow.Core.Exceptions;
 using LoanWorkflow.Core.Options;
+using LoanWorkflow.DAL.Entities;
 using LoanWorkflow.DAL.Entities.Users;
 using LoanWorkflow.Services.Interfaces.Settings;
 using LoanWorkflow.Services.Interfaces.Users;
@@ -95,7 +96,8 @@ namespace LoanWorkflow.Api.Controllers
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
                 FirstName = model.FirstName,
-                LastName = model.LastName
+                LastName = model.LastName,
+                //PartnerId = model.PartnerId
             };
 
             await userManager.CreateAsync(employee, model.Password);
