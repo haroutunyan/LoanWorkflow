@@ -6,7 +6,7 @@ namespace LoanWorkflow.DAL.Entities.PersonalInfo
     public abstract class PersonalInfoBase : Entity
     {
         public Guid Id { get; set; }
-        public PersonalInfoType Type { get; set; }
+        public PersonalInfoType PersonalInfoType { get; set; }
 
         public ICollection<ApplicantPersonalInfo> ApplicantPersonalInfos { get; set; }
     }

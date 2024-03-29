@@ -10,7 +10,7 @@ namespace LoanWorkflow.DAL.Configurations
         public void Configure(EntityTypeBuilder<PersonalInfoBase> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Type)
+            builder.Property(x => x.PersonalInfoType)
                 .HasConversion(x => x.ToString(), m => (PersonalInfoType)Enum.Parse(typeof(PersonalInfoType), m))
                 .IsRequired();
         }

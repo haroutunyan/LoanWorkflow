@@ -1,11 +1,10 @@
 ﻿using LoanWorkflow.Core.Enums;
-using LoanWorkflow.DAL.Entities.Abstractions;
 
 namespace LoanWorkflow.DAL.Entities.PersonalInfo
 {
     public class AvvData : PersonalInfoBase
     {
-        public AvvData() => Type = PersonalInfoType.EkengAvvData;
+        public AvvData() => PersonalInfoType = PersonalInfoType.Avv;
         public string PublicServiceNumber { get; set; }
         public bool SsnIndicator { get; set; }
         public bool IsDead { get; set; }

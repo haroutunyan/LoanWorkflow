@@ -13,7 +13,7 @@ namespace LoanWorkflow.Services.DTO.Ekeng.BusinessRegister
 
         [JsonProperty("birth_date")]
         [JsonConverter(typeof(DateFormatConverter), ["yyyy-MM-dd"])]
-        public DateTimeOffset? BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         [JsonProperty("type")]
         public string Type { get; set; }
@@ -26,6 +26,6 @@ namespace LoanWorkflow.Services.DTO.Ekeng.BusinessRegister
 
         [JsonProperty("passport_issued")]
         [JsonConverter(typeof(DateFormatConverter), ["yyyy-MM-dd"])]
-        public DateTimeOffset? PassportIssuedDate { get; set; }
+        public DateTime? PassportIssuedDate { get; set; }
     }
 }

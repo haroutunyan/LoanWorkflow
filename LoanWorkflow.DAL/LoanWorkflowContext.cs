@@ -37,8 +37,9 @@ namespace LoanWorkflow.DAL
         public DbSet<PledgeFile> PledgeFile { get; set; }
         public DbSet<RealEstatePledge> RealEstatePledge { get; set; }
         public DbSet<RealEstateType> RealEstateType { get; set; }
+        public DbSet<CivilPerson> CivilPersons { get; set; }
+        public DbSet<ECivilData> ECivilData { get; set; }
 
-        
         public int SaveChanges(long initiator, bool acceptAllChangesOnSuccess)
         {
             SetAuditData(initiator);
