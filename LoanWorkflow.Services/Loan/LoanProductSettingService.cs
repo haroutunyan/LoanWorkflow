@@ -17,5 +17,13 @@ namespace LoanWorkflow.Services.Loan
                                    && x.ProductTypeId == productTypeId)
                           .Include(x => x.LoanSetting).ToListAsync();
         }
+
+        public async Task<LoanSetting> GetLoanSettingByProductSettingId(int productSettingId)
+        {
+            var setting = await Repository.Where(x => x.Id == productSettingId)
+                .Include(x => x.LoanSetting)
+                .FirstOrDefaultAsync() ?? throw new Exception();
+            return setting.LoanSetting;
+        }
     }
 }

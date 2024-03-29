@@ -8,5 +8,6 @@ namespace LoanWorkflow.Services.Loan
     public class LoanSettingService(IDbSetAccessor<LoanSetting> dbSetAccessor)
         : Service<LoanSetting>(dbSetAccessor), ILoanSettingService
     {
+        
     }
 }

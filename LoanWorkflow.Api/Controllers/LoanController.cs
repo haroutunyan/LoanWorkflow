@@ -11,7 +11,7 @@ namespace LoanWorkflow.Api.Controllers
         ILoanTypeService _loanTypeservice,
         ILoanProductTypeService _loanProductTypeService,
         ILoanProductSettingService _loanProductSettingService
-        //ILoanSettingService _loanSettingService,
+        //ILoanSettingService _loanSettingService
         ): ApiControllerBase(apiContext)
     {
         [HttpPost]
@@ -34,6 +34,13 @@ namespace LoanWorkflow.Api.Controllers
             return new ApiResponse<List<LoanCurrenciesByRepaymentTypeIdDTO>>
                 (ApiContext.Mapper.Map<List<LoanCurrenciesByRepaymentTypeIdDTO>>
                 (await _loanProductSettingService.GetCurrenciesByRepaymentTypes(repaymentTypeId,productTypeId)));
+        }
+        [HttpPost]
+        public async Task<ApiResponse<LoanSettingDTO>> GetLoanSettingByProductSettingId(int productSettingId)
+        {
+            return new ApiResponse<LoanSettingDTO>
+                (ApiContext.Mapper.Map<LoanSettingDTO>
+                (await _loanProductSettingService.GetLoanSettingByProductSettingId(productSettingId)));
         }
     }
 }
