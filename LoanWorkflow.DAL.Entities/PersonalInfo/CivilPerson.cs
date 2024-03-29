@@ -18,7 +18,7 @@ namespace LoanWorkflow.DAL.Entities.PersonalInfo
         public string EducationLevel { get; set; }
         public string EmploymentStatus { get; set; }
         public string MaritalStatus { get; set; }
-        public int MarriageNumber { get; set; }
+        public int? MarriageNumber { get; set; }
         public CivilPersonBirth Birth { get; set; }
         public CivilPersonResident Resident { get; set; }
         public CivilPersonBaseInfo BaseInfo { get; set; }

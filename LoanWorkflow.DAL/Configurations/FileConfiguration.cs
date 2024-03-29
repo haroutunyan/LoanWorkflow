@@ -13,14 +13,14 @@ namespace LoanWorkflow.DAL.Configurations
                 .IsRequired();
 
             builder.Property(e => e.Name)
-                .HasMaxLength(30)
+                .HasMaxLength(100)
                 .IsRequired();
 
             builder.Property(e => e.Extension)
                 .HasMaxLength(10)
                 .IsRequired();
 
-            builder.Property(e => e.Data)
+            builder.Property(e => e.Path)
                 .HasColumnType("varchar")
                 .HasMaxLength(250)
                 .IsRequired();

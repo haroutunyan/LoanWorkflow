@@ -7,6 +7,7 @@ using LoanWorkflow.DAL.Entities.PersonalInfo;
 using LoanWorkflow.DAL.Entities.Approvers;
 using LoanWorkflow.DAL.Entities.Loan;
 using LoanWorkflow.DAL.Entities.Pledge;
+using LoanWorkflow.DAL.Entities;
 
 namespace LoanWorkflow.DAL
 {
@@ -37,6 +38,7 @@ namespace LoanWorkflow.DAL
         public DbSet<PledgeFile> PledgeFile { get; set; }
         public DbSet<RealEstatePledge> RealEstatePledge { get; set; }
         public DbSet<RealEstateType> RealEstateType { get; set; }
+        public DbSet<Partner> Partner { get; set; }
         public DbSet<CivilPerson> CivilPersons { get; set; }
         public DbSet<ECivilData> ECivilData { get; set; }
 
