@@ -1,7 +1,7 @@
 ﻿using LoanWorkflow.Services.Interfaces.Abstractions;
 using Microsoft.AspNetCore.Http;
 
-namespace LoanWorkflow.Services
+namespace LoanWorkflow.Services.Interfaces.FileManagment
 {
     public interface IFileManagmentService : IService<DAL.Entities.File.File>
     {

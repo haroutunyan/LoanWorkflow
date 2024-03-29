@@ -4,6 +4,7 @@ using LoanWorkflow.Services.Interfaces.Users;
 using LoanWorkflow.Services.Users;
 using LoanWorkflow.Services.Interfaces.Loan;
 using LoanWorkflow.Services.Loan;
+using LoanWorkflow.Services.Interfaces.FileManagment;
 
 namespace LoanWorkflow.Services.Core
 {
@@ -17,6 +18,9 @@ namespace LoanWorkflow.Services.Core
                 new(typeof(ISettings), typeof(Settings.Settings)),
                 new(typeof(IUserLoginService), typeof(UserLoginService)),
                 new(typeof(ILoanTypeService), typeof(LoanTypeService)),
+                new(typeof(ILoanProductTypeService), typeof(LoanProductTypeService)),
+                new(typeof(ILoanProductSettingService), typeof(LoanProductSettingService)),
+                new(typeof(IDocTypeService), typeof(DocTypesService)),
             ];
     }
 }
