@@ -1,11 +1,6 @@
 ﻿using LoanWorkflow.DAL.Entities.PersonalInfo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LoanWorkflow.DAL.Configurations
 {
@@ -86,18 +81,37 @@ namespace LoanWorkflow.DAL.Configurations
                 });
             });
 
+            builder.OwnsOne(x => x.Death, m =>
+            {
+                m.ToTable("ECivilDeath");
+                m.Property(c => c.Place)
+                    .HasMaxLength(50)
+                    .IsRequired(false);
+                m.Property(c => c.Date)
+                    .IsRequired(false);
+                m.Property(c => c.Reason)
+                    .HasMaxLength(50)
+                    .IsRequired(false);
+                m.Property(c => c.Age)
+                    .HasMaxLength(50)
+                    .IsRequired(false);
+                m.Property(c => c.Unidentified)
+                    .HasMaxLength(50)
+                    .IsRequired(false);
+            });
+
             builder.HasOne(x => x.Presenter)
-                .WithMany(x => x.ECivils)
+                .WithMany(x => x.PresenterECivils)
                 .HasForeignKey(x => x.PresenterId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.Person)
-                .WithMany(x => x.ECivils)
+                .WithMany(x => x.PersonECivils)
                 .HasForeignKey(x => x.PersonId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.Person2)
-                .WithMany(x => x.ECivils)
+                .WithMany(x => x.Person2ECivils)
                 .HasForeignKey(x => x.Person2Id)
                 .OnDelete(DeleteBehavior.Restrict);
         }

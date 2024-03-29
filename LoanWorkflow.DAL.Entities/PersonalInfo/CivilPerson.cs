@@ -22,6 +22,8 @@ namespace LoanWorkflow.DAL.Entities.PersonalInfo
         public CivilPersonBirth Birth { get; set; }
         public CivilPersonResident Resident { get; set; }
         public CivilPersonBaseInfo BaseInfo { get; set; }
-        public ICollection<ECivilData> ECivils { get; set; }
+        public ICollection<ECivilData> PresenterECivils { get; set; }
+        public ICollection<ECivilData> PersonECivils { get; set; }
+        public ICollection<ECivilData> Person2ECivils { get; set; }
     }
 }
