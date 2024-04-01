@@ -36,7 +36,7 @@ namespace LoanWorkflow.Api.Mappings
 
             public void Process(LoanType source, ChildLoanTypesDTO destination, ResolutionContext context)
             {
-                destination.Img = source?.File?.Path is not null ? $"{AppDomain.CurrentDomain.BaseDirectory}{_configuration.GetSection("FilePath").Value ?? string.Empty}\\{source?.File?.Path}" : null;
+                destination.Img = source?.File?.Path is not null ? $"{_configuration.GetSection("FileDisplayPath").Value ?? string.Empty}{source?.File?.Path}" : null;
             }
         }
 

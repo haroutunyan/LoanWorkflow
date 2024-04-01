@@ -1,7 +1,6 @@
 ﻿using LoanWorkflow.Api.Abstractions;
 using LoanWorkflow.Api.Models.Loan;
 using LoanWorkflow.Services.Interfaces.Loan;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoanWorkflow.Api.Controllers
