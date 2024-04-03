@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LoanWorkflow.Core.Attributes
+namespace LoanWorkflow.Api.Security
 {
     public sealed class ApiAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {

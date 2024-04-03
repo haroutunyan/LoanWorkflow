@@ -14,5 +14,6 @@ namespace LoanWorkflow.Api.Models.UserAccount
         public string PhoneNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public long PartnerId { get; set; }
     }
 }

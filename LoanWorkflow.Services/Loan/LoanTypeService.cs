@@ -13,9 +13,11 @@ namespace LoanWorkflow.Services.Loan
         {
             return await Repository
                     .Include(x=>x.Childs)
-                    .ThenInclude(x => x.LoanProductTypes)
-                    .ThenInclude(x => x.LoanProductSettings)
-                    .ThenInclude(x => x.LoanSetting)
+                        .ThenInclude(x => x.LoanProductTypes)
+                        .ThenInclude(x => x.LoanProductSettings)
+                        .ThenInclude(x => x.LoanSetting)
+                    .Include(x=>x.Childs)
+                        .ThenInclude(x=>x.File)
                     .Where(x => x.ParentId == null)
                     .ToListAsync(); 
         }

@@ -1,7 +1,8 @@
 ﻿using LoanWorkflow.Api.Abstractions;
 using LoanWorkflow.Api.Models.File.Request;
 using LoanWorkflow.Api.Models.File.Response;
-using LoanWorkflow.Services;
+using LoanWorkflow.Services.Interfaces.FileManagment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoanWorkflow.Api.Controllers
@@ -11,24 +12,29 @@ namespace LoanWorkflow.Api.Controllers
         IFileManagmentService service)
         : ApiControllerBase(apiContext)
     {
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<bool> FileUpload([FromForm] SaveFileRequest request)
+        public async Task<ApiResponse<bool>> FileUpload([FromForm] SaveFileRequest request)
         {
             var res = await service.SaveFileAsync(request.File,request.DocType);
-            await SaveChangesAsync(UserContext.UserId);
-            return res;
+            await SaveChangesAsync(0);
+            return new ApiResponse<bool>(res);
         }
 
         [HttpPost]
-        public async Task<FileInfoResponse> GetFileInfo(Guid Id)
+        public async Task<ApiResponse<FileInfoResponse>> GetFileInfo(Guid Id)
         {
-            return ApiContext.Mapper.Map<FileInfoResponse>(await service.GetFileInfoAsync(Id));
+            return new ApiResponse<FileInfoResponse>(
+                ApiContext.Mapper.Map<FileInfoResponse>
+                (await service.GetFileInfoAsync(Id)));
         }
 
         [HttpPost]
-        public async Task<List<FileInfoResponse>> GetAllFiles()
+        public async Task<ApiResponse<List<FileInfoResponse>>> GetAllFiles()
         {
-            return ApiContext.Mapper.Map<List<FileInfoResponse>>(await service.GetAllFileInfoAsync());
+            return new ApiResponse<List<FileInfoResponse>>(
+                ApiContext.Mapper.Map<List<FileInfoResponse>>
+                (await service.GetAllFileInfoAsync()));
         }
 
         [HttpGet]

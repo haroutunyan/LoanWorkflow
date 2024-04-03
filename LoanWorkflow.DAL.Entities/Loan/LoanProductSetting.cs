@@ -1,6 +1,5 @@
 ﻿using LoanWorkflow.Core.Enums;
 using LoanWorkflow.DAL.Entities.Abstractions;
-using LoanWorkflow.DAL.Entities.Approvers;
 
 namespace LoanWorkflow.DAL.Entities.Loan
 {

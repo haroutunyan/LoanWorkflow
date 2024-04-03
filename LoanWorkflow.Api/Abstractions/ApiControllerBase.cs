@@ -1,4 +1,5 @@
-﻿using LoanWorkflow.Core.Attributes;
+﻿using LoanWorkflow.Api.Security;
+using LoanWorkflow.Core.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoanWorkflow.Api.Abstractions
