@@ -22,6 +22,8 @@ namespace LoanWorkflow.Api.Mappings
 
             CreateMap<LoanProductSetting, LoanCurrenciesByRepaymentTypeIdDTO>()
                 .AfterMap<LoanCurrenciesByRepaymentTypeIdDTOAction>();
+         
+            CreateMap<LoanType, LoanTypeInfoResponse>();
         }
 
         
@@ -63,6 +65,5 @@ namespace LoanWorkflow.Api.Mappings
                 destination.Currency = source.LoanSetting.Currency;
             }
         }
-
     }
 }
