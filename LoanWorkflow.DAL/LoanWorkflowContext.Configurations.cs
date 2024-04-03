@@ -27,7 +27,7 @@ namespace LoanWorkflow.DAL
             entityData.SetQueryFilter((LambdaExpression)filter);
         }
 
-        private static LambdaExpression GetSoftDeleteFilter<TEntity>()
+        private static Expression<Func<TEntity, bool>> GetSoftDeleteFilter<TEntity>()
             where TEntity : class, IEntity
         {
             Expression<Func<TEntity, bool>> filter = x => x.Deleted == null;

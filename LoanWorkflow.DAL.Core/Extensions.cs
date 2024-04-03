@@ -1,14 +1,8 @@
 ﻿using LoanWorkflow.DAL.Core.Abstractions;
-using LoanWorkflow.DAL.Entities.User;
+using LoanWorkflow.DAL.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LoanWorkflow.DAL.Core
 {
@@ -31,7 +25,7 @@ namespace LoanWorkflow.DAL.Core
                 }, ServiceLifetime.Scoped);
             services.AddIdentity<User, Role>(identityOptions =>
             {
-
+                
             }).AddEntityFrameworkStores<LoanWorkflowContext>()
             .AddDefaultTokenProviders();
 
