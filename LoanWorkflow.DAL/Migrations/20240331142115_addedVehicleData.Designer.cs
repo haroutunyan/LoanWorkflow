@@ -4,6 +4,7 @@ using LoanWorkflow.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    partial class LoanWorkflowContextModelSnapshot : ModelSnapshot
+    [Migration("20240331142115_addedVehicleData")]
+    partial class addedVehicleData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1779,18 +1782,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.CesData", b =>
-                {
-                    b.HasBaseType("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase");
-
-                    b.ToTable("CesData", null, t =>
-                        {
-                            t.HasTrigger("CesData_Trigger");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-                });
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.ECivilData", b =>
                 {
                     b.HasBaseType("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase");
@@ -2888,115 +2879,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Navigation("AvvAddresses");
 
                     b.Navigation("AvvDocuments");
-                });
-
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.CesData", b =>
-                {
-                    b.HasOne("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase", null)
-                        .WithOne()
-                        .HasForeignKey("LoanWorkflow.DAL.Entities.PersonalInfo.CesData", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.EInquest", "Inquests", b1 =>
-                        {
-                            b1.Property<Guid>("CesDataId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<decimal?>("Aliment")
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.Property<string>("Article")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<int?>("CalcPersent")
-                                .HasMaxLength(50)
-                                .HasColumnType("int");
-
-                            b1.Property<DateTime?>("ChangeDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<decimal?>("ClaimSum")
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.Property<string>("CourtId")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<string>("DebtorAddress")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<string>("DebtorName")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<string>("DistributionProcedure")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<DateTime?>("InquestDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("InquestId")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<int?>("InquestState")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("InquestType")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<string>("OldOrderText")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<DateTime?>("OrderDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("OrderNumber")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<string>("OrderText")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<string>("PlaintiffName")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
-
-                            b1.Property<decimal?>("RecoverSum")
-                                .HasMaxLength(50)
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.Property<decimal?>("RemainingSum")
-                                .HasMaxLength(50)
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.HasKey("CesDataId", "Id");
-
-                            b1.ToTable("Inquests", null, t =>
-                                {
-                                    t.HasTrigger("Inquests_Trigger");
-                                });
-
-                            b1.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                            b1.WithOwner()
-                                .HasForeignKey("CesDataId");
-                        });
-
-                    b.Navigation("Inquests");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.ECivilData", b =>

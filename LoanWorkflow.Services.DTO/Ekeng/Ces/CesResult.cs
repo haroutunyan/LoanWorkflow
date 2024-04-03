@@ -10,6 +10,6 @@ namespace LoanWorkflow.Services.DTO.Ekeng.Ces
     public record CesResult
     {
         [JsonProperty("result")]
-        public virtual List<EInquest> Result { get; set; }
+        public virtual List<EInquestDTO> Result { get; set; }
     }
 }

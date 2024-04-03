@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace LoanWorkflow.Services.DTO.Ekeng.Ces
 {
-    public record EInquest
+    public record EInquestDTO
     {
         [JsonProperty("inquestid")]
         public string InquestId { get; set; }

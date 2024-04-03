@@ -41,6 +41,8 @@ namespace LoanWorkflow.DAL
         public DbSet<Partner> Partner { get; set; }
         public DbSet<CivilPerson> CivilPersons { get; set; }
         public DbSet<ECivilData> ECivilData { get; set; }
+        public DbSet<VehicleData> VehicleData { get; set; }
+        public DbSet<CesData> CesData { get; set; }
 
         public int SaveChanges(long initiator, bool acceptAllChangesOnSuccess)
         {
