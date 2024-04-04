@@ -158,7 +158,7 @@ namespace LoanWorkflow.Services.Users
                  new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                  new Claim(ClaimTypes.Email, user.Email),
                  new Claim("userId", user.Id.ToString()),
-                 new Claim(ClaimTypes.Role, "SuperAdmin")
+                 new Claim(ClaimTypes.Role, user.UserRoles.FirstOrDefault(x=>x.UserId == user.Id).Role.NormalizedName)
             ];
 
             IList<string> roleNames = await GetRolesAsync(user);
