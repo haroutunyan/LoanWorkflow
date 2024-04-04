@@ -19,7 +19,7 @@ namespace LoanWorkflow.Api.SwaggerConfigs
         {
             var info = new OpenApiInfo()
             {
-                Title = $"Online Banking API {description.ApiVersion.ToString().ToUpper()}",
+                Title = $"Loan Workflow API {description.ApiVersion.ToString().ToUpper()}",
                 Version = description.ApiVersion.ToString(),
             };
 

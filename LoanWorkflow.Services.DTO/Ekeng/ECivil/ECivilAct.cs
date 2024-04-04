@@ -15,7 +15,7 @@ namespace LoanWorkflow.Services.DTO.Ekeng.ECivil
         public string RefNumber { get; set; }
 
         [JsonProperty("registered")]
-        [JsonConverter(typeof(DateFormatConverter), ["yyyy-MM-dd'T'HH:mm:ss"])]
+        [JsonConverter(typeof(DateFormatConverter), ["yyyy-MM-dd"])]
         public DateTime? RegistrationDate { get; set; }
 
         [JsonProperty("office_name")]

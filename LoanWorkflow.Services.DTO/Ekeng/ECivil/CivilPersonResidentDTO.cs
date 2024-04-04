@@ -38,11 +38,11 @@ namespace LoanWorkflow.Services.DTO.Ekeng.ECivil
         public string Department { get; set; }
 
         [JsonProperty("start_date")]
-        [JsonConverter(typeof(DateFormatConverter), ["yyyy-MM-dd"])]
+        [JsonConverter(typeof(DateFormatConverter), ["dd-MM-yyyy"])]
         public DateTime? StartDate { get; set; }
 
         [JsonProperty("end_date")]
-        [JsonConverter(typeof(DateFormatConverter), ["yyyy-MM-dd"])]
+        [JsonConverter(typeof(DateFormatConverter), ["dd-MM-yyyy"])]
         public DateTime? EndDate { get; set; }
     }
 }

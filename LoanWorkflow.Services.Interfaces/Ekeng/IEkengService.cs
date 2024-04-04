@@ -8,8 +8,8 @@ namespace LoanWorkflow.Services.Interfaces.Ekeng
 {
     public interface IEkengService
     {
-        Task<AvvResult> GetAvvData(string ssn);
-        Task<BusinessRegisterResult> GetBusinessRegisterData(string ssn);
+        Task<AvvResponse> GetAvvData(string ssn);
+        Task<PhysicalPersonBusinessResult> GetBusinessRegisterData(string ssn);
         Task<CivilResult> GetCivilResult(string ssn);
         Task<VehiclesResult> GetVehicleData(string ssn);
         Task<CesResult> GetCesData(string ssn);

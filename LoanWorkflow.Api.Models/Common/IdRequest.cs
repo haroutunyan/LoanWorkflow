@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LoanWorkflow.Services.DTO.Ekeng.Police
+namespace LoanWorkflow.Api.Models.Common
 {
-    public record EPoliceOwnerPersonDTO : EPolicePersonBaseDTO
+    public class IdRequest<T> where T : struct
     {
+        public T Id { get; set; }
     }
 }

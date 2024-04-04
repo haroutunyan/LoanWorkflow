@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LoanWorkflow.Services.DTO.Ekeng.Police
+namespace LoanWorkflow.Api.Models.Personallnfo
 {
-    public record EPoliceOwnerPersonDTO : EPolicePersonBaseDTO
+    public class SSNRequest
     {
+        public string SSN { get; set; }
     }
 }

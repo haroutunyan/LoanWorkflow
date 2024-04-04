@@ -12,31 +12,35 @@ namespace LoanWorkflow.Api.Controllers
         ILoanTypeService _loanTypeservice,
         ILoanProductTypeService _loanProductTypeService,
         ILoanProductSettingService _loanProductSettingService,
-        IAcraService acraService
-        //ILoanSettingService _loanSettingService
-        ) : ApiControllerBase(apiContext)
+        IAcraService acraService) 
+        : ApiControllerBase(apiContext)
     {
         [HttpPost]
-        public async Task<ApiResponse<List<LoanTypesResponse>>> GetAllLoanTypes()
+        public async Task<ApiResponse<IEnumerable<LoanTypesResponse>>> GetAllLoanTypes()
         {
-            return new ApiResponse<List<LoanTypesResponse>>
-                (ApiContext.Mapper.Map<List<LoanTypesResponse>>
+            return new ApiResponse<IEnumerable<LoanTypesResponse>>
+                (ApiContext.Mapper.Map<IEnumerable<LoanTypesResponse>>
                 (await _loanTypeservice.GetAllLoanTypes()));
         }
+
         [HttpPost]
-        public async Task<ApiResponse<List<LoanRepaymentTypesDTO>>> GetRepaymentTypes(short productTypeId)
+        public async Task<ApiResponse<IEnumerable<LoanRepaymentTypesDTO>>> GetRepaymentTypes(short productTypeId)
         {
-            return new ApiResponse<List<LoanRepaymentTypesDTO>>
-                (ApiContext.Mapper.Map<List<LoanRepaymentTypesDTO>>
+            return new ApiResponse<IEnumerable<LoanRepaymentTypesDTO>>
+                (ApiContext.Mapper.Map<IEnumerable<LoanRepaymentTypesDTO>>
                 (await _loanProductTypeService.GetRepaymentTypes(productTypeId)));
         }
+
         [HttpPost]
-        public async Task<ApiResponse<List<LoanCurrenciesByRepaymentTypeIdDTO>>> GetCurrenciesByRepaymentTypes(short repaymentTypeId, short productTypeId)
+        public async Task<ApiResponse<IEnumerable<LoanCurrenciesByRepaymentTypeIdDTO>>> GetCurrenciesByRepaymentTypes(
+            short repaymentTypeId, 
+            short productTypeId)
         {
-            return new ApiResponse<List<LoanCurrenciesByRepaymentTypeIdDTO>>
-                (ApiContext.Mapper.Map<List<LoanCurrenciesByRepaymentTypeIdDTO>>
+            return new ApiResponse<IEnumerable<LoanCurrenciesByRepaymentTypeIdDTO>>
+                (ApiContext.Mapper.Map<IEnumerable<LoanCurrenciesByRepaymentTypeIdDTO>>
                 (await _loanProductSettingService.GetCurrenciesByRepaymentTypes(repaymentTypeId, productTypeId)));
         }
+
         [HttpPost]
         public async Task<ApiResponse<LoanSettingDTO>> GetLoanSettingByProductSettingId(int productSettingId)
         {
@@ -48,7 +52,8 @@ namespace LoanWorkflow.Api.Controllers
         [HttpPost]
         public async Task<ApiResponse<LoanTypeInfoResponse>> GetLoanTypeInfoByProductSettingId(int productSettingId)
         {
-            var maped = ApiContext.Mapper.Map<LoanTypeInfoResponse>(await _loanProductSettingService.GetLoanTypeInfoByProductSettingId(productSettingId));
+            var maped = ApiContext.Mapper.Map<LoanTypeInfoResponse>(
+                await _loanProductSettingService.GetLoanTypeInfoByProductSettingId(productSettingId));
             maped.ProductSettingId = productSettingId;
             return new ApiResponse<LoanTypeInfoResponse>(maped);
         }
@@ -56,6 +61,6 @@ namespace LoanWorkflow.Api.Controllers
         [HttpGet]
         [AllowAnonymous]
         public Task GetAcraData() 
-            => Task.Run(() => acraService.GetAcraData());
+            => Task.Run(acraService.GetAcraData);
     }
 }

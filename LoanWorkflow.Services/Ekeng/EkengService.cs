@@ -4,35 +4,41 @@ using LoanWorkflow.Services.DTO.Ekeng.Ces;
 using LoanWorkflow.Services.DTO.Ekeng.ECivil;
 using LoanWorkflow.Services.DTO.Ekeng.Police;
 using LoanWorkflow.Services.Interfaces.Ekeng;
+using Newtonsoft.Json;
 
 namespace LoanWorkflow.Services.Ekeng
 {
     public class EkengService(
         HttpClient httpClient) : IEkengService
     {
-        public Task<AvvResult> GetAvvData(string ssn)
+        public async Task<AvvResponse> GetAvvData(string ssn)
         {
-            throw new NotImplementedException();
+            var data = File.ReadAllText("C:\\Users\\User\\Downloads\\Telegram Desktop\\avv.txt");
+            return await Task.FromResult(JsonConvert.DeserializeObject<AvvResponse>(data));
         }
 
-        public Task<BusinessRegisterResult> GetBusinessRegisterData(string ssn)
+        public async Task<PhysicalPersonBusinessResult> GetBusinessRegisterData(string ssn)
         {
-            throw new NotImplementedException();
+            var data = File.ReadAllText("C:\\Users\\User\\Downloads\\Telegram Desktop\\businessregister.txt");
+            return await Task.FromResult(JsonConvert.DeserializeObject<PhysicalPersonBusinessResult>(data));
         }
 
-        public Task<CesResult> GetCesData(string ssn)
+        public async Task<CesResult> GetCesData(string ssn)
         {
-            throw new NotImplementedException();
+            var data = File.ReadAllText("C:\\Users\\User\\Downloads\\Telegram Desktop\\ces.txt");
+            return await Task.FromResult(JsonConvert.DeserializeObject<CesResult>(data));
         }
 
-        public Task<CivilResult> GetCivilResult(string ssn)
+        public async Task<CivilResult> GetCivilResult(string ssn)
         {
-            throw new NotImplementedException();
+            var data = File.ReadAllText("C:\\Users\\User\\Downloads\\Telegram Desktop\\ecivil.txt");
+            return await Task.FromResult(JsonConvert.DeserializeObject<CivilResult>(data));
         }
 
-        public Task<VehiclesResult> GetVehicleData(string ssn)
+        public async Task<VehiclesResult> GetVehicleData(string ssn)
         {
-            throw new NotImplementedException();
+            var data = File.ReadAllText("C:\\Users\\User\\Downloads\\Telegram Desktop\\vehicleinfo.txt");
+            return await Task.FromResult(JsonConvert.DeserializeObject<VehiclesResult>(data));
         }
     }
 }
