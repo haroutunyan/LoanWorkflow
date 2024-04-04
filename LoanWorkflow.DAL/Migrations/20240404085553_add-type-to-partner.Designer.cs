@@ -4,6 +4,7 @@ using LoanWorkflow.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    partial class LoanWorkflowContextModelSnapshot : ModelSnapshot
+    [Migration("20240404085553_add-type-to-partner")]
+    partial class addtypetopartner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1086,9 +1089,6 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<long?>("ParentId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("PartnerType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1097,8 +1097,6 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.HasIndex("Deleted")
                         .HasFilter("[Deleted] IS NULL");
-
-                    b.HasIndex("ParentId");
 
                     b.ToTable("Partner", t =>
                         {
@@ -2096,16 +2094,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Partner", b =>
-                {
-                    b.HasOne("LoanWorkflow.DAL.Entities.Partner", "Parent")
-                        .WithMany("Childs")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Parent");
-                });
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.ApplicantPersonalInfo", b =>
                 {
                     b.HasOne("LoanWorkflow.DAL.Entities.Loan.Applicant", "Applicant")
@@ -2785,8 +2773,6 @@ namespace LoanWorkflow.DAL.Migrations
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Partner", b =>
                 {
-                    b.Navigation("Childs");
-
                     b.Navigation("Users");
                 });
 
