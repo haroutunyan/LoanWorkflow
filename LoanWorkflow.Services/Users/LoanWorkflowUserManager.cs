@@ -149,7 +149,7 @@ namespace LoanWorkflow.Services.Users
             rng.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
         }
-  
+
         private async Task<IList<Claim>> GetClaims(User user)
         {
             IList<Claim> claims =
@@ -158,7 +158,7 @@ namespace LoanWorkflow.Services.Users
                  new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                  new Claim(ClaimTypes.Email, user.Email),
                  new Claim("userId", user.Id.ToString()),
-                 new Claim(ClaimTypes.Role, user.UserRoles.FirstOrDefault(x=>x.UserId == user.Id).Role.NormalizedName)
+                 new Claim(ClaimTypes.Role, user.UserRoles.FirstOrDefault().Role.NormalizedName)
             ];
 
             IList<string> roleNames = await GetRolesAsync(user);

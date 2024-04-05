@@ -19,6 +19,9 @@ namespace LoanWorkflow.Services.Users
             => await Repository.FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<User> GetByUserNameAsync(string username)
-            => await Repository.FirstOrDefaultAsync(x => x.NormalizedUserName == username.Normalize());
+            => await Repository
+            .Include(x => x.UserRoles)
+            .ThenInclude(x => x.Role)
+            .FirstOrDefaultAsync(x => x.NormalizedUserName == username.Normalize());
     }
 }
