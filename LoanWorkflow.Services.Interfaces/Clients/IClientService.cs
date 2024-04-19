@@ -5,5 +5,8 @@ namespace LoanWorkflow.Services.Interfaces.Clients
 {
     public interface IClientService : IService<Client>
     {
+        Task Add(Client client);
+        Task<Client> GetById(long id);
+        Task<Client> GetBySsn(string ssn);
     }
 }

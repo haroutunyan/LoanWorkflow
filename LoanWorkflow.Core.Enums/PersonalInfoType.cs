@@ -8,6 +8,7 @@
         Norq = 4,
         Acra = 5,
         Ces = 6,
-        Vehicle = 7
+        Vehicle = 7,
+        Tax = 8
     }
 }

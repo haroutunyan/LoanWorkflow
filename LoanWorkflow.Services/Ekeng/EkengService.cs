@@ -3,6 +3,7 @@ using LoanWorkflow.Services.DTO.Ekeng.BusinessRegister;
 using LoanWorkflow.Services.DTO.Ekeng.Ces;
 using LoanWorkflow.Services.DTO.Ekeng.ECivil;
 using LoanWorkflow.Services.DTO.Ekeng.Police;
+using LoanWorkflow.Services.DTO.Ekeng.TaxInfo;
 using LoanWorkflow.Services.Interfaces.Ekeng;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -41,6 +42,12 @@ namespace LoanWorkflow.Services.Ekeng
         {
             var data = File.ReadAllText(Path.Combine(config["PersonalInfo"], "vehicleinfo.txt"));
             return await Task.FromResult(JsonConvert.DeserializeObject<VehiclesResult>(data));
+        }
+
+        public async Task<TaxInfoResult> GetTaxData(string ssn)
+        {
+            var data = File.ReadAllText(Path.Combine(config["PersonalInfo"], "taxmonthly.txt"));
+            return await Task.FromResult(JsonConvert.DeserializeObject<TaxInfoResult>(data));
         }
     }
 }

@@ -3,6 +3,7 @@ using LoanWorkflow.Services.DTO.Ekeng.BusinessRegister;
 using LoanWorkflow.Services.DTO.Ekeng.Ces;
 using LoanWorkflow.Services.DTO.Ekeng.ECivil;
 using LoanWorkflow.Services.DTO.Ekeng.Police;
+using LoanWorkflow.Services.DTO.Ekeng.TaxInfo;
 
 namespace LoanWorkflow.Services.Interfaces.Ekeng
 {
@@ -13,5 +14,6 @@ namespace LoanWorkflow.Services.Interfaces.Ekeng
         Task<CivilResult> GetCivilResult(string ssn);
         Task<VehiclesResult> GetVehicleData(string ssn);
         Task<CesResult> GetCesData(string ssn);
+        Task<TaxInfoResult> GetTaxData(string ssn);
     }
 }

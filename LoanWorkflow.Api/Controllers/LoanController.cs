@@ -1,6 +1,9 @@
 ﻿using LoanWorkflow.Api.Abstractions;
 using LoanWorkflow.Api.Models.Loan;
+using LoanWorkflow.Core.Enums;
 using LoanWorkflow.Services.Interfaces.Acra;
+using LoanWorkflow.Services.Interfaces.Clients;
+using LoanWorkflow.Services.Interfaces.Ekeng;
 using LoanWorkflow.Services.Interfaces.Loan;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +15,9 @@ namespace LoanWorkflow.Api.Controllers
         ILoanTypeService _loanTypeservice,
         ILoanProductTypeService _loanProductTypeService,
         ILoanProductSettingService _loanProductSettingService,
-        IAcraService acraService) 
+        IAcraService acraService,
+        IEkengService ekengService,
+        IClientService clientService) 
         : ApiControllerBase(apiContext)
     {
         [HttpPost]
@@ -58,9 +63,22 @@ namespace LoanWorkflow.Api.Controllers
             return new ApiResponse<LoanTypeInfoResponse>(maped);
         }
 
-        [HttpGet]
+        [HttpPost]
         [AllowAnonymous]
-        public Task GetAcraData() 
-            => Task.Run(acraService.GetAcraData);
+        public async Task<ApiResponse<Dictionary<int, object>>> AddApplicant(AddApplicantRequest request)
+        {
+            var result = new Dictionary<int, object>
+            {
+                { (int)PersonalInfoType.Avv, (await ekengService.GetAvvData(request.SSN)).Result },
+                { (int)PersonalInfoType.ECivil, (await ekengService.GetCivilResult(request.SSN)).Result },
+                { (int)PersonalInfoType.Acra, acraService.GetAcraData() },
+                { (int)PersonalInfoType.BusinessRegister, (await ekengService.GetBusinessRegisterData(request.SSN)).Result },
+                { (int)PersonalInfoType.Ces, (await ekengService.GetCesData(request.SSN)).Result },
+                { (int)PersonalInfoType.Vehicle, (await ekengService.GetVehicleData(request.SSN)).Result },
+                { (int)PersonalInfoType.Tax, (await ekengService.GetTaxData(request.SSN)).TaxPayersInfo }
+            };
+
+            return new ApiResponse<Dictionary<int, object>>(result);
+        }
     }
 }
