@@ -22,8 +22,14 @@ namespace LoanWorkflow.Api.Mappings
 
             CreateMap<LoanProductSetting, LoanCurrenciesByRepaymentTypeIdDTO>()
                 .AfterMap<LoanCurrenciesByRepaymentTypeIdDTOAction>();
-         
+
+            CreateMap<LoanProductSetting, LoanRepaymentTypesByCurrencyDTO>()
+                .AfterMap<LoanRepaymentTypesBYCurrnecyDTOAction>();
+
             CreateMap<LoanType, LoanTypeInfoResponse>();
+
+            CreateMap<LoanProductSetting, LoanCurrenciesByProductTypeIdDTO>()
+              .AfterMap<LoanCurrenciesByProductTypeIdDTOAction>();
         }
 
         
@@ -57,12 +63,37 @@ namespace LoanWorkflow.Api.Mappings
             }
         }
 
+        public class LoanCurrenciesByProductTypeIdDTOAction : IMappingAction<LoanProductSetting, LoanCurrenciesByProductTypeIdDTO>
+        {
+            public void Process(LoanProductSetting source, LoanCurrenciesByProductTypeIdDTO destination, ResolutionContext context)
+            {
+                destination.ProductTypeId = (short)source.ProductTypeId;
+                destination.Currency = source.LoanSetting.Currency;
+            }
+        }
+
         public class LoanCurrenciesByRepaymentTypeIdDTOAction : IMappingAction<LoanProductSetting, LoanCurrenciesByRepaymentTypeIdDTO>
         {
             public void Process(LoanProductSetting source, LoanCurrenciesByRepaymentTypeIdDTO destination, ResolutionContext context)
             {
                 destination.ProductSettingId = source.Id;
                 destination.Currency = source.LoanSetting.Currency;
+            }
+        }
+
+        public class LoanRepaymentTypesBYCurrnecyDTOAction : IMappingAction<LoanProductSetting, LoanRepaymentTypesByCurrencyDTO>
+        {
+            public void Process(LoanProductSetting source, LoanRepaymentTypesByCurrencyDTO destination, ResolutionContext context)
+            {
+                destination.Id = (short)source.RepaymentType;
+                destination.ProductSettingId = source.Id;
+                destination.Name = (short)source.RepaymentType switch
+                {
+                    1 => "Անուիտետ",
+                    2 => "Զսպանակաձև",
+                    3 => "Ժամկետի վերջում",
+                    _ => throw new NotImplementedException(),
+                };
             }
         }
     }

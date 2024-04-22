@@ -6,5 +6,6 @@ namespace LoanWorkflow.Services.Interfaces.Loan
     public interface ILoanProductTypeService : IService<LoanProductType>
     {
         Task<List<LoanProductSetting>> GetRepaymentTypes(short productTypeId);
+        Task<List<LoanProductSetting>> GetCurrenciesByProductTypeId(short productTypeId);
     }
 }
