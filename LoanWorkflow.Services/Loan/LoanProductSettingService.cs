@@ -17,6 +17,14 @@ namespace LoanWorkflow.Services.Loan
                                    && x.ProductTypeId == productTypeId)
                           .Include(x => x.LoanSetting).ToListAsync();
         }
+        public async Task<List<LoanProductSetting>> GetRepaymentTypesByCurrency(string currencyCode, short productTypeId)
+        {
+            return await Repository
+                          .Include(x=>x.LoanSetting)
+                          .Where(x => x.LoanSetting.Currency == currencyCode
+                                   && x.ProductTypeId == productTypeId)
+                          .ToListAsync();
+        }
 
         public async Task<LoanSetting> GetLoanSettingByProductSettingId(int productSettingId)
         {
@@ -28,7 +36,7 @@ namespace LoanWorkflow.Services.Loan
         public async Task<LoanType> GetLoanTypeInfoByProductSettingId(int productSettingId)
         {
             var loanType = await Repository.Where(x => x.Id == productSettingId)
-                .Include(x => x.LoanProductType).ThenInclude(x => x.LoanType).Select(s=>s.LoanProductType.LoanType)
+                .Include(x => x.LoanProductType).ThenInclude(x => x.LoanType).Select(s => s.LoanProductType.LoanType)
                 .FirstOrDefaultAsync() ?? throw new Exception();
             return loanType;
         }

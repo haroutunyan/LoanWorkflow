@@ -29,11 +29,30 @@ namespace LoanWorkflow.Api.Controllers
         }
 
         [HttpPost]
+        public async Task<ApiResponse<IEnumerable<LoanCurrenciesByProductTypeIdDTO>>> GetCurrenciesByProductTypeId(
+            short productTypeId)
+        {
+            return new ApiResponse<IEnumerable<LoanCurrenciesByProductTypeIdDTO>>
+                (ApiContext.Mapper.Map<IEnumerable<LoanCurrenciesByProductTypeIdDTO>>
+                (await _loanProductTypeService.GetCurrenciesByProductTypeId(productTypeId)));
+        }
+
+        [HttpPost]
         public async Task<ApiResponse<IEnumerable<LoanRepaymentTypesDTO>>> GetRepaymentTypes(short productTypeId)
         {
             return new ApiResponse<IEnumerable<LoanRepaymentTypesDTO>>
                 (ApiContext.Mapper.Map<IEnumerable<LoanRepaymentTypesDTO>>
                 (await _loanProductTypeService.GetRepaymentTypes(productTypeId)));
+        }
+
+        [HttpPost]
+        public async Task<ApiResponse<IEnumerable<LoanRepaymentTypesByCurrencyDTO>>> GetRepaymentTypesByCurrency(
+           string currencyCode,
+           short productTypeId)
+        {
+            return new ApiResponse<IEnumerable<LoanRepaymentTypesByCurrencyDTO>>
+                (ApiContext.Mapper.Map<IEnumerable<LoanRepaymentTypesByCurrencyDTO>>
+                (await _loanProductSettingService.GetRepaymentTypesByCurrency(currencyCode,productTypeId)));
         }
 
         [HttpPost]

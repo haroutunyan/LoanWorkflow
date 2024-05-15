@@ -13,9 +13,20 @@ namespace LoanWorkflow.Services.Loan
         {
             var productType = (await Repository
                          .Where(x=>x.Id == productTypeId)
-                         .Include(x=>x.LoanProductSettings).FirstOrDefaultAsync()) ?? throw new Exception();
+                         .Include(x=>x.LoanProductSettings)
+                         .FirstOrDefaultAsync()) ?? throw new Exception();
 
             return productType.LoanProductSettings.DistinctBy(x=>x.RepaymentType).ToList();
+        }
+        public async Task<List<LoanProductSetting>> GetCurrenciesByProductTypeId(short productTypeId)
+        {
+            var productType = (await Repository
+                         .Where(x=>x.Id == productTypeId)
+                         .Include(x=>x.LoanProductSettings)
+                         .ThenInclude(x=>x.LoanSetting)
+                         .FirstOrDefaultAsync()) ?? throw new Exception();
+
+            return productType.LoanProductSettings.DistinctBy(x=>x.LoanSetting.Currency).ToList();
         }
 
     }
