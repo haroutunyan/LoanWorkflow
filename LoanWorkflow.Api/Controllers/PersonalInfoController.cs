@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LoanWorkflow.Api.Controllers
 {
-    [AllowAnonymous]
     public class PersonalInfoController(
         ApiContext apiContext,
         IEkengService ekengService,
