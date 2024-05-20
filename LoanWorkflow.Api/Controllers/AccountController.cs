@@ -1,14 +1,13 @@
 ﻿using LoanWorkflow.Api.Abstractions;
 using LoanWorkflow.Api.Models.UserAccount;
 using LoanWorkflow.Core.Exceptions;
-using LoanWorkflow.Core.Options;
-using LoanWorkflow.DAL.Entities;
 using LoanWorkflow.DAL.Entities.Users;
 using LoanWorkflow.Services.Interfaces.Settings;
 using LoanWorkflow.Services.Interfaces.Users;
 using LoanWorkflow.Services.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace LoanWorkflow.Api.Controllers
@@ -18,6 +17,7 @@ namespace LoanWorkflow.Api.Controllers
         IUserService userService,
         IUserTokenService userTokenService,
         ISettings settings,
+        IRoleService roleService,
         LoanWorkflowUserManager userManager) : ApiControllerBase(apiContext)
     {
         [AllowAnonymous]
@@ -53,9 +53,8 @@ namespace LoanWorkflow.Api.Controllers
         public async Task<ApiResponse<RefreshTokenResponseModel>> RefreshToken(RefreshTokenRequestModel model)
         {
             var principal = await userManager.GetPrincipalFromExpiredTokenAsync(model.AccessToken, model.RefreshToken);
-            var user = await userManager.FindByNameAsync(principal.Identity.Name)
-                ?? throw new UnauthorizedException();
-
+            var user = await userService.GetByUserNameAsync(principal.Identity.Name)
+                 ?? throw new UnauthorizedException();
             UserToken userToken = await userTokenService.GetByUserIdLoginProviderAndNameAsync(user.Id,
                 settings.LoginProviderSettings.LoginProviderName,
                 settings.LoginProviderSettings.TokenName);
@@ -100,9 +99,22 @@ namespace LoanWorkflow.Api.Controllers
                 PartnerId = model.PartnerId
             };
 
-            await userManager.CreateAsync(employee, model.Password);
-            await SaveChangesAsync(0);
-            return Ok(new ApiResponse<bool>(true));
+            var defaultRole = await roleService.GetDefaultRoleAsync();
+            var result = await userManager.CreateAsync(employee, model.Password);
+
+            if (result.Succeeded)
+            {
+                var roleAddResult = await userManager.AddToRoleAsync(employee, defaultRole.NormalizedName);
+
+                if (roleAddResult.Succeeded)
+                {
+                    return Ok(new ApiResponse<bool>(true));
+                }
+                
+                return BadRequest(new { Errors = roleAddResult.Errors.Select(e => e.Description) });
+                
+            }
+            return BadRequest(new { Errors = result.Errors.Select(e => e.Description) });
         }
     }
 }
