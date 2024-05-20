@@ -9,7 +9,9 @@ using LoanWorkflow.Services.Interfaces.Users;
 using LoanWorkflow.Services.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace LoanWorkflow.Api.Controllers
 {
@@ -25,6 +27,7 @@ namespace LoanWorkflow.Api.Controllers
         public async Task<ApiResponse<SignInResponseModel>> SignIn(SignInRequestModel model)
         {
             var user = await userService.GetByUserNameAsync(model.UserName);
+            user.UserRoles = await userManager.GetRolesAsync(user);
             if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
             {
                 await userManager.AddLoginAsync(user);
@@ -88,7 +91,7 @@ namespace LoanWorkflow.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> CreateUser(CreateUserRequestModel model)
+        public async Task<IActionResult> CreateUser(CreateUserRequestModel model, string role)
         {
             var employee = new User
             {
@@ -100,9 +103,16 @@ namespace LoanWorkflow.Api.Controllers
                 PartnerId = model.PartnerId
             };
 
-            await userManager.CreateAsync(employee, model.Password);
-            await SaveChangesAsync(0);
-            return Ok(new ApiResponse<bool>(true));
+            var result = await userManager.CreateAsync(employee, model.Password);
+
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(employee, role);
+
+                return Ok(new ApiResponse<bool>(true));
+            }
+
+            return BadRequest(new { Errors = result.Errors.Select(e => e.Description) });
         }
     }
 }
