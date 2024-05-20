@@ -43,6 +43,7 @@ namespace LoanWorkflow.DAL
         public DbSet<ECivilData> ECivilData { get; set; }
         public DbSet<VehicleData> VehicleData { get; set; }
         public DbSet<CesData> CesData { get; set; }
+        public DbSet<DraftApplication> DraftApplications { get; set; }
 
         public int SaveChanges(long initiator, bool acceptAllChangesOnSuccess)
         {

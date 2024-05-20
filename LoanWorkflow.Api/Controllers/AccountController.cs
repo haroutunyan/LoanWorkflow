@@ -30,7 +30,7 @@ namespace LoanWorkflow.Api.Controllers
                 await userManager.AddLoginAsync(user);
                 await userManager.SetAuthenticationTokenAsync(user);
                 var token = await userManager.GenerateAccessTokenAsync(user);
-                string refresh = await userManager.GetAuthenticationTokenAsync(
+                var refresh = await userManager.GetAuthenticationTokenAsync(
                     user,
                     settings.LoginProviderSettings.LoginProviderName,
                     settings.LoginProviderSettings.TokenName);

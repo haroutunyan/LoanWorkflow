@@ -1,6 +1,11 @@
-﻿using LoanWorkflow.Api.Abstractions;
+﻿using Azure.Core;
+using LoanWorkflow.Api.Abstractions;
+using LoanWorkflow.Api.Models.Common;
 using LoanWorkflow.Api.Models.Loan;
 using LoanWorkflow.Core.Enums;
+using LoanWorkflow.Core.Exceptions;
+using LoanWorkflow.DAL.Entities.Clients;
+using LoanWorkflow.DAL.Entities.Loan;
 using LoanWorkflow.Services.Interfaces.Acra;
 using LoanWorkflow.Services.Interfaces.Clients;
 using LoanWorkflow.Services.Interfaces.Ekeng;
@@ -12,12 +17,14 @@ namespace LoanWorkflow.Api.Controllers
 {
     public class LoanController(
         ApiContext apiContext,
-        ILoanTypeService _loanTypeservice,
-        ILoanProductTypeService _loanProductTypeService,
-        ILoanProductSettingService _loanProductSettingService,
+        ILoanTypeService loanTypeService,
+        ILoanProductTypeService loanProductTypeService,
+        ILoanProductSettingService loanProductSettingService,
         IAcraService acraService,
         IEkengService ekengService,
-        IClientService clientService) 
+        IClientService clientService,
+        IApplicationService applicationService,
+        IDraftApplicationService draftApplicationService)
         : ApiControllerBase(apiContext)
     {
         [HttpPost]
@@ -25,7 +32,7 @@ namespace LoanWorkflow.Api.Controllers
         {
             return new ApiResponse<IEnumerable<LoanTypesResponse>>
                 (ApiContext.Mapper.Map<IEnumerable<LoanTypesResponse>>
-                (await _loanTypeservice.GetAllLoanTypes()));
+                (await loanTypeService.GetAllLoanTypes()));
         }
 
         [HttpPost]
@@ -34,7 +41,7 @@ namespace LoanWorkflow.Api.Controllers
         {
             return new ApiResponse<IEnumerable<LoanCurrenciesByProductTypeIdDTO>>
                 (ApiContext.Mapper.Map<IEnumerable<LoanCurrenciesByProductTypeIdDTO>>
-                (await _loanProductTypeService.GetCurrenciesByProductTypeId(productTypeId)));
+                (await loanProductTypeService.GetCurrenciesByProductTypeId(productTypeId)));
         }
 
         [HttpPost]
@@ -42,7 +49,7 @@ namespace LoanWorkflow.Api.Controllers
         {
             return new ApiResponse<IEnumerable<LoanRepaymentTypesDTO>>
                 (ApiContext.Mapper.Map<IEnumerable<LoanRepaymentTypesDTO>>
-                (await _loanProductTypeService.GetRepaymentTypes(productTypeId)));
+                (await loanProductTypeService.GetRepaymentTypes(productTypeId)));
         }
 
         [HttpPost]
@@ -52,17 +59,17 @@ namespace LoanWorkflow.Api.Controllers
         {
             return new ApiResponse<IEnumerable<LoanRepaymentTypesByCurrencyDTO>>
                 (ApiContext.Mapper.Map<IEnumerable<LoanRepaymentTypesByCurrencyDTO>>
-                (await _loanProductSettingService.GetRepaymentTypesByCurrency(currencyCode,productTypeId)));
+                (await loanProductSettingService.GetRepaymentTypesByCurrency(currencyCode, productTypeId)));
         }
 
         [HttpPost]
         public async Task<ApiResponse<IEnumerable<LoanCurrenciesByRepaymentTypeIdDTO>>> GetCurrenciesByRepaymentTypes(
-            short repaymentTypeId, 
+            short repaymentTypeId,
             short productTypeId)
         {
             return new ApiResponse<IEnumerable<LoanCurrenciesByRepaymentTypeIdDTO>>
                 (ApiContext.Mapper.Map<IEnumerable<LoanCurrenciesByRepaymentTypeIdDTO>>
-                (await _loanProductSettingService.GetCurrenciesByRepaymentTypes(repaymentTypeId, productTypeId)));
+                (await loanProductSettingService.GetCurrenciesByRepaymentTypes(repaymentTypeId, productTypeId)));
         }
 
         [HttpPost]
@@ -70,22 +77,35 @@ namespace LoanWorkflow.Api.Controllers
         {
             return new ApiResponse<LoanSettingDTO>
                 (ApiContext.Mapper.Map<LoanSettingDTO>
-                (await _loanProductSettingService.GetLoanSettingByProductSettingId(productSettingId)));
+                (await loanProductSettingService.GetLoanSettingByProductSettingId(productSettingId)));
         }
 
         [HttpPost]
         public async Task<ApiResponse<LoanTypeInfoResponse>> GetLoanTypeInfoByProductSettingId(int productSettingId)
         {
             var maped = ApiContext.Mapper.Map<LoanTypeInfoResponse>(
-                await _loanProductSettingService.GetLoanTypeInfoByProductSettingId(productSettingId));
+                await loanProductSettingService.GetLoanTypeInfoByProductSettingId(productSettingId));
             maped.ProductSettingId = productSettingId;
             return new ApiResponse<LoanTypeInfoResponse>(maped);
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<ApiResponse<Dictionary<int, object>>> AddApplicant(AddApplicantRequest request)
         {
+            var draftApplication = await draftApplicationService.Get(e => e.Id == request.ApplicationId)
+                ?? throw new DraftApplicationNotFoundException();
+
+            if (draftApplication.Used)
+            {
+
+            }
+
+            var application = await applicationService.Get(e => e.Id == request.ApplicationId)
+                ?? throw new ApplicationNotFoundException();
+
+            if (application.Applicant is null && request.Type != ClientType.Borrower)
+                throw new ApplicationDoesNotHaveBorrowerException();
+
             var result = new Dictionary<int, object>
             {
                 { (int)PersonalInfoType.Avv, (await ekengService.GetAvvData(request.SSN)).Result },
@@ -98,6 +118,24 @@ namespace LoanWorkflow.Api.Controllers
             };
 
             return new ApiResponse<Dictionary<int, object>>(result);
+        }
+
+        [HttpPost]
+        public async Task<ApiResponse<Guid>> GetNewApplicationId(IdRequest<long> request)
+        {
+            if (await loanProductSettingService.GetAsNoTracking(e => e.Id == request.Id) is null)
+                throw new LoanProductSettingNotFoundException();
+
+            var id = Guid.Parse(HttpContext.TraceIdentifier);
+            await draftApplicationService.Add(new DraftApplication
+            {
+                Id = id,
+                LoanProductSettingId = request.Id
+            });
+
+            await SaveChangesAsync(UserContext.UserId);
+
+            return new ApiResponse<Guid>(id);
         }
     }
 }
