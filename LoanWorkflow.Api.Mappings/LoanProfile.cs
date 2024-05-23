@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using LoanWorkflow.Api.Models.File.Response;
 using LoanWorkflow.Api.Models.Loan;
 using LoanWorkflow.DAL.Entities.Loan;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +29,9 @@ namespace LoanWorkflow.Api.Mappings
 
             CreateMap<LoanProductSetting, LoanCurrenciesByProductTypeIdDTO>()
               .AfterMap<LoanCurrenciesByProductTypeIdDTOAction>();
+
+            CreateMap<LoanType, ChildLoanTypeShortModel>()
+                .AfterMap<LoanTypeToChildLoanTypeShortModelAction>();
         }
 
         
@@ -94,6 +96,17 @@ namespace LoanWorkflow.Api.Mappings
                     3 => "Ժամկետի վերջում",
                     _ => throw new NotImplementedException(),
                 };
+            }
+        }
+
+        public class LoanTypeToChildLoanTypeShortModelAction(IConfiguration configuration) : IMappingAction<LoanType, ChildLoanTypeShortModel>
+        {
+            private readonly IConfiguration _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+
+            public void Process(LoanType source, ChildLoanTypeShortModel destination, ResolutionContext context)
+            {
+                destination.Img = source?.File?.Path is not null ? 
+                    $"{_configuration.GetSection("FileDisplayPath").Value ?? string.Empty}{source?.File?.Path}" : null;
             }
         }
     }

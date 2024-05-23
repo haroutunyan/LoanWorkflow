@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LoanWorkflow.DAL.Core\LoanWorkflow.DAL.Core.csproj" />
     <ProjectReference Include="..\LoanWorkflow.Services.DTO\LoanWorkflow.Services.DTO.csproj" />
     <ProjectReference Include="..\LoanWorkflow.Services.Interfaces\LoanWorkflow.Services.Interfaces.csproj" />
