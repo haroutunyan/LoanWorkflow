@@ -1,11 +1,6 @@
 ﻿using LoanWorkflow.DAL.Entities.Clients;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LoanWorkflow.DAL.Configurations
 {
@@ -45,16 +40,16 @@ namespace LoanWorkflow.DAL.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
             builder.Property(e => e.ActualAddress)
-                .HasMaxLength(50)
-                .IsRequired();
+                .HasMaxLength(50);
             builder.Property(e => e.PhoneNumber)
                 .HasMaxLength(15)
                 .IsRequired();
             builder.Property(e => e.SecondPhoneNumber)
-                .HasMaxLength(15)
-                .IsRequired(false);
+                .HasMaxLength(15);
             builder.Property(e => e.Email)
-                .HasMaxLength(15)
+                .IsRequired();
+            builder.Property(e => e.Type)
+                .HasMaxLength(50)
                 .IsRequired();
         }
     }

@@ -1,4 +1,5 @@
-﻿using LoanWorkflow.Services.DTO.Ekeng.AVV;
+﻿using LoanWorkflow.Api.Models.Clients;
+using LoanWorkflow.Services.DTO.Ekeng.AVV;
 using LoanWorkflow.Services.DTO.Ekeng.BusinessRegister;
 using LoanWorkflow.Services.DTO.Ekeng.Ces;
 using LoanWorkflow.Services.DTO.Ekeng.ECivil;
@@ -48,6 +49,12 @@ namespace LoanWorkflow.Services.Ekeng
         {
             var data = File.ReadAllText(Path.Combine(config["PersonalInfo"], "taxmonthly.txt"));
             return await Task.FromResult(JsonConvert.DeserializeObject<TaxInfoResult>(data));
+        }
+
+        public async Task<ClientData> GetClientData(string ssn)
+        {
+            var client = config.GetSection("ClientData").Get<IList<ClientData>>();
+            return client.FirstOrDefault(p => p.SSN == ssn);
         }
     }
 }

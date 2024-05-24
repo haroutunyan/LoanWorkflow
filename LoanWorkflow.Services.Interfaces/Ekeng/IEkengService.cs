@@ -1,4 +1,5 @@
-﻿using LoanWorkflow.Services.DTO.Ekeng.AVV;
+﻿using LoanWorkflow.Api.Models.Clients;
+using LoanWorkflow.Services.DTO.Ekeng.AVV;
 using LoanWorkflow.Services.DTO.Ekeng.BusinessRegister;
 using LoanWorkflow.Services.DTO.Ekeng.Ces;
 using LoanWorkflow.Services.DTO.Ekeng.ECivil;
@@ -15,5 +16,6 @@ namespace LoanWorkflow.Services.Interfaces.Ekeng
         Task<VehiclesResult> GetVehicleData(string ssn);
         Task<CesResult> GetCesData(string ssn);
         Task<TaxInfoResult> GetTaxData(string ssn);
+        Task<ClientData> GetClientData(string ssn);
     }
 }

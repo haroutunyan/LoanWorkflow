@@ -4,6 +4,7 @@ using LoanWorkflow.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    partial class LoanWorkflowContextModelSnapshot : ModelSnapshot
+    [Migration("20240524135856_CLientTableChanges")]
+    partial class CLientTableChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,6 +206,7 @@ namespace LoanWorkflow.DAL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("ActualAddress")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -244,7 +248,8 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -281,6 +286,7 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("SecondPhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
