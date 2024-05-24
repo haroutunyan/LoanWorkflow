@@ -99,5 +99,12 @@ namespace LoanWorkflow.Api.Controllers
 
             return new ApiResponse<Dictionary<int, object>>(result);
         }
+
+        [HttpPost]
+        public async Task<ApiResponse<IList<GetLoanTypeShortResponseModel>>> GetLoanTypes()
+        {
+            var response = await _loanTypeservice.GetLoanTypes();
+            return new ApiResponse<IList<GetLoanTypeShortResponseModel>>(response);
+        }
     }
 }
