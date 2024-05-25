@@ -29,5 +29,9 @@ namespace LoanWorkflow.Services.Loan
             return productType.LoanProductSettings.DistinctBy(x=>x.LoanSetting.Currency).ToList();
         }
 
+        public async Task<LoanProductType?> GetById(short productTypeId)
+        {
+            return await Repository.FirstOrDefaultAsync(p => p.Id == productTypeId);
+        }
     }
 }

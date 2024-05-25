@@ -7,6 +7,6 @@ namespace LoanWorkflow.Services.Interfaces.Loan
     public interface ILoanTypeService : IService<LoanType>
     {
         Task<List<LoanType>> GetAllLoanTypes();
-        Task<IList<GetLoanTypeShortResponseModel>> GetLoanTypes();      
+        Task<IList<GetLoanTypeShortResponseModel>> GetLoanTypes();
     }
 }

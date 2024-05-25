@@ -20,7 +20,8 @@ namespace LoanWorkflow.Api.ExceptionHandler
                     UnauthorizedException => (int)HttpStatusCode.Unauthorized,
                     LoanWorkflowException => (int)HttpStatusCode.OK,
                     _ => (int?)(int)HttpStatusCode.InternalServerError,
-                }
+                },
+                Detail = exception.Message,
             };
 
             httpContext.Response.StatusCode = errorResponse.Status.Value;

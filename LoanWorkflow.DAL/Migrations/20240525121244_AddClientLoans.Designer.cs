@@ -4,6 +4,7 @@ using LoanWorkflow.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    partial class LoanWorkflowContextModelSnapshot : ModelSnapshot
+    [Migration("20240525121244_AddClientLoans")]
+    partial class AddClientLoans
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -344,22 +347,27 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.Property<string>("Currency")
                         .IsRequired()
-                        .HasColumnType("nvarchar(3)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Deleted")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Duration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(70)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<short>("LoanId")
+                    b.Property<int>("LoanId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LoanProductTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<short?>("LoanProductTypeId1")
                         .HasColumnType("smallint");
 
-                    b.Property<short>("LoanProductTypeId")
-                        .HasColumnType("smallint");
+                    b.Property<int>("LoanTypeId")
+                        .HasColumnType("int");
 
-                    b.Property<short>("LoanTypeId")
+                    b.Property<short?>("LoanTypeId1")
                         .HasColumnType("smallint");
 
                     b.Property<DateTime>("Modified")
@@ -384,9 +392,9 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasIndex("Deleted")
                         .HasFilter("[Deleted] IS NULL");
 
-                    b.HasIndex("LoanProductTypeId");
+                    b.HasIndex("LoanProductTypeId1");
 
-                    b.HasIndex("LoanTypeId");
+                    b.HasIndex("LoanTypeId1");
 
                     b.ToTable("ClientLoans", t =>
                         {
@@ -2248,15 +2256,11 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.HasOne("LoanWorkflow.DAL.Entities.Loan.LoanProductType", "LoanProductType")
                         .WithMany()
-                        .HasForeignKey("LoanProductTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LoanProductTypeId1");
 
                     b.HasOne("LoanWorkflow.DAL.Entities.Loan.LoanType", "LoanType")
                         .WithMany()
-                        .HasForeignKey("LoanTypeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("LoanTypeId1");
 
                     b.Navigation("Client");
 

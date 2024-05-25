@@ -8,7 +8,8 @@ namespace LoanWorkflow.Services.Interfaces.Clients
     {
         Task Add(Client client);
         Task<Client?> GetById(long id);
-        Task<Client?> GetBySsn(string ssn);
+        Task<Client?> GetBySsnAsync(string ssn);
         Task BorrowerInfo(BorrowerInfoRequestModel requestModel);
+        Task ConnectedClientInfo(ConnectedClientInfoRequestModel requestModel);
     }
 }

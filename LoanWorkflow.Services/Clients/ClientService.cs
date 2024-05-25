@@ -20,13 +20,13 @@ namespace LoanWorkflow.Services.Clients
         public async Task<Client?> GetById(long id)
             => await Repository.FirstOrDefaultAsync(e => e.Id == id);
 
-        public async Task<Client?> GetBySsn(string ssn)
+        public async Task<Client?> GetBySsnAsync(string ssn)
             => await Repository
             .FirstOrDefaultAsync(e => e.SSN == ssn);
 
         public async Task BorrowerInfo(BorrowerInfoRequestModel requestModel)
         {
-            var client = GetBySsn(requestModel.SSN);
+            var client = await GetBySsnAsync(requestModel.SSN);
 
             if (client != null)
                 throw new AlreadyExistException();
@@ -51,6 +51,38 @@ namespace LoanWorkflow.Services.Clients
                 DocIssuedDate = info.DocIssuedDate,
                 DocValidityDate = info.DocValidityDate,
                 MiddleName = info.MiddleName
+            });
+        }
+
+        public async Task ConnectedClientInfo(ConnectedClientInfoRequestModel requestModel)
+        {
+            var client = await GetBySsnAsync(requestModel.SSN);
+
+            if (client != null)
+                throw new AlreadyExistException();
+
+            var info = await _ekengService.GetClientData(requestModel.SSN) ?? throw new NotFoundException();
+
+            await Repository.AddAsync(new Client
+            {
+                Email = requestModel.Email,
+                Address = info.Address,
+                ConsentDate = requestModel.ConsentDate,
+                Created = DateTime.Now,
+                Type = requestModel.ClientType,
+                SSN = requestModel.SSN,
+                PhoneNumber = requestModel.PhoneNumber,
+                FirstName = info.FirstName,
+                LastName = info.LastName,
+                BirthDate = info.BirthDate,
+                Gender = (Gender)Enum.Parse(typeof(Gender), info.Gender),
+                Document = info.Document,
+                DocIssuer = info.DocIssuer,
+                DocIssuedDate = info.DocIssuedDate,
+                DocValidityDate = info.DocValidityDate,
+                MiddleName = info.MiddleName,
+                ConnectionType = requestModel.ConnectionType,
+                BorrowerSSN = requestModel.BorrowerSSN
             });
         }
     }

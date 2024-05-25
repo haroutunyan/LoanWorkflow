@@ -4,6 +4,7 @@ using LoanWorkflow.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    partial class LoanWorkflowContextModelSnapshot : ModelSnapshot
+    [Migration("20240525100929_clientTableAddRows")]
+    partial class clientTableAddRows
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,92 +308,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.ToTable("Clients", t =>
                         {
                             t.HasTrigger("Clients_Trigger");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-                });
-
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Clients.ClientLoans", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ApplicationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AttachedFile1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AttachedFile2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClientSSN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<DateTime>("Created")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
-
-                    b.Property<long>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(3)");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Duration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(70)");
-
-                    b.Property<short>("LoanId")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("LoanProductTypeId")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("LoanTypeId")
-                        .HasColumnType("smallint");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("ModifiedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<decimal>("Percent")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ReceivingMethod")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RepaymentType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientSSN");
-
-                    b.HasIndex("Deleted")
-                        .HasFilter("[Deleted] IS NULL");
-
-                    b.HasIndex("LoanProductTypeId");
-
-                    b.HasIndex("LoanTypeId");
-
-                    b.ToTable("ClientLoans", t =>
-                        {
-                            t.HasTrigger("ClientLoans_Trigger");
                         });
 
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
@@ -2237,34 +2154,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Clients.ClientLoans", b =>
-                {
-                    b.HasOne("LoanWorkflow.DAL.Entities.Clients.Client", "Client")
-                        .WithMany("ClientLoans")
-                        .HasForeignKey("ClientSSN")
-                        .HasPrincipalKey("SSN")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.LoanProductType", "LoanProductType")
-                        .WithMany()
-                        .HasForeignKey("LoanProductTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.LoanType", "LoanType")
-                        .WithMany()
-                        .HasForeignKey("LoanTypeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Client");
-
-                    b.Navigation("LoanProductType");
-
-                    b.Navigation("LoanType");
-                });
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Clients.Income", b =>
                 {
                     b.HasOne("LoanWorkflow.DAL.Entities.Clients.Client", "Client")
@@ -3800,8 +3689,6 @@ namespace LoanWorkflow.DAL.Migrations
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Clients.Client", b =>
                 {
                     b.Navigation("Applicants");
-
-                    b.Navigation("ClientLoans");
 
                     b.Navigation("Incomes");
                 });

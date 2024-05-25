@@ -1,6 +1,15 @@
 ﻿namespace LoanWorkflow.Core.Exceptions
 {
-    public class AlreadyExistException : Exception
+    public class AlreadyExistException : LoanWorkflowException
     {
+        public AlreadyExistException()
+        {
+            
+        }
+
+        public AlreadyExistException(string message) : base(message)
+        {
+            
+        }
     }
 }

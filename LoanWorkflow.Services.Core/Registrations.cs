@@ -28,6 +28,7 @@ namespace LoanWorkflow.Services.Core
                 new(typeof(IAcraService), typeof(AcraService)),
                 new(typeof(IClientService), typeof(ClientService)),
                 new(typeof(IRoleService), typeof(RoleService)),
+                new(typeof(IClientLoanService), typeof(ClientLoanService)),
             ];
     }
 }

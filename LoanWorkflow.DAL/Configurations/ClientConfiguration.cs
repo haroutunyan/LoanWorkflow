@@ -9,7 +9,7 @@ namespace LoanWorkflow.DAL.Configurations
         public void Configure(EntityTypeBuilder<Client> builder)
         {
             builder.HasKey(e => e.Id);
-
+            builder.HasAlternateKey(p => p.SSN);
             builder.Property(e => e.FirstName)
                 .HasMaxLength(20)
                 .IsRequired();
@@ -51,6 +51,15 @@ namespace LoanWorkflow.DAL.Configurations
             builder.Property(e => e.Type)
                 .HasMaxLength(50)
                 .IsRequired();
+            builder.Property(e => e.ConnectionType)
+                .HasMaxLength(20);
+            builder.Property(e => e.BorrowerSSN)
+                .HasMaxLength(10);
+
+            builder.HasMany(c => c.ClientLoans)
+                .WithOne(o => o.Client)
+                .HasForeignKey(l => l.ClientSSN)
+                .HasPrincipalKey(c => c.SSN);
         }
     }
 }

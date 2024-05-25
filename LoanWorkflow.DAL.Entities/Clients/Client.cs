@@ -24,8 +24,11 @@ namespace LoanWorkflow.DAL.Entities.Clients
         public required string Email { get; set; }
         public DateTime? ConsentDate { get; set; }
         public required string Type { get; set; }
+        public string? ConnectionType { get; set; }
+        public string? BorrowerSSN { get; set; }
 
         public ICollection<Income> Incomes { get; set; }
         public ICollection<Applicant> Applicants { get; set; }
+        public ICollection<ClientLoans>? ClientLoans { get; set; }
     }
 }

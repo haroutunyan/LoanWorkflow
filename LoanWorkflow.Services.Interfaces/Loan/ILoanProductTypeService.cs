@@ -7,5 +7,6 @@ namespace LoanWorkflow.Services.Interfaces.Loan
     {
         Task<List<LoanProductSetting>> GetRepaymentTypes(short productTypeId);
         Task<List<LoanProductSetting>> GetCurrenciesByProductTypeId(short productTypeId);
+        Task<LoanProductType?> GetById(short productTypeId);
     }
 }

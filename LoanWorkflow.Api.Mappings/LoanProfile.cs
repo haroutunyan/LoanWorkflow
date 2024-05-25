@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using LoanWorkflow.Api.Models.Clients;
 using LoanWorkflow.Api.Models.Loan;
+using LoanWorkflow.DAL.Entities.Clients;
 using LoanWorkflow.DAL.Entities.Loan;
 using Microsoft.Extensions.Configuration;
 
@@ -32,6 +34,10 @@ namespace LoanWorkflow.Api.Mappings
 
             CreateMap<LoanType, ChildLoanTypeShortModel>()
                 .AfterMap<LoanTypeToChildLoanTypeShortModelAction>();
+
+            CreateMap<ClientLoans, GetClientLoanApplicationResponseModel>()
+                .ForMember(p => p.LoanProductType, otp => otp.MapFrom(src => src.LoanProductTypeId))
+                .ForMember(p => p.LoanType, otp => otp.MapFrom(src => src.LoanTypeId));
         }
 
         
