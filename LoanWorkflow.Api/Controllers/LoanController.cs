@@ -10,6 +10,7 @@ using LoanWorkflow.Services.Interfaces.Acra;
 using LoanWorkflow.Services.Interfaces.Clients;
 using LoanWorkflow.Services.Interfaces.Ekeng;
 using LoanWorkflow.Services.Interfaces.Loan;
+using LoanWorkflow.Services.Interfaces.PersonalInfo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,8 @@ namespace LoanWorkflow.Api.Controllers
         IEkengService ekengService,
         IClientService clientService,
         IApplicationService applicationService,
-        IDraftApplicationService draftApplicationService)
+        IDraftApplicationService draftApplicationService,
+        IPersonalInfoBaseService personalInfoBaseService)
         : ApiControllerBase(apiContext)
     {
         [HttpPost]
@@ -95,16 +97,13 @@ namespace LoanWorkflow.Api.Controllers
             var draftApplication = await draftApplicationService.Get(e => e.Id == request.ApplicationId)
                 ?? throw new DraftApplicationNotFoundException();
 
-            if (draftApplication.Used)
-            {
-
-            }
-
             var application = await applicationService.Get(e => e.Id == request.ApplicationId)
                 ?? throw new ApplicationNotFoundException();
 
             if (application.Applicant is null && request.Type != ClientType.Borrower)
                 throw new ApplicationDoesNotHaveBorrowerException();
+
+            
 
             var result = new Dictionary<int, object>
             {

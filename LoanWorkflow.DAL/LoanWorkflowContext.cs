@@ -8,6 +8,7 @@ using LoanWorkflow.DAL.Entities.Approvers;
 using LoanWorkflow.DAL.Entities.Loan;
 using LoanWorkflow.DAL.Entities.Pledge;
 using LoanWorkflow.DAL.Entities;
+using LoanWorkflow.DAL.Entities.Event;
 
 namespace LoanWorkflow.DAL
 {
@@ -44,6 +45,7 @@ namespace LoanWorkflow.DAL
         public DbSet<VehicleData> VehicleData { get; set; }
         public DbSet<CesData> CesData { get; set; }
         public DbSet<DraftApplication> DraftApplications { get; set; }
+        public DbSet<StoredEvent> Events { get; set; }
 
         public int SaveChanges(long initiator, bool acceptAllChangesOnSuccess)
         {
