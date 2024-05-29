@@ -9,6 +9,8 @@ using LoanWorkflow.Services.Acra;
 using LoanWorkflow.Services.Interfaces.Acra;
 using LoanWorkflow.Services.Interfaces.Clients;
 using LoanWorkflow.Services.Clients;
+using LoanWorkflow.Services.Interfaces.PersonalInfo;
+using LoanWorkflow.Services.PersonalInfo;
 
 namespace LoanWorkflow.Services.Core
 {
@@ -28,6 +30,7 @@ namespace LoanWorkflow.Services.Core
                 new(typeof(IAcraService), typeof(AcraService)),
                 new(typeof(IClientService), typeof(ClientService)),
                 new(typeof(IDraftApplicationService), typeof(DraftApplicationService)),
+                new(typeof(IPersonalInfoService), typeof(PersonalInfoService)),
             ];
     }
 }

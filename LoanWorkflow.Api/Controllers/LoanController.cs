@@ -6,6 +6,8 @@ using LoanWorkflow.Core.Enums;
 using LoanWorkflow.Core.Exceptions;
 using LoanWorkflow.DAL.Entities.Clients;
 using LoanWorkflow.DAL.Entities.Loan;
+using LoanWorkflow.DAL.Entities.PersonalInfo;
+using LoanWorkflow.Services.DTO.PersonalInfo;
 using LoanWorkflow.Services.Interfaces.Acra;
 using LoanWorkflow.Services.Interfaces.Clients;
 using LoanWorkflow.Services.Interfaces.Ekeng;
@@ -21,8 +23,8 @@ namespace LoanWorkflow.Api.Controllers
         ILoanTypeService loanTypeService,
         ILoanProductTypeService loanProductTypeService,
         ILoanProductSettingService loanProductSettingService,
-        IAcraService acraService,
         IEkengService ekengService,
+        IPersonalInfoService personalInfoService,
         IClientService clientService,
         IApplicationService applicationService,
         IDraftApplicationService draftApplicationService,
@@ -92,7 +94,7 @@ namespace LoanWorkflow.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ApiResponse<Dictionary<int, object>>> AddApplicant(AddApplicantRequest request)
+        public async Task<ApiResponse<PersonalInfoDTO>> AddApplicant(AddApplicantRequest request)
         {
             var draftApplication = await draftApplicationService.Get(e => e.Id == request.ApplicationId)
                 ?? throw new DraftApplicationNotFoundException();
@@ -103,20 +105,16 @@ namespace LoanWorkflow.Api.Controllers
             if (application.Applicant is null && request.Type != ClientType.Borrower)
                 throw new ApplicationDoesNotHaveBorrowerException();
 
-            
-
-            var result = new Dictionary<int, object>
+            var personalInfo = await personalInfoService.GetAllPersonalInfos(request.SSN);
+            var avv = ApiContext.Mapper.Map<AvvData>(personalInfo.Avv);
+           // var acra = ApiContext.Mapper.Map<AvvData>(personalInfo.Acra);
+            var acts = new ECivilData 
             {
-                { (int)PersonalInfoType.Avv, (await ekengService.GetAvvData(request.SSN)).Result },
-                { (int)PersonalInfoType.ECivil, (await ekengService.GetCivilResult(request.SSN)).Result },
-                { (int)PersonalInfoType.Acra, acraService.GetAcraData() },
-                { (int)PersonalInfoType.BusinessRegister, (await ekengService.GetBusinessRegisterData(request.SSN)).Result },
-                { (int)PersonalInfoType.Ces, (await ekengService.GetCesData(request.SSN)).Result },
-                { (int)PersonalInfoType.Vehicle, (await ekengService.GetVehicleData(request.SSN)).Result },
-                { (int)PersonalInfoType.Tax, (await ekengService.GetTaxData(request.SSN)).TaxPayersInfo }
+                
             };
-
-            return new ApiResponse<Dictionary<int, object>>(result);
+            var ces = ApiContext.Mapper.Map<IEnumerable<EInquest>>(personalInfo.Ces);
+            
+            return new ApiResponse<PersonalInfoDTO>(personalInfo);
         }
 
         [HttpPost]
