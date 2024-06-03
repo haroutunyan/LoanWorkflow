@@ -4,6 +4,7 @@ using LoanWorkflow.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    partial class LoanWorkflowContextModelSnapshot : ModelSnapshot
+    [Migration("20240603051921_ChangeSomeFieldTypes")]
+    partial class ChangeSomeFieldTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -654,8 +657,6 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.HasIndex("Deleted")
                         .HasFilter("[Deleted] IS NULL");
-
-                    b.HasIndex("FileId");
 
                     b.ToTable("ApplicantFiles", t =>
                         {
@@ -2018,9 +2019,6 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<long?>("ApplicantFileId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -2053,8 +2051,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasIndex("ActivityPositionId");
 
                     b.HasIndex("ActivityTypeId");
-
-                    b.HasIndex("ApplicantFileId");
 
                     b.HasIndex("FileId");
 
@@ -3426,13 +3422,10 @@ namespace LoanWorkflow.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.ApplicantFile", null)
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.ApplicantFile", "ApplicantFile")
                         .WithMany("OtherIncomes")
-                        .HasForeignKey("ApplicantFileId");
-
-                    b.HasOne("LoanWorkflow.DAL.Entities.File.File", "OtherIncomeFile")
-                        .WithMany()
                         .HasForeignKey("FileId")
+                        .HasPrincipalKey("FileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3446,7 +3439,7 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.Navigation("ActivityType");
 
-                    b.Navigation("OtherIncomeFile");
+                    b.Navigation("ApplicantFile");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.VehicleData", b =>

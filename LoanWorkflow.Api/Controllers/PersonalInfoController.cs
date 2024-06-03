@@ -8,7 +8,10 @@ using LoanWorkflow.Services.DTO.Ekeng.ECivil;
 using LoanWorkflow.Services.DTO.Ekeng.Police;
 using LoanWorkflow.Services.DTO.Ekeng.TaxInfo;
 using LoanWorkflow.Services.Interfaces.Acra;
+using LoanWorkflow.Services.Interfaces.Clients;
 using LoanWorkflow.Services.Interfaces.Ekeng;
+using LoanWorkflow.Services.Interfaces.PersonalInfo;
+using LoanWorkflow.Services.PersonalInfo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +20,8 @@ namespace LoanWorkflow.Api.Controllers
     public class PersonalInfoController(
         ApiContext apiContext,
         IEkengService ekengService,
-        IAcraService acraService) 
+        IAcraService acraService,
+        IOtherIncomeService otherIncomeService) 
         : ApiControllerBase(apiContext)
     {
         [HttpPost]
@@ -54,5 +58,33 @@ namespace LoanWorkflow.Api.Controllers
         public async Task<ApiResponse<TaxInfoResult>> GetTaxData(SSNRequest request)
             => new ApiResponse<TaxInfoResult>(
                 await ekengService.GetTaxData(request.SSN));
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult<AddOtherIncomeResponse>> AddOtherIncome([FromForm] AddOtherIncomeRequest request)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await otherIncomeService.AddOtherIncomeAsync(request);
+
+        }
+
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetOtherIncomeById(Guid id)
+        {
+            var otherIncome = await otherIncomeService.GetOtherIncomeAsync(id);
+
+            if (otherIncome == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(otherIncome);
+        }
     }
 }

@@ -4,6 +4,7 @@ using LoanWorkflow.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    partial class LoanWorkflowContextModelSnapshot : ModelSnapshot
+    [Migration("20240527074635_AddedOtherIncome")]
+    partial class AddedOtherIncome
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1108,29 +1111,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.Activity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ActivityName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Activity", null, t =>
-                        {
-                            t.HasTrigger("Activity_Trigger");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-                });
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.ApplicantPersonalInfo", b =>
                 {
                     b.Property<long>("Id")
@@ -1304,29 +1284,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b
                         .UseTptMappingStrategy()
                         .HasAnnotation("SqlServer:UseSqlOutputClause", false);
-                });
-
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.Position", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("PositionName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Position", null, t =>
-                        {
-                            t.HasTrigger("Position_Trigger");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.MovableEstateType", b =>
@@ -2018,9 +1975,6 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<long?>("ApplicantFileId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -2049,14 +2003,6 @@ namespace LoanWorkflow.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.HasIndex("ActivityPositionId");
-
-                    b.HasIndex("ActivityTypeId");
-
-                    b.HasIndex("ApplicantFileId");
-
-                    b.HasIndex("FileId");
 
                     b.ToTable("OtherIncome", null, t =>
                         {
@@ -3414,39 +3360,11 @@ namespace LoanWorkflow.DAL.Migrations
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.OtherIncome", b =>
                 {
-                    b.HasOne("LoanWorkflow.DAL.Entities.PersonalInfo.Position", "ActivityPosition")
-                        .WithMany("OtherIncomes")
-                        .HasForeignKey("ActivityPositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LoanWorkflow.DAL.Entities.PersonalInfo.Activity", "ActivityType")
-                        .WithMany("OtherIncomes")
-                        .HasForeignKey("ActivityTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.ApplicantFile", null)
-                        .WithMany("OtherIncomes")
-                        .HasForeignKey("ApplicantFileId");
-
-                    b.HasOne("LoanWorkflow.DAL.Entities.File.File", "OtherIncomeFile")
-                        .WithMany()
-                        .HasForeignKey("FileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase", null)
                         .WithOne()
                         .HasForeignKey("LoanWorkflow.DAL.Entities.PersonalInfo.OtherIncome", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ActivityPosition");
-
-                    b.Navigation("ActivityType");
-
-                    b.Navigation("OtherIncomeFile");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.VehicleData", b =>
@@ -3847,11 +3765,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Navigation("Pledges");
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.ApplicantFile", b =>
-                {
-                    b.Navigation("OtherIncomes");
-                });
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.Application", b =>
                 {
                     b.Navigation("ApproverActivities");
@@ -3890,11 +3803,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.Activity", b =>
-                {
-                    b.Navigation("OtherIncomes");
-                });
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.CivilPerson", b =>
                 {
                     b.Navigation("Person2ECivils");
@@ -3907,11 +3815,6 @@ namespace LoanWorkflow.DAL.Migrations
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase", b =>
                 {
                     b.Navigation("ApplicantPersonalInfos");
-                });
-
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.Position", b =>
-                {
-                    b.Navigation("OtherIncomes");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Pledge.MovableEstateType", b =>
