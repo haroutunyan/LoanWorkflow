@@ -4,16 +4,13 @@ using LoanWorkflow.Api.Models.Common;
 using LoanWorkflow.Api.Models.Loan;
 using LoanWorkflow.Core.Enums;
 using LoanWorkflow.Core.Exceptions;
-using LoanWorkflow.DAL.Entities.Clients;
 using LoanWorkflow.DAL.Entities.Loan;
 using LoanWorkflow.DAL.Entities.PersonalInfo;
 using LoanWorkflow.Services.DTO.PersonalInfo;
-using LoanWorkflow.Services.Interfaces.Acra;
 using LoanWorkflow.Services.Interfaces.Clients;
 using LoanWorkflow.Services.Interfaces.Ekeng;
 using LoanWorkflow.Services.Interfaces.Loan;
 using LoanWorkflow.Services.Interfaces.PersonalInfo;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoanWorkflow.Api.Controllers

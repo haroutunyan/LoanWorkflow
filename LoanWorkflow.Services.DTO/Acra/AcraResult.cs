@@ -8,8 +8,6 @@ namespace LoanWorkflow.Services.DTO.Acra
     [XmlType("ROWDATA")]
     public class AcraResult
     {
-        public Guid? ParticipientId { get; set; }
-
         [XmlElement(ElementName = "ReqID")]
         public string ReqID { get; set; }
 
