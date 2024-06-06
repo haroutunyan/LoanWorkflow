@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace LoanWorkflow.Core.Helpers
 {
-    public static class HelperMethods
+    public static class Helpers
     {
         public static IEnumerable<KeyValuePair<string, string>> ToKeyValuePairs<T>(T model)
         {
@@ -29,6 +30,27 @@ namespace LoanWorkflow.Core.Helpers
             }
 
             return keyValuePairs;
+        }
+
+        public static string ToXml<T>(T Model, out string errorMessage, string RootAttribute = null)
+        {
+            errorMessage = string.Empty;
+            string resultString = string.Empty;
+            Type type = typeof(T);
+
+            try
+            {
+                var serializer = string.IsNullOrEmpty(RootAttribute) ? new XmlSerializer(type) : new XmlSerializer(type, new XmlRootAttribute(RootAttribute));
+                using var textWriter = new Utf8StringWriter();
+                serializer.Serialize(textWriter, Model);
+                resultString = textWriter.ToString();
+            }
+            catch (Exception e)
+            {
+                errorMessage = e.InnerException is not null ? e.InnerException.Message : e.Message;
+            }
+
+            return resultString;
         }
     }
 }

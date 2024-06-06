@@ -98,6 +98,8 @@ builder.Services.Configure<JwtSettings>(options =>
     builder.Configuration.GetSection(nameof(JwtSettings)).Bind(options));
 builder.Services.Configure<LoginProviderSettings>(options =>
     builder.Configuration.GetSection(nameof(LoginProviderSettings)).Bind(options));
+builder.Services.Configure<AcraCredentials>(options =>
+    builder.Configuration.GetSection(nameof(AcraCredentials)).Bind(options));
 
 var app = builder.Build();
 app.UseSwagger();

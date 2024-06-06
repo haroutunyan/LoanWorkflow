@@ -9,7 +9,6 @@ using LoanWorkflow.Services.DTO.Ekeng.Police;
 using LoanWorkflow.Services.DTO.Ekeng.TaxInfo;
 using LoanWorkflow.Services.Interfaces.Acra;
 using LoanWorkflow.Services.Interfaces.Ekeng;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoanWorkflow.Api.Controllers
@@ -26,9 +25,9 @@ namespace LoanWorkflow.Api.Controllers
                 await ekengService.GetAvvData(request.SSN));
 
         [HttpPost]
-        public async Task<ApiResponse<CivilResult>> GetActs(SSNRequest request)
+        public async Task<ApiResponse<CivilResult>> GetActs(ECivilRequest request)
             => new ApiResponse<CivilResult>(
-                await ekengService.GetCivilResult(request.SSN));
+                await ekengService.GetCivilResult(request.SSN, request.FirstName, request.LastName));
 
         [HttpPost]
         public async Task<ApiResponse<CesResult>> GetCesData(SSNRequest request)
@@ -51,8 +50,8 @@ namespace LoanWorkflow.Api.Controllers
                 acraService.GetAcraData());
 
         [HttpPost]
-        public async Task<ApiResponse<TaxInfoResult>> GetTaxData(SSNRequest request)
+        public async Task<ApiResponse<TaxInfoResult>> GetTaxData(TaxRequest request)
             => new ApiResponse<TaxInfoResult>(
-                await ekengService.GetTaxData(request.SSN));
+                await ekengService.GetTaxData(request.SSN, request.StartDate, request.EndDate));
     }
 }

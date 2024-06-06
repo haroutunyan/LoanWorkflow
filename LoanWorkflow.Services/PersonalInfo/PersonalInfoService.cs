@@ -17,14 +17,16 @@ namespace LoanWorkflow.Services.PersonalInfo
     {
         public async Task<PersonalInfoDTO> GetAllPersonalInfos(string ssn)
         {
+            var avv = (await ekengService.GetAvvData(ssn)).Result.FirstOrDefault();
+            var firstDoc = avv.AvvDocuments.Document.FirstOrDefault();
             return new PersonalInfoDTO
             {
-                Avv = (await ekengService.GetAvvData(ssn)).Result.FirstOrDefault(),
+                Avv = avv,
                 Acra = acraService.GetAcraData(),
-                Acts = (await ekengService.GetCivilResult(ssn)).Result,
+                Acts = (await ekengService.GetCivilResult(ssn, firstDoc.Person.FirstName, firstDoc.Person.LastName)).Result,
                 Ces = (await ekengService.GetCesData(ssn)).Result,
                 BusinessRegister = (await ekengService.GetBusinessRegisterData(ssn)).Result,
-                TaxInfo = (await ekengService.GetTaxData(ssn)).TaxPayersInfo,
+                TaxInfo = (await ekengService.GetTaxData(ssn, DateTime.UtcNow.AddYears(-1), DateTime.UtcNow)).TaxPayersInfo,
                 Vehicles = (await ekengService.GetVehicleData(ssn)).Result
             };
         }

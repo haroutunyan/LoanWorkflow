@@ -11,9 +11,9 @@ namespace LoanWorkflow.Services.Interfaces.Ekeng
     {
         Task<AvvResponse> GetAvvData(string ssn);
         Task<PhysicalPersonBusinessResult> GetBusinessRegisterData(string ssn);
-        Task<CivilResult> GetCivilResult(string ssn);
+        Task<CivilResult> GetCivilResult(string ssn, string firstName, string lastName);
         Task<VehiclesResult> GetVehicleData(string ssn);
         Task<CesResult> GetCesData(string ssn);
-        Task<TaxInfoResult> GetTaxData(string ssn);
+        Task<TaxInfoResult> GetTaxData(string ssn, DateTime start, DateTime end);
     }
 }
