@@ -33,4 +33,8 @@
     <ProjectReference Include="..\LoanWorkflow.Services.Core\LoanWorkflow.Services.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="HttpHandlers\" />
+  </ItemGroup>
+
 </Project>

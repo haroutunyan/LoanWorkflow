@@ -1,4 +1,6 @@
-﻿using LoanWorkflow.Services.Ekeng;
+﻿using LoanWorkflow.Services.Acra;
+using LoanWorkflow.Services.Ekeng;
+using LoanWorkflow.Services.Interfaces.Acra;
 using LoanWorkflow.Services.Interfaces.Ekeng;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +21,21 @@ namespace LoanWorkflow.Services.Core
                 services.AddHttpClient<IEkengService, EkengService>((provider, client) =>
                 {
                     client.BaseAddress = new Uri(options.EkengUrl);
+                });
+
+                services.AddHttpClient<IAcraService, AcraService>((provider, client) =>
+                {
+                    client.BaseAddress = new Uri(options.AcraUrl);
+                })
+                    .ConfigurePrimaryHttpMessageHandler(() =>
+                {
+                    var handler = new HttpClientHandler
+                    {
+                        ClientCertificateOptions = ClientCertificateOption.Manual,
+                        ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => true
+                    };
+
+                    return handler;
                 });
             }
 

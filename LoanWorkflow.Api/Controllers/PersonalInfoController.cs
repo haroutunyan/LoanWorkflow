@@ -44,10 +44,10 @@ namespace LoanWorkflow.Api.Controllers
             => new ApiResponse<VehiclesResult>(
                 await ekengService.GetVehicleData(request.SSN));
 
-        [HttpPost]
-        public async Task<ApiResponse<AcraResult>> GetAcraData(SSNRequest request)
-            => new ApiResponse<AcraResult>(
-                acraService.GetAcraData());
+        //[HttpPost]
+        //public async Task<ApiResponse<AcraResult>> GetAcraData(SSNRequest request)
+        //    => new ApiResponse<AcraResult>(
+        //        acraService.GetAcraData());
 
         [HttpPost]
         public async Task<ApiResponse<TaxInfoResult>> GetTaxData(TaxRequest request)

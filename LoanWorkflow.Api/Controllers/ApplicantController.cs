@@ -15,7 +15,7 @@ namespace LoanWorkflow.Api.Controllers
         public async Task<ApiResponse<PersonalInfoDTO>> AddApplicant(SSNRequest request)
         {
             var data = await personalInfoService.GetAllPersonalInfos(request.SSN);
-            
+            return new ApiResponse<PersonalInfoDTO>(data);
         }
     }
 }
