@@ -51,11 +51,11 @@ namespace LoanWorkflow.Services.DTO.Ekeng.BusinessRegister
 
         [JsonProperty("joined_date")]
         [JsonConverter(typeof(DateFormatConverter), ["yyyy-MM-dd"])]
-        public DateTimeOffset? JoinedDate { get; set; }
+        public DateTime? JoinedDate { get; set; }
 
         [JsonProperty("left_date")]
         [JsonConverter(typeof(DateFormatConverter), ["yyyy-MM-dd"])]
-        public DateTimeOffset? LeftDate { get; set; }
+        public DateTime? LeftDate { get; set; }
 
         [JsonProperty("id_info")]
         public IdInfoDTO IdInfo { get; set; }

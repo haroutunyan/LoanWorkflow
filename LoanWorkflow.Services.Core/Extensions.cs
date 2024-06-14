@@ -1,4 +1,5 @@
-﻿using LoanWorkflow.Services.Acra;
+﻿using LoanWorkflow.Core.Handlers;
+using LoanWorkflow.Services.Acra;
 using LoanWorkflow.Services.Ekeng;
 using LoanWorkflow.Services.Interfaces.Acra;
 using LoanWorkflow.Services.Interfaces.Ekeng;
@@ -15,29 +16,28 @@ namespace LoanWorkflow.Services.Core
             var options = new BLLConfigurationBuilder();
             setupAction?.Invoke(options ?? throw new ArgumentNullException(nameof(setupAction)));
 
-            if (!string.IsNullOrEmpty(options.EkengUrl))
+            services.AddHttpContextAccessor();
+            services.AddHttpClient<IEkengService, EkengService>((provider, client) =>
             {
-                services.AddHttpContextAccessor();
-                services.AddHttpClient<IEkengService, EkengService>((provider, client) =>
-                {
-                    client.BaseAddress = new Uri(options.EkengUrl);
-                });
+                client.BaseAddress = new Uri(options.EkengUrl);
+            })
+                .AddHttpMessageHandler<LoggingDelegatingHandler>();
 
-                services.AddHttpClient<IAcraService, AcraService>((provider, client) =>
+            services.AddHttpClient<IAcraService, AcraService>((provider, client) =>
+            {
+                client.BaseAddress = new Uri(options.AcraUrl);
+            })
+                .ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler
                 {
-                    client.BaseAddress = new Uri(options.AcraUrl);
-                })
-                    .ConfigurePrimaryHttpMessageHandler(() =>
-                {
-                    var handler = new HttpClientHandler
-                    {
-                        ClientCertificateOptions = ClientCertificateOption.Manual,
-                        ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => true
-                    };
+                    ClientCertificateOptions = ClientCertificateOption.Manual,
+                    ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => true
+                };
 
-                    return handler;
-                });
-            }
+                return handler;
+            })
+                .AddHttpMessageHandler<LoggingDelegatingHandler>();
 
             ServicesRegistrator.Register(services);
             return services;

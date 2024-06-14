@@ -2,9 +2,9 @@
 
 namespace LoanWorkflow.Services.DTO.Ekeng.Police
 {
-    public record VehiclesResult
+    public record VehiclesResult : EkengResponseBase
     {
         [JsonProperty("result")]
-        public virtual List<EVehicleDTO> Result { get; set; }
+        public List<EVehicleDTO> Result { get; set; }
     }
 }

@@ -6,6 +6,7 @@ namespace LoanWorkflow.Services.Interfaces.Abstractions
     public interface IService<TEntity> where TEntity : class, IEntity
     {
         Task Add(TEntity entity);
+        Task AddRange(ICollection<TEntity> entities);
         void Update(TEntity entity);        
         Task<TEntity> GetAsNoTracking(Expression<Func<TEntity, bool>> predicate);
         Task<TEntity> Get(Expression<Func<TEntity, bool>> predicate);

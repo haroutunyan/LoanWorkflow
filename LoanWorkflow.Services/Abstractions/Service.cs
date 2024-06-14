@@ -37,6 +37,9 @@ namespace LoanWorkflow.Services.Abstractions
 
         public void Update(TEntity entity)
             => dbSetAccessor.DbSet.Update(entity);
+
+        public async Task AddRange(ICollection<TEntity> entities)
+            => await dbSetAccessor.DbSet.AddRangeAsync(entities);
     }
 
     public abstract class Service

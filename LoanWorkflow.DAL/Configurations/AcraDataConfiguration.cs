@@ -11,30 +11,30 @@ namespace LoanWorkflow.DAL.Configurations
             builder.ToTable("AcraData");
 
             builder.Property(e => e.ReqID)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired(false);
             builder.Property(e => e.SID)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired(false);
             builder.Property(e => e.Error)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired(false);
             builder.Property(e => e.AppNumber)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired(false);
             builder.Property(e => e.DateTime)
                 .IsRequired(false);
             builder.Property(e => e.ReportType)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired(false);
             builder.Property(e => e.Type)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired(false);
             builder.Property(e => e.Response)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired(false);
             builder.Property(e => e.ErrorDesc)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired(false);
 
             builder.OwnsOne(e => e.Participient, op =>
@@ -42,81 +42,81 @@ namespace LoanWorkflow.DAL.Configurations
                 op.ToTable("Participients");
 
                 op.Property(x => x.ThePresenceData)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.KindBorrower)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.FoundationDate)
                     .IsRequired(false);
                 op.Property(x => x.Director)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.ActivityScope)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.RegistryNumber)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.RequestTarget)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.UsageRange)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.ReportNumber)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.FirmName)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.TaxID)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.FirstName)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.LastName)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.PassportNumber)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.IdCardNumber)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.DateofBirth)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.SocCardNumber)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.Address)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.Residence)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.PersonBankruptIncome)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.SelfInquiryQuantity30)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.SelfInquiryQuantity)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.RequestQuantity30)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.RequestQuantity)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.ErrorDesc)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
                 op.Property(x => x.AcraId)
-                    .HasMaxLength(50)
+                    .HasMaxLength(250)
                     .IsRequired(false);
 
                 op.OwnsOne(x => x.CountOfLoans, kl =>
@@ -124,13 +124,13 @@ namespace LoanWorkflow.DAL.Configurations
                     kl.ToTable("CountOfLoans");
 
                     kl.Property(c => c.Total)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.Current)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.Closed)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                 });
 
@@ -139,13 +139,13 @@ namespace LoanWorkflow.DAL.Configurations
                     kl.ToTable("CountOfGuarantees");
 
                     kl.Property(c => c.Total)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.Current)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.Closed)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                 });
 
@@ -154,10 +154,10 @@ namespace LoanWorkflow.DAL.Configurations
                     kl.ToTable("TotalLiabilitiesLoans");
 
                     kl.Property(c => c.Currency)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.Amount)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                 });
 
@@ -166,10 +166,10 @@ namespace LoanWorkflow.DAL.Configurations
                     kl.ToTable("TotalLiabilitiesGuarantees");
 
                     kl.Property(c => c.Currency)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.Amount)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                 });
 
@@ -178,13 +178,13 @@ namespace LoanWorkflow.DAL.Configurations
                     kl.ToTable("AcraLoans");
 
                     kl.Property(c => c.CreditID)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.SourceName)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.Currency)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.ActualCreditStart)
                         .IsRequired(false);
@@ -195,67 +195,67 @@ namespace LoanWorkflow.DAL.Configurations
                     kl.Property(c => c.LastInstallment)
                         .IsRequired(false);
                     kl.Property(c => c.AnnualRate)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.AmountDue)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.AmountOverdue)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.OutstandingPercent)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.LoanLastPaymentDate)
                         .IsRequired(false);
                     kl.Property(c => c.TheLoanClass)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CreditStatus)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.OutstandingDate)
                         .IsRequired(false);
                     kl.Property(c => c.ContractAmount)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CreditAmount)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CreditScope)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CreditUsePlace)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CreditType)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.OverdueDays)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.PaymentAmount)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.ClassificationLastDate)
                         .IsRequired(false);
                     kl.Property(c => c.CreditNotes)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.ProlongationsNum)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.PledgeSubject)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CollateralNotes)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CollateralAmount)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CollateralCurrency)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
 
                     kl.OwnsMany(c => c.OutstandingDaysCount, ml =>
@@ -263,7 +263,7 @@ namespace LoanWorkflow.DAL.Configurations
                         ml.ToTable("LoanOutstandingDaysCount");
 
                         ml.Property(v => v.Name)
-                            .HasMaxLength(50)
+                            .HasMaxLength(250)
                             .IsRequired(false);
 
                         ml.OwnsMany(v => v.Months);
@@ -280,13 +280,13 @@ namespace LoanWorkflow.DAL.Configurations
                     kl.ToTable("AcraGuarantees");
 
                     kl.Property(c => c.CreditID)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.SourceName)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.Currency)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.ActualCreditStart)
                         .IsRequired(false);
@@ -299,73 +299,73 @@ namespace LoanWorkflow.DAL.Configurations
                     kl.Property(c => c.GuaranteeCancellationDate)
                         .IsRequired(false);
                     kl.Property(c => c.AnnualRate)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.AmountDue)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.AmountOverdue)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.OutstandingPercent)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.GuaranteeLastPaymentDate)
                         .IsRequired(false);
                     kl.Property(c => c.TheGuaranteeClass)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CreditStatus)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.OutstandingDate)
                         .IsRequired(false);
                     kl.Property(c => c.ContractAmount)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CreditAmount)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CreditScope)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CreditUsePlace)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CreditType)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.OverdueDays)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.PaymentAmount)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.ClassificationLastDate)
                         .IsRequired(false);
                     kl.Property(c => c.CreditNotes)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.ProlongationsNum)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.PledgeSubject)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CollateralNotes)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CollateralAmount)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.CollateralCurrency)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.GuarantorOverdueDays)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.GuarantorAmount)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
 
                     kl.OwnsMany(c => c.OutstandingDaysCount, ml =>
@@ -373,7 +373,7 @@ namespace LoanWorkflow.DAL.Configurations
                         ml.ToTable("GuaranteeOutstandingDaysCount");
 
                         ml.Property(v => v.Name)
-                            .HasMaxLength(50)
+                            .HasMaxLength(250)
                             .IsRequired(false);
 
                         ml.OwnsMany(v => v.Months);
@@ -385,7 +385,7 @@ namespace LoanWorkflow.DAL.Configurations
                     kl.ToTable("Interrelated");
 
                     kl.Property(c => c.DebtorNum)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
 
                     kl.OwnsMany(c => c.InterrelatedLoans, ml =>
@@ -393,34 +393,34 @@ namespace LoanWorkflow.DAL.Configurations
                         ml.ToTable("InterrelatedLoans");
 
                         ml.Property(v => v.Number)
-                            .HasMaxLength(50)
+                            .HasMaxLength(250)
                             .IsRequired(false);
                         ml.Property(v => v.CreditStart)
                             .IsRequired(false);
                         ml.Property(v => v.LastInstallment)
                             .IsRequired(false);
                         ml.Property(v => v.ContractAmount)
-                            .HasMaxLength(50)
+                            .HasMaxLength(250)
                             .IsRequired(false);
                         ml.Property(v => v.AmountDue)
-                            .HasMaxLength(50)
+                            .HasMaxLength(250)
                             .IsRequired(false);
                         ml.Property(v => v.AmountOverdue)
-                            .HasMaxLength(50)
+                            .HasMaxLength(250)
                             .IsRequired(false);
                         ml.Property(v => v.OutstandingPercent)
-                            .HasMaxLength(50)
+                            .HasMaxLength(250)
                             .IsRequired(false);
                         ml.Property(v => v.OutstandingDate)
                             .IsRequired(false);
                         ml.Property(v => v.Currency)
-                            .HasMaxLength(50)
+                            .HasMaxLength(250)
                             .IsRequired(false);
                         ml.Property(v => v.CreditClassification)
-                            .HasMaxLength(50)
+                            .HasMaxLength(250)
                             .IsRequired(false);
                         ml.Property(v => v.InterrelatedSourceName)
-                            .HasMaxLength(50)
+                            .HasMaxLength(250)
                             .IsRequired(false);
                     });
                 });
@@ -430,18 +430,18 @@ namespace LoanWorkflow.DAL.Configurations
                     kl.ToTable("AcraRequests");
 
                     kl.Property(c => c.BankName)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.DateTime)
                         .IsRequired(false);
                     kl.Property(c => c.Reason)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.SubReason)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     kl.Property(c => c.Type)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                 });
             });

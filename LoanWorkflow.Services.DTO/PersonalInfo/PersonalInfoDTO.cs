@@ -15,13 +15,14 @@ namespace LoanWorkflow.Services.DTO.PersonalInfo
 {
     public record PersonalInfoDTO
     {
+        public long ApplicantId { get; set; }
         public AvvResult Avv { get; set; }
         public PhysicalPersonBusinessDTO BusinessRegister { get; set; }
         public IEnumerable<EInquestDTO> Ces { get; set; }
         public IEnumerable<ECivilAct> Acts { get; set; }
         public IEnumerable<EVehicleDTO> Vehicles { get; set; }
         public DrivingLicenseDTO DrivingLicense { get; set; }
-        public TaxPayersInfoDTO TaxInfo { get; set; }
+        public IEnumerable<TaxPayerInfoDTO> TaxInfo { get; set; }
         public AcraResult Acra { get; set; }
     }
 }

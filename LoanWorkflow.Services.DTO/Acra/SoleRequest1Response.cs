@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 
 namespace LoanWorkflow.Services.DTO.Acra
 {
+    [XmlRoot(ElementName = "ROWDATA")]
     public record SoleRequest1Response : SoleResponse
     {
         [XmlElement("AppNumber")]

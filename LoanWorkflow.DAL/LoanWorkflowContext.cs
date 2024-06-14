@@ -47,6 +47,7 @@ namespace LoanWorkflow.DAL
         public DbSet<DraftApplication> DraftApplications { get; set; }
         public DbSet<StoredEvent> Events { get; set; }
         public DbSet<AcraData> AcraData { get; set; }
+        public DbSet<TaxData> TaxData { get; set; }
 
         public int SaveChanges(long initiator, bool acceptAllChangesOnSuccess)
         {

@@ -22,7 +22,6 @@ namespace LoanWorkflow.Services.Acra
                 ReqID = options.Value.ReqID,
                 User = options.Value.UserName
             };
-            httpClient.BaseAddress = new Uri("https://10.100.65.100/acra/soap/");
             var loginResult = await httpClient.PostXml<SoleLoginRequestModel, SoleLoginResponse>(string.Empty, loginRequest, RowDataAttributeName);
             if (loginResult.Error is not null)
                 throw new Exception(loginResult.Error);
@@ -32,19 +31,19 @@ namespace LoanWorkflow.Services.Acra
             var request1 = ConstructRequest1(model, isMonitoring, loginResult.SessionId, "99999999", options.Value);
             var response1 = await httpClient.PostXml<SoleRequest1Model, SoleRequest1Response>(monitoringUrl, request1, RowDataAttributeName);
             if (response1.Error is not null)
-                throw new Exception(response1.Error);
+                return null;
 
             if (response1.Participient.ThePresenceData == ACRAThePresenceData.CreditReportBlocked)
-                throw new Exception();
+                return null;
 
             if (response1?.Participient?.Person?.Count == 0)
-                throw new Exception("Person Count Is 0");
+                return null;
 
             var request2 = ConstructRequest2(model, response1, isMonitoring);
             var response2 = await httpClient.PostXml<SoleRequest2Model, AcraResult>(monitoringUrl, request2, RowDataAttributeName);
 
             if (response2.Error is not null)
-                throw new Exception(response2.Error);
+                return null;
 
             return response2;
         }

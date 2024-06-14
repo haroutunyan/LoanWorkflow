@@ -15,6 +15,7 @@ using System.Reflection;
 using LoanWorkflow.Core.Options;
 using LoanWorkflow.Services.Users;
 using LoanWorkflow.Api.ExceptionHandler;
+using LoanWorkflow.Core.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +37,7 @@ builder.Services.ConfigureCoreBLL(options =>
     options.EkengUrl = builder.Configuration["ExternalServices:EkengURL"];
     options.AcraUrl = builder.Configuration["ExternalServices:AcraURL"];
 });
-
+builder.Services.AddTransient<LoggingDelegatingHandler>();
 builder.Services.AddScoped(typeof(ApiContext));
 builder.Services.AddScoped(typeof(LoanWorkflowUserManager));
 
@@ -109,9 +110,9 @@ app.UseHttpsRedirection();
 app.UseCors(configurePolicy =>
 {
     configurePolicy
-    .AllowAnyOrigin()
-    .AllowAnyHeader()
-    .AllowAnyMethod();
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
 });
 app.UseRouting();
 app.UseForwardedHeaders(new ForwardedHeadersOptions

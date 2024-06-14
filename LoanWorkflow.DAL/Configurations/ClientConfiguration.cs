@@ -42,20 +42,20 @@ namespace LoanWorkflow.DAL.Configurations
             builder.Property(e => e.DocValidityDate)
                 .IsRequired();
             builder.Property(e => e.Address)
-                .HasMaxLength(50)
-                .IsRequired();
+                .HasMaxLength(100)
+                .IsRequired(false);
             builder.Property(e => e.ActualAddress)
-                .HasMaxLength(50)
-                .IsRequired();
+                .HasMaxLength(100)
+                .IsRequired(false);
             builder.Property(e => e.PhoneNumber)
                 .HasMaxLength(15)
-                .IsRequired();
+                .IsRequired(false);
             builder.Property(e => e.SecondPhoneNumber)
                 .HasMaxLength(15)
                 .IsRequired(false);
             builder.Property(e => e.Email)
                 .HasMaxLength(15)
-                .IsRequired();
+                .IsRequired(false);
         }
     }
 }

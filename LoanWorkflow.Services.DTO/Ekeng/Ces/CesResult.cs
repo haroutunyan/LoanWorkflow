@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LoanWorkflow.Services.DTO.Ekeng.Ces
 {
-    public record CesResult
+    public record CesResult : EkengResponseBase
     {
         [JsonProperty("result")]
         public virtual List<EInquestDTO> Result { get; set; }
