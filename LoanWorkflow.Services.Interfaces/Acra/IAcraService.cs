@@ -4,6 +4,6 @@ namespace LoanWorkflow.Services.Interfaces.Acra
 {
     public interface IAcraService
     {
-        AcraResult GetAcraData();
+        Task<AcraResult> GetAcraData(AcraRequest model, bool isMonitoring);
     }
 }

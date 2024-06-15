@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace LoanWorkflow.Services.DTO.Ekeng.ECivil
 {
-    public class CivilResult
+    public record CivilResult : EkengResponseBase
     {
         [JsonProperty("result")]
         [JsonConverter(typeof(DictionaryToListConverter<string, ECivilAct>))]

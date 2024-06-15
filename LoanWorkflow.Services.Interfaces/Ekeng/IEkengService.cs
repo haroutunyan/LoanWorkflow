@@ -9,11 +9,11 @@ namespace LoanWorkflow.Services.Interfaces.Ekeng
 {
     public interface IEkengService
     {
-        Task<AvvResponse> GetAvvData(string ssn);
-        Task<PhysicalPersonBusinessResult> GetBusinessRegisterData(string ssn);
-        Task<CivilResult> GetCivilResult(string ssn);
-        Task<VehiclesResult> GetVehicleData(string ssn);
-        Task<CesResult> GetCesData(string ssn);
-        Task<TaxInfoResult> GetTaxData(string ssn);
+        Task<AvvResult> GetAvvData(string ssn);
+        Task<PhysicalPersonBusinessDTO> GetBusinessRegisterData(string ssn);
+        Task<IEnumerable<ECivilAct>> GetCivilResult(string ssn, string firstName, string lastName);
+        Task<IEnumerable<EVehicleDTO>> GetVehicleData(string ssn);
+        Task<IEnumerable<EInquestDTO>> GetCesData(string ssn);
+        Task<IEnumerable<TaxPayerInfoDTO>> GetTaxData(string ssn, DateTime start, DateTime end);
     }
 }

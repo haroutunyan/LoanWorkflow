@@ -14,6 +14,7 @@
 	<ProjectReference Include="..\LoanWorkflow.Api.Models\LoanWorkflow.Api.Models.csproj" />
     <ProjectReference Include="..\LoanWorkflow.DAL.Entities\LoanWorkflow.DAL.Entities.csproj" />
     <ProjectReference Include="..\LoanWorkflow.Services.DTO\LoanWorkflow.Services.DTO.csproj" />
+    <ProjectReference Include="..\LoanWorkflow.Services.Events\LoanWorkflow.Services.Events.csproj" />
   </ItemGroup>
 
 </Project>

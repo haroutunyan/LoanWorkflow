@@ -2,7 +2,7 @@
 
 namespace LoanWorkflow.Services.DTO.Ekeng.AVV
 {
-    public class AvvResponse
+    public record AvvResponse : EkengResponseBase
     {
         [JsonProperty("result")]
         public List<AvvResult> Result { get; set; }

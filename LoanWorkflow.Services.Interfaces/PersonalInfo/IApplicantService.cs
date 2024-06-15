@@ -5,5 +5,6 @@ namespace LoanWorkflow.Services.Interfaces.PersonalInfo
 {
     public interface IApplicantService : IService<Applicant>
     {
+        
     }
 }

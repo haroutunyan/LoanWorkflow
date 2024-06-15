@@ -41,7 +41,7 @@ namespace LoanWorkflow.Core.Validations
                 ValidationConstants.MaximumLengthSimple => "The length of '{PropertyName}' must be {MaxLength} characters or fewer.",
                 ValidationConstants.ExactLengthSimple => "'{PropertyName}' must be {MaxLength} characters in length.",
                 ValidationConstants.InclusiveBetweenSimple => "'{PropertyName}' must be between {From} and {To}.",
-                _ => null
+                _ => string.Empty,
             };
     }
 }

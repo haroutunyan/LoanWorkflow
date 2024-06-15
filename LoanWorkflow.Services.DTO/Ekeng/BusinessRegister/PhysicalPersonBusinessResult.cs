@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LoanWorkflow.Services.DTO.Ekeng.BusinessRegister
 {
-    public class PhysicalPersonBusinessResult
+    public record PhysicalPersonBusinessResult : EkengResponseBase
     {
         [JsonProperty("result")]
         public PhysicalPersonBusinessDTO Result { get; set; }

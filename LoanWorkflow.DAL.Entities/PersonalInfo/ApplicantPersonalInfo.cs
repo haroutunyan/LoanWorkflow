@@ -1,10 +1,5 @@
 ﻿using LoanWorkflow.DAL.Entities.Abstractions;
 using LoanWorkflow.DAL.Entities.Loan;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LoanWorkflow.DAL.Entities.PersonalInfo
 {
