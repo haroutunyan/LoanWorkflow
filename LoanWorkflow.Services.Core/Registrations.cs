@@ -34,6 +34,7 @@ namespace LoanWorkflow.Services.Core
                 new(typeof(IPersonalInfoBaseService), typeof(PersonalInfoBaseService)),
                 new(typeof(IApplicantPersonalInfoService), typeof(ApplicantPersonalInfoService)),
                 new(typeof(IApplicantService), typeof(ApplicantService)),
+                new(typeof(IOtherIncomeService), typeof(OtherIncomeService)),
             ];
     }
 }
