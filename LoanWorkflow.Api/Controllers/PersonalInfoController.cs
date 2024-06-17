@@ -106,10 +106,10 @@ namespace LoanWorkflow.Api.Controllers
         //    return new ApiResponse<TaxInfoResult>(await ekengService.GetTaxData(request.SSN, request.StartDate, request.EndDate));
         //}
 
-        [HttpPost]
-        public async Task<ApiResponse<TaxInfoResult>> GetTaxData(SSNRequest request)
-            => new ApiResponse<TaxInfoResult>(
-                await ekengService.GetTaxData(request.SSN));
+        //[HttpPost]
+        //public async Task<ApiResponse<TaxInfoResult>> GetTaxData(SSNRequest request)
+        //    => new ApiResponse<TaxInfoResult>(
+        //        await ekengService.GetTaxData(request.SSN));
 
         [HttpPost]
         [AllowAnonymous]
