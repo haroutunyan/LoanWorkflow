@@ -4,6 +4,7 @@ using LoanWorkflow.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanWorkflow.DAL.Migrations
 {
     [DbContext(typeof(LoanWorkflowContext))]
-    partial class LoanWorkflowContextModelSnapshot : ModelSnapshot
+    [Migration("20240603051921_ChangeSomeFieldTypes")]
+    partial class ChangeSomeFieldTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,12 +206,14 @@ namespace LoanWorkflow.DAL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("ActualAddress")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Address")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -239,6 +244,7 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -267,6 +273,7 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -302,16 +309,16 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<long>("ClientId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -341,13 +348,13 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.Property<string>("Position")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Sphere")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -359,65 +366,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.ToTable("Incomes", t =>
                         {
                             t.HasTrigger("Incomes_Trigger");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-                });
-
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Event.StoredEvent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AggregateId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AggregateType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EventData")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("EventType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("ModifiedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Version")
-                        .IsConcurrencyToken()
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Deleted")
-                        .HasFilter("[Deleted] IS NULL");
-
-                    b.ToTable("Events", t =>
-                        {
-                            t.HasTrigger("Events_Trigger");
                         });
 
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
@@ -439,8 +387,8 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
@@ -710,8 +658,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasIndex("Deleted")
                         .HasFilter("[Deleted] IS NULL");
 
-                    b.HasIndex("FileId");
-
                     b.ToTable("ApplicantFiles", t =>
                         {
                             t.HasTrigger("ApplicantFiles_Trigger");
@@ -829,45 +775,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.DraftApplication", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("LoanProductSettingId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("ModifiedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("Used")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Deleted")
-                        .HasFilter("[Deleted] IS NULL");
-
-                    b.ToTable("DraftApplications", t =>
-                        {
-                            t.HasTrigger("DraftApplications_Trigger");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-                });
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.Loan.LoanProductSetting", b =>
                 {
                     b.Property<int>("Id")
@@ -958,8 +865,8 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("TemplateId")
                         .HasColumnType("int");
@@ -1280,8 +1187,8 @@ namespace LoanWorkflow.DAL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Citizenship")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -1293,8 +1200,8 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DocumentDepartment")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("DocumentExpiryDate")
                         .HasColumnType("datetime2");
@@ -1303,32 +1210,32 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DocumentNumber")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("DocumentType")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("EducationLevel")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("EmploymentStatus")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Gender")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastNameBeforeMarriage")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("MaritalStatus")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("MarriageNumber")
                         .HasColumnType("int");
@@ -1340,12 +1247,12 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("NewLastName")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Ssn")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -2002,53 +1909,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.AcraData", b =>
-                {
-                    b.HasBaseType("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase");
-
-                    b.Property<string>("AppNumber")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<DateTime?>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Error")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("ErrorDesc")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("ReportType")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("ReqID")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Response")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("SID")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("Type")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.ToTable("AcraData", null, t =>
-                        {
-                            t.HasTrigger("AcraData_Trigger");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-                });
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.AvvData", b =>
                 {
                     b.HasBaseType("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase");
@@ -2095,16 +1955,16 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CertNum")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FullRefNumber")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("OfficeName")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<long>("Person2Id")
                         .HasColumnType("bigint");
@@ -2116,19 +1976,19 @@ namespace LoanWorkflow.DAL.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("RefNumber")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("RegistrationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TrackingId")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Type")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasIndex("Person2Id");
 
@@ -2144,15 +2004,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.TaxData", b =>
-                {
-                    b.HasBaseType("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase");
-
-                    b.ToTable("TaxData", null, t =>
-                        {
-                            t.HasTrigger("TaxData_Trigger");
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.OtherIncome", b =>
                 {
                     b.HasBaseType("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase");
@@ -2167,9 +2018,6 @@ namespace LoanWorkflow.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<long?>("ApplicantFileId")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
@@ -2204,14 +2052,11 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.HasIndex("ActivityTypeId");
 
-                    b.HasIndex("ApplicantFileId");
-
                     b.HasIndex("FileId");
 
                     b.ToTable("OtherIncome", null, t =>
                         {
                             t.HasTrigger("OtherIncome_Trigger");
-
                         });
 
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
@@ -2563,24 +2408,24 @@ namespace LoanWorkflow.DAL.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<DateTime?>("BirthDate")
-                                .HasMaxLength(250)
+                                .HasMaxLength(50)
                                 .HasColumnType("datetime2");
 
                             b1.Property<string>("FathersName")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("LastName")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Name")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Nationality")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.HasKey("CivilPersonId");
 
@@ -2601,16 +2446,16 @@ namespace LoanWorkflow.DAL.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<string>("Community")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Country")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Region")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.HasKey("CivilPersonId");
 
@@ -2631,46 +2476,46 @@ namespace LoanWorkflow.DAL.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<string>("Apartment")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Community")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Country")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Department")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<DateTime?>("EndDate")
                                 .HasColumnType("datetime2");
 
                             b1.Property<string>("House")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("HouseType")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Region")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Residence")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<DateTime?>("StartDate")
                                 .HasColumnType("datetime2");
 
                             b1.Property<string>("Street")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.HasKey("CivilPersonId");
 
@@ -2788,849 +2633,6 @@ namespace LoanWorkflow.DAL.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.AcraData", b =>
-                {
-                    b.HasOne("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase", null)
-                        .WithOne()
-                        .HasForeignKey("LoanWorkflow.DAL.Entities.PersonalInfo.AcraData", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("LoanWorkflow.DAL.Entities.PersonalInfo.Participient", "Participient", b1 =>
-                        {
-                            b1.Property<Guid>("AcraDataId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("AcraId")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("ActivityScope")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("Address")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("DateofBirth")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("Director")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("ErrorDesc")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("FirmName")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("FirstName")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<DateTime?>("FoundationDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("IdCardNumber")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("KindBorrower")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("LastName")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("PassportNumber")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("PersonBankruptIncome")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("RegistryNumber")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("ReportNumber")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("RequestQuantity")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("RequestQuantity30")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("RequestTarget")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("Residence")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("SelfInquiryQuantity")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("SelfInquiryQuantity30")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("SocCardNumber")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("TaxID")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("ThePresenceData")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.Property<string>("UsageRange")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
-
-                            b1.HasKey("AcraDataId");
-
-                            b1.ToTable("Participients", null, t =>
-                                {
-                                    t.HasTrigger("Participients_Trigger");
-                                });
-
-                            b1.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                            b1.WithOwner()
-                                .HasForeignKey("AcraDataId");
-
-                            b1.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.Guarantee", "Guarantees", b2 =>
-                                {
-                                    b2.Property<Guid>("ParticipientAcraDataId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("int");
-
-                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
-
-                                    b2.Property<DateTime?>("ActualCreditStart")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<string>("AmountDue")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("AmountOverdue")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("AnnualRate")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<DateTime?>("ClassificationLastDate")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<string>("CollateralAmount")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CollateralCurrency")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CollateralNotes")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("ContractAmount")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditAmount")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditID")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditNotes")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditScope")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<DateTime?>("CreditStart")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<string>("CreditStatus")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditType")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditUsePlace")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("Currency")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<DateTime?>("GuaranteeCancellationDate")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<DateTime?>("GuaranteeLastPaymentDate")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<string>("GuarantorAmount")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("GuarantorOverdueDays")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<DateTime?>("IncomingDate")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<DateTime?>("LastInstallment")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<DateTime?>("OutstandingDate")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<string>("OutstandingPercent")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("OverdueDays")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("PaymentAmount")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("PledgeSubject")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("ProlongationsNum")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("SourceName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("TheGuaranteeClass")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.HasKey("ParticipientAcraDataId", "Id");
-
-                                    b2.ToTable("AcraGuarantees", null, t =>
-                                        {
-                                            t.HasTrigger("AcraGuarantees_Trigger");
-                                        });
-
-                                    b2.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ParticipientAcraDataId");
-
-                                    b2.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.Year", "OutstandingDaysCount", b3 =>
-                                        {
-                                            b3.Property<Guid>("GuaranteeParticipientAcraDataId")
-                                                .HasColumnType("uniqueidentifier");
-
-                                            b3.Property<int>("GuaranteeId")
-                                                .HasColumnType("int");
-
-                                            b3.Property<int>("Id")
-                                                .ValueGeneratedOnAdd()
-                                                .HasColumnType("int");
-
-                                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b3.Property<int>("Id"));
-
-                                            b3.Property<string>("Name")
-                                                .HasMaxLength(250)
-                                                .HasColumnType("nvarchar(250)");
-
-                                            b3.HasKey("GuaranteeParticipientAcraDataId", "GuaranteeId", "Id");
-
-                                            b3.ToTable("GuaranteeOutstandingDaysCount", null, t =>
-                                                {
-                                                    t.HasTrigger("GuaranteeOutstandingDaysCount_Trigger");
-                                                });
-
-                                            b3.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("GuaranteeParticipientAcraDataId", "GuaranteeId");
-
-                                            b3.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.Month", "Months", b4 =>
-                                                {
-                                                    b4.Property<Guid>("YearGuaranteeParticipientAcraDataId")
-                                                        .HasColumnType("uniqueidentifier");
-
-                                                    b4.Property<int>("YearGuaranteeId")
-                                                        .HasColumnType("int");
-
-                                                    b4.Property<int>("YearId")
-                                                        .HasColumnType("int");
-
-                                                    b4.Property<int>("Id")
-                                                        .ValueGeneratedOnAdd()
-                                                        .HasColumnType("int");
-
-                                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b4.Property<int>("Id"));
-
-                                                    b4.Property<string>("Name")
-                                                        .IsRequired()
-                                                        .HasColumnType("nvarchar(max)");
-
-                                                    b4.Property<string>("Text")
-                                                        .IsRequired()
-                                                        .HasColumnType("nvarchar(max)");
-
-                                                    b4.HasKey("YearGuaranteeParticipientAcraDataId", "YearGuaranteeId", "YearId", "Id");
-
-                                                    b4.ToTable("GuaranteeOutstandingDaysCount_Months", t =>
-                                                        {
-                                                            t.HasTrigger("GuaranteeOutstandingDaysCount_Months_Trigger");
-                                                        });
-
-                                                    b4.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                                    b4.WithOwner()
-                                                        .HasForeignKey("YearGuaranteeParticipientAcraDataId", "YearGuaranteeId", "YearId");
-                                                });
-
-                                            b3.Navigation("Months");
-                                        });
-
-                                    b2.Navigation("OutstandingDaysCount");
-                                });
-
-                            b1.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.Interrelated", "Interrelated", b2 =>
-                                {
-                                    b2.Property<Guid>("ParticipientAcraDataId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("int");
-
-                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
-
-                                    b2.Property<string>("DebtorNum")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.HasKey("ParticipientAcraDataId", "Id");
-
-                                    b2.ToTable("Interrelated", null, t =>
-                                        {
-                                            t.HasTrigger("Interrelated_Trigger");
-                                        });
-
-                                    b2.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ParticipientAcraDataId");
-
-                                    b2.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.InterrelatedLoan", "InterrelatedLoans", b3 =>
-                                        {
-                                            b3.Property<Guid>("InterrelatedParticipientAcraDataId")
-                                                .HasColumnType("uniqueidentifier");
-
-                                            b3.Property<int>("InterrelatedId")
-                                                .HasColumnType("int");
-
-                                            b3.Property<int>("Id")
-                                                .ValueGeneratedOnAdd()
-                                                .HasColumnType("int");
-
-                                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b3.Property<int>("Id"));
-
-                                            b3.Property<string>("AmountDue")
-                                                .HasMaxLength(250)
-                                                .HasColumnType("nvarchar(250)");
-
-                                            b3.Property<string>("AmountOverdue")
-                                                .HasMaxLength(250)
-                                                .HasColumnType("nvarchar(250)");
-
-                                            b3.Property<string>("ContractAmount")
-                                                .HasMaxLength(250)
-                                                .HasColumnType("nvarchar(250)");
-
-                                            b3.Property<string>("CreditClassification")
-                                                .HasMaxLength(250)
-                                                .HasColumnType("nvarchar(250)");
-
-                                            b3.Property<DateTime?>("CreditStart")
-                                                .HasColumnType("datetime2");
-
-                                            b3.Property<string>("Currency")
-                                                .HasMaxLength(250)
-                                                .HasColumnType("nvarchar(250)");
-
-                                            b3.Property<string>("InterrelatedSourceName")
-                                                .HasMaxLength(250)
-                                                .HasColumnType("nvarchar(250)");
-
-                                            b3.Property<DateTime?>("LastInstallment")
-                                                .HasColumnType("datetime2");
-
-                                            b3.Property<string>("Number")
-                                                .HasMaxLength(250)
-                                                .HasColumnType("nvarchar(250)");
-
-                                            b3.Property<DateTime?>("OutstandingDate")
-                                                .HasColumnType("datetime2");
-
-                                            b3.Property<string>("OutstandingPercent")
-                                                .HasMaxLength(250)
-                                                .HasColumnType("nvarchar(250)");
-
-                                            b3.HasKey("InterrelatedParticipientAcraDataId", "InterrelatedId", "Id");
-
-                                            b3.ToTable("InterrelatedLoans", null, t =>
-                                                {
-                                                    t.HasTrigger("InterrelatedLoans_Trigger");
-                                                });
-
-                                            b3.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("InterrelatedParticipientAcraDataId", "InterrelatedId");
-                                        });
-
-                                    b2.Navigation("InterrelatedLoans");
-                                });
-
-                            b1.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.Loans", "Loans", b2 =>
-                                {
-                                    b2.Property<Guid>("ParticipientAcraDataId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("int");
-
-                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
-
-                                    b2.Property<DateTime?>("ActualCreditStart")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<string>("AmountDue")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("AmountOverdue")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("AnnualRate")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<DateTime?>("ClassificationLastDate")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<string>("CollateralAmount")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CollateralCurrency")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CollateralNotes")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("ContractAmount")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditAmount")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditID")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditNotes")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditScope")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<DateTime?>("CreditStart")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<string>("CreditStatus")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditType")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("CreditUsePlace")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("Currency")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<DateTime?>("IncomingDate")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<DateTime?>("LastInstallment")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<DateTime?>("LoanLastPaymentDate")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<DateTime?>("OutstandingDate")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<string>("OutstandingPercent")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("OverdueDays")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("PaymentAmount")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("PledgeSubject")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("PossiblePayments")
-                                        .IsRequired()
-                                        .HasColumnType("nvarchar(max)");
-
-                                    b2.Property<string>("ProlongationsNum")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("SourceName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("TheLoanClass")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.HasKey("ParticipientAcraDataId", "Id");
-
-                                    b2.ToTable("AcraLoans", null, t =>
-                                        {
-                                            t.HasTrigger("AcraLoans_Trigger");
-                                        });
-
-                                    b2.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ParticipientAcraDataId");
-
-                                    b2.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.Year", "OutstandingDaysCount", b3 =>
-                                        {
-                                            b3.Property<Guid>("LoansParticipientAcraDataId")
-                                                .HasColumnType("uniqueidentifier");
-
-                                            b3.Property<int>("LoansId")
-                                                .HasColumnType("int");
-
-                                            b3.Property<int>("Id")
-                                                .ValueGeneratedOnAdd()
-                                                .HasColumnType("int");
-
-                                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b3.Property<int>("Id"));
-
-                                            b3.Property<string>("Name")
-                                                .HasMaxLength(250)
-                                                .HasColumnType("nvarchar(250)");
-
-                                            b3.HasKey("LoansParticipientAcraDataId", "LoansId", "Id");
-
-                                            b3.ToTable("LoanOutstandingDaysCount", null, t =>
-                                                {
-                                                    t.HasTrigger("LoanOutstandingDaysCount_Trigger");
-                                                });
-
-                                            b3.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("LoansParticipientAcraDataId", "LoansId");
-
-                                            b3.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.Month", "Months", b4 =>
-                                                {
-                                                    b4.Property<Guid>("YearLoansParticipientAcraDataId")
-                                                        .HasColumnType("uniqueidentifier");
-
-                                                    b4.Property<int>("YearLoansId")
-                                                        .HasColumnType("int");
-
-                                                    b4.Property<int>("YearId")
-                                                        .HasColumnType("int");
-
-                                                    b4.Property<int>("Id")
-                                                        .ValueGeneratedOnAdd()
-                                                        .HasColumnType("int");
-
-                                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b4.Property<int>("Id"));
-
-                                                    b4.Property<string>("Name")
-                                                        .IsRequired()
-                                                        .HasColumnType("nvarchar(max)");
-
-                                                    b4.Property<string>("Text")
-                                                        .IsRequired()
-                                                        .HasColumnType("nvarchar(max)");
-
-                                                    b4.HasKey("YearLoansParticipientAcraDataId", "YearLoansId", "YearId", "Id");
-
-                                                    b4.ToTable("LoanOutstandingDaysCount_Months", t =>
-                                                        {
-                                                            t.HasTrigger("LoanOutstandingDaysCount_Months_Trigger");
-                                                        });
-
-                                                    b4.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                                    b4.WithOwner()
-                                                        .HasForeignKey("YearLoansParticipientAcraDataId", "YearLoansId", "YearId");
-                                                });
-
-                                            b3.Navigation("Months");
-                                        });
-
-                                    b2.Navigation("OutstandingDaysCount");
-                                });
-
-                            b1.OwnsOne("LoanWorkflow.DAL.Entities.PersonalInfo.CountOfLoans", "CountOfGuarantees", b2 =>
-                                {
-                                    b2.Property<Guid>("ParticipientAcraDataId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<string>("Closed")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("Current")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("Total")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.HasKey("ParticipientAcraDataId");
-
-                                    b2.ToTable("CountOfGuarantees", null, t =>
-                                        {
-                                            t.HasTrigger("CountOfGuarantees_Trigger");
-                                        });
-
-                                    b2.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ParticipientAcraDataId");
-                                });
-
-                            b1.OwnsOne("LoanWorkflow.DAL.Entities.PersonalInfo.CountOfLoans", "CountOfLoans", b2 =>
-                                {
-                                    b2.Property<Guid>("ParticipientAcraDataId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<string>("Closed")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("Current")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("Total")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.HasKey("ParticipientAcraDataId");
-
-                                    b2.ToTable("CountOfLoans", null, t =>
-                                        {
-                                            t.HasTrigger("CountOfLoans_Trigger");
-                                        });
-
-                                    b2.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ParticipientAcraDataId");
-                                });
-
-                            b1.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.TotalLiabilitiesLoan", "TotalLiabilitiesGuarantees", b2 =>
-                                {
-                                    b2.Property<Guid>("ParticipientAcraDataId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("int");
-
-                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
-
-                                    b2.Property<string>("Amount")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("Currency")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.HasKey("ParticipientAcraDataId", "Id");
-
-                                    b2.ToTable("TotalLiabilitiesGuarantees", null, t =>
-                                        {
-                                            t.HasTrigger("TotalLiabilitiesGuarantees_Trigger");
-                                        });
-
-                                    b2.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ParticipientAcraDataId");
-                                });
-
-                            b1.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.TotalLiabilitiesLoan", "TotalLiabilitiesLoans", b2 =>
-                                {
-                                    b2.Property<Guid>("ParticipientAcraDataId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("int");
-
-                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
-
-                                    b2.Property<string>("Amount")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("Currency")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.HasKey("ParticipientAcraDataId", "Id");
-
-                                    b2.ToTable("TotalLiabilitiesLoans", null, t =>
-                                        {
-                                            t.HasTrigger("TotalLiabilitiesLoans_Trigger");
-                                        });
-
-                                    b2.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ParticipientAcraDataId");
-                                });
-
-                            b1.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.Request", "Requests", b2 =>
-                                {
-                                    b2.Property<Guid>("ParticipientAcraDataId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("int");
-
-                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
-
-                                    b2.Property<string>("BankName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<DateTime?>("DateTime")
-                                        .HasColumnType("datetime2");
-
-                                    b2.Property<string>("Reason")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("SubReason")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.Property<string>("Type")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
-
-                                    b2.HasKey("ParticipientAcraDataId", "Id");
-
-                                    b2.ToTable("AcraRequests", null, t =>
-                                        {
-                                            t.HasTrigger("AcraRequests_Trigger");
-                                        });
-
-                                    b2.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ParticipientAcraDataId");
-                                });
-
-                            b1.Navigation("CountOfGuarantees")
-                                .IsRequired();
-
-                            b1.Navigation("CountOfLoans")
-                                .IsRequired();
-
-                            b1.Navigation("Guarantees");
-
-                            b1.Navigation("Interrelated");
-
-                            b1.Navigation("Loans");
-
-                            b1.Navigation("Requests");
-
-                            b1.Navigation("TotalLiabilitiesGuarantees");
-
-                            b1.Navigation("TotalLiabilitiesLoans");
-                        });
-
-                    b.Navigation("Participient")
                         .IsRequired();
                 });
 
@@ -4017,8 +3019,8 @@ namespace LoanWorkflow.DAL.Migrations
                                         .HasColumnType("nvarchar(3)");
 
                                     b2.Property<string>("CountryName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("CountryShortName")
                                         .HasMaxLength(3)
@@ -4135,11 +3137,11 @@ namespace LoanWorkflow.DAL.Migrations
                                 .HasColumnType("decimal(18,2)");
 
                             b1.Property<string>("Article")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<int?>("CalcPersent")
-                                .HasMaxLength(250)
+                                .HasMaxLength(50)
                                 .HasColumnType("int");
 
                             b1.Property<DateTime?>("ChangeDate")
@@ -4149,60 +3151,60 @@ namespace LoanWorkflow.DAL.Migrations
                                 .HasColumnType("decimal(18,2)");
 
                             b1.Property<string>("CourtId")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("DebtorAddress")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("DebtorName")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("DistributionProcedure")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<DateTime?>("InquestDate")
                                 .HasColumnType("datetime2");
 
                             b1.Property<string>("InquestId")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<int?>("InquestState")
                                 .HasColumnType("int");
 
                             b1.Property<string>("InquestType")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("OldOrderText")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<DateTime?>("OrderDate")
                                 .HasColumnType("datetime2");
 
                             b1.Property<string>("OrderNumber")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("OrderText")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("PlaintiffName")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<decimal?>("RecoverSum")
-                                .HasMaxLength(250)
+                                .HasMaxLength(50)
                                 .HasColumnType("decimal(18,2)");
 
                             b1.Property<decimal?>("RemainingSum")
-                                .HasMaxLength(250)
+                                .HasMaxLength(50)
                                 .HasColumnType("decimal(18,2)");
 
                             b1.HasKey("CesDataId", "Id");
@@ -4253,8 +3255,8 @@ namespace LoanWorkflow.DAL.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("BirthStatus")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<int?>("BornChildrenCount")
                                 .HasColumnType("int");
@@ -4266,8 +3268,8 @@ namespace LoanWorkflow.DAL.Migrations
                                 .HasColumnType("int");
 
                             b1.Property<string>("Ssn")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.HasKey("ECivilDataId");
 
@@ -4287,24 +3289,24 @@ namespace LoanWorkflow.DAL.Migrations
                                         .HasColumnType("uniqueidentifier");
 
                                     b2.Property<DateTime?>("BirthDate")
-                                        .HasMaxLength(250)
+                                        .HasMaxLength(50)
                                         .HasColumnType("datetime2");
 
                                     b2.Property<string>("FathersName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("LastName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("Name")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("Nationality")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.HasKey("ChildECivilDataId");
 
@@ -4325,16 +3327,16 @@ namespace LoanWorkflow.DAL.Migrations
                                         .HasColumnType("uniqueidentifier");
 
                                     b2.Property<string>("Community")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("Country")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("Region")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.HasKey("ChildECivilDataId");
 
@@ -4362,23 +3364,23 @@ namespace LoanWorkflow.DAL.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Age")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<DateTime?>("Date")
                                 .HasColumnType("datetime2");
 
                             b1.Property<string>("Place")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Reason")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Unidentified")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.HasKey("ECivilDataId");
 
@@ -4406,123 +3408,6 @@ namespace LoanWorkflow.DAL.Migrations
                     b.Navigation("Presenter");
                 });
 
-
-            modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.TaxData", b =>
-                {
-                    b.HasOne("LoanWorkflow.DAL.Entities.PersonalInfo.PersonalInfoBase", null)
-                        .WithOne()
-                        .HasForeignKey("LoanWorkflow.DAL.Entities.PersonalInfo.TaxData", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.TaxPayerInfo", "TaxPayerInfo", b1 =>
-                        {
-                            b1.Property<Guid>("TaxDataId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<string>("TaxPayerId")
-                                .IsRequired()
-                                .HasMaxLength(10)
-                                .HasColumnType("nvarchar(10)");
-
-                            b1.HasKey("TaxDataId", "Id");
-
-                            b1.ToTable("TaxPayerInfos", null, t =>
-                                {
-                                    t.HasTrigger("TaxPayerInfos_Trigger");
-                                });
-
-                            b1.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                            b1.WithOwner()
-                                .HasForeignKey("TaxDataId");
-
-                            b1.OwnsMany("LoanWorkflow.DAL.Entities.PersonalInfo.PersonInfoPeriod", "PersonInfoPeriods", b2 =>
-                                {
-                                    b2.Property<Guid>("TaxPayerInfoTaxDataId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<int>("TaxPayerInfoId")
-                                        .HasColumnType("int");
-
-                                    b2.Property<int>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("int");
-
-                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
-
-                                    b2.Property<DateTime>("Date")
-                                        .HasColumnType("datetime2");
-
-                                    b2.HasKey("TaxPayerInfoTaxDataId", "TaxPayerInfoId", "Id");
-
-                                    b2.ToTable("PersonInfoPeriods", null, t =>
-                                        {
-                                            t.HasTrigger("PersonInfoPeriods_Trigger");
-                                        });
-
-                                    b2.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("TaxPayerInfoTaxDataId", "TaxPayerInfoId");
-
-                                    b2.OwnsOne("LoanWorkflow.DAL.Entities.PersonalInfo.PersonInfo", "PersonInfo", b3 =>
-                                        {
-                                            b3.Property<Guid>("PersonInfoPeriodTaxPayerInfoTaxDataId")
-                                                .HasColumnType("uniqueidentifier");
-
-                                            b3.Property<int>("PersonInfoPeriodTaxPayerInfoId")
-                                                .HasColumnType("int");
-
-                                            b3.Property<int>("PersonInfoPeriodId")
-                                                .HasColumnType("int");
-
-                                            b3.Property<decimal>("CivilLowContractPayments")
-                                                .HasColumnType("decimal(18,2)");
-
-                                            b3.Property<decimal>("IncomeTax")
-                                                .HasColumnType("decimal(18,2)");
-
-                                            b3.Property<decimal>("SalaryEquivPayments")
-                                                .HasColumnType("decimal(18,2)");
-
-                                            b3.Property<decimal>("SocialPaymentsPaid")
-                                                .HasColumnType("decimal(18,2)");
-
-                                            b3.Property<decimal>("Socialpayments")
-                                                .HasColumnType("decimal(18,2)");
-
-                                            b3.Property<int>("WorkingHours")
-                                                .HasColumnType("int");
-
-                                            b3.HasKey("PersonInfoPeriodTaxPayerInfoTaxDataId", "PersonInfoPeriodTaxPayerInfoId", "PersonInfoPeriodId");
-
-                                            b3.ToTable("PersonInfo", null, t =>
-                                                {
-                                                    t.HasTrigger("PersonInfo_Trigger");
-                                                });
-
-                                            b3.HasAnnotation("SqlServer:UseSqlOutputClause", false);
-
-                                            b3.WithOwner()
-                                                .HasForeignKey("PersonInfoPeriodTaxPayerInfoTaxDataId", "PersonInfoPeriodTaxPayerInfoId", "PersonInfoPeriodId");
-                                        });
-
-                                    b2.Navigation("PersonInfo")
-                                        .IsRequired();
-                                });
-
-                            b1.Navigation("PersonInfoPeriods");
-                        });
-
-                    b.Navigation("TaxPayerInfo");
-
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.OtherIncome", b =>
                 {
                     b.HasOne("LoanWorkflow.DAL.Entities.PersonalInfo.Position", "ActivityPosition")
@@ -4537,13 +3422,10 @@ namespace LoanWorkflow.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.ApplicantFile", null)
+                    b.HasOne("LoanWorkflow.DAL.Entities.Loan.ApplicantFile", "ApplicantFile")
                         .WithMany("OtherIncomes")
-                        .HasForeignKey("ApplicantFileId");
-
-                    b.HasOne("LoanWorkflow.DAL.Entities.File.File", "OtherIncomeFile")
-                        .WithMany()
                         .HasForeignKey("FileId")
+                        .HasPrincipalKey("FileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -4557,8 +3439,7 @@ namespace LoanWorkflow.DAL.Migrations
 
                     b.Navigation("ActivityType");
 
-                    b.Navigation("OtherIncomeFile");
-
+                    b.Navigation("ApplicantFile");
                 });
 
             modelBuilder.Entity("LoanWorkflow.DAL.Entities.PersonalInfo.VehicleData", b =>
@@ -4581,118 +3462,118 @@ namespace LoanWorkflow.DAL.Migrations
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
 
                             b1.Property<string>("BodyNum")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("BodyType")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("CertNum")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("ChassisNum")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Color")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("EngineHp")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("EngineNum")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("EnginePower")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("FuelType")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<int?>("Inactive")
-                                .HasMaxLength(250)
+                                .HasMaxLength(50)
                                 .HasColumnType("int");
 
                             b1.Property<int?>("IsBlocked")
-                                .HasMaxLength(250)
+                                .HasMaxLength(50)
                                 .HasColumnType("int");
 
                             b1.Property<decimal?>("MaxWeight")
                                 .HasColumnType("decimal(18,2)");
 
                             b1.Property<string>("Model")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("ModelCode")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("ModelName")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Number")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("NumberPlateType")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("OwnerCertId")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<DateTime?>("RecordingDate")
                                 .HasColumnType("datetime2");
 
                             b1.Property<string>("RegNum")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("RegistrationStatus")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("Released")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("SpecialNotes")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("TemporaryNumber")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("TransitNumber")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("VehicleGroup")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("VehicleType")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("VehicleTypeId")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<string>("VinCode")
-                                .HasMaxLength(250)
-                                .HasColumnType("nvarchar(250)");
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<decimal?>("Weight")
                                 .HasColumnType("decimal(18,2)");
@@ -4724,51 +3605,51 @@ namespace LoanWorkflow.DAL.Migrations
                                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
 
                                     b2.Property<string>("DocumentType")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("FirstName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("IdentificationNo")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<int>("IsHolder")
                                         .HasColumnType("int");
 
                                     b2.Property<int?>("IsLegalEntity")
-                                        .HasMaxLength(250)
+                                        .HasMaxLength(50)
                                         .HasColumnType("int");
 
                                     b2.Property<DateTime?>("JoinedDate")
-                                        .HasMaxLength(250)
+                                        .HasMaxLength(50)
                                         .HasColumnType("datetime2");
 
                                     b2.Property<string>("LastName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("MiddleName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("NationalityCountryId")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("Psn")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("Sex")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("Shares")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.HasKey("EVehicleVehicleDataId", "EVehicleId", "Id");
 
@@ -4792,15 +3673,15 @@ namespace LoanWorkflow.DAL.Migrations
                                         .HasColumnType("int");
 
                                     b2.Property<DateTime?>("EndDate")
-                                        .HasMaxLength(250)
+                                        .HasMaxLength(50)
                                         .HasColumnType("datetime2");
 
                                     b2.Property<string>("InsuranceName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<DateTime?>("StartDate")
-                                        .HasMaxLength(250)
+                                        .HasMaxLength(50)
                                         .HasColumnType("datetime2");
 
                                     b2.HasKey("EVehicleVehicleDataId", "EVehicleId");
@@ -4831,56 +3712,56 @@ namespace LoanWorkflow.DAL.Migrations
                                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
 
                                     b2.Property<string>("AllowedLending")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("Currency")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("DocumentType")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("FirstName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("IdentificationNumber")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<int?>("IsLegalEntity")
-                                        .HasMaxLength(250)
+                                        .HasMaxLength(50)
                                         .HasColumnType("int");
 
                                     b2.Property<DateTime?>("JoinedDate")
-                                        .HasMaxLength(250)
+                                        .HasMaxLength(50)
                                         .HasColumnType("datetime2");
 
                                     b2.Property<string>("LastName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("MiddleName")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("NationalityCountryId")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<string>("Place")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.Property<decimal?>("Shares")
-                                        .HasMaxLength(250)
+                                        .HasMaxLength(50)
                                         .HasColumnType("decimal(18,2)");
 
                                     b2.Property<string>("Ssn")
-                                        .HasMaxLength(250)
-                                        .HasColumnType("nvarchar(250)");
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
 
                                     b2.HasKey("EVehicleVehicleDataId", "EVehicleId", "Id");
 

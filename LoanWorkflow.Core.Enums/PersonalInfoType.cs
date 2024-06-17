@@ -9,6 +9,7 @@
         Acra = 5,
         Ces = 6,
         Vehicle = 7,
-        Tax = 8
+        Tax = 8,
+        OtherIncome = 9
     }
 }
