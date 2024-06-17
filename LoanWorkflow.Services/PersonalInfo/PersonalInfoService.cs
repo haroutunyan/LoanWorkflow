@@ -28,19 +28,19 @@ namespace LoanWorkflow.Services.PersonalInfo
                 && e.DocumentStatus != "INVALID");
 
             var firstDoc = passport ?? IdCard;
-            //var acra = acraService.GetAcraData(new AcraRequest
-            //{
-            //    ACRAReportType = ACRAReportTypes.Full,
-            //    BirthDate = firstDoc.Person.BirthDate.Value,
-            //    FirstName = firstDoc.Person.FirstName,
-            //    LastName = firstDoc.Person.LastName,
-            //    SocialCard = ssn,
-            //    RequestTarget = RequestTarget.NewLoanAppTest,
-            //    RequestType = AvhRequestType.Sole,
-            //    UsageRange = UsageRange.OtherTest,
-            //    Passport = passport?.DocumentNumber,
-            //    IdCard = IdCard?.DocumentNumber
-            //}, true);
+            var acra = acraService.GetAcraData(new AcraRequest
+            {
+                ACRAReportType = ACRAReportTypes.Full,
+                BirthDate = firstDoc.Person.BirthDate.Value,
+                FirstName = firstDoc.Person.FirstName,
+                LastName = firstDoc.Person.LastName,
+                SocialCard = ssn,
+                RequestTarget = RequestTarget.NewLoanAppTest,
+                RequestType = AvhRequestType.Sole,
+                UsageRange = UsageRange.OtherTest,
+                Passport = passport?.DocumentNumber,
+                IdCard = IdCard?.DocumentNumber
+            }, true);
             var acts = ekengService.GetCivilResult(ssn, firstDoc.Person.FirstName, firstDoc.Person.LastName);
             var ces = ekengService.GetCesData(ssn);
             var businessRegister = ekengService.GetBusinessRegisterData(ssn);
@@ -48,17 +48,17 @@ namespace LoanWorkflow.Services.PersonalInfo
             var vehicles = ekengService.GetVehicleData(ssn);
 
             await Task.WhenAll(
-                //acra,
+                acra,
                 acts, ces, businessRegister, tax, vehicles);
 
             return new PersonalInfoDTO
             {
                 Avv = avv,
-               // Acra = await acra,
+                Acra = await acra,
                 Acts = await acts,
                 Ces = await ces,
                 BusinessRegister = await businessRegister,
-                //TaxInfo = await tax,
+                TaxInfo = await tax,
                 Vehicles = await vehicles
             };
         }

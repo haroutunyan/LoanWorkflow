@@ -16,19 +16,19 @@ namespace LoanWorkflow.DAL.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.CompanyName)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired();
             builder.Property(x => x.Address)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired();
             builder.Property(x => x.PhoneNumber)
                 .HasMaxLength(15)
                 .IsRequired();
             builder.Property(x => x.Sphere)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired();
             builder.Property(x => x.Position)
-                .HasMaxLength(50)
+                .HasMaxLength(250)
                 .IsRequired();
             builder.Property(x => x.Experience)                
                 .IsRequired();

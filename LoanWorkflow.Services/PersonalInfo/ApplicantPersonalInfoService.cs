@@ -15,6 +15,5 @@ namespace LoanWorkflow.Services.PersonalInfo
             => await Repository
                 .Include(e => e.PersonalInfo)
                 .FirstOrDefaultAsync(predicate);
-
     }
 }

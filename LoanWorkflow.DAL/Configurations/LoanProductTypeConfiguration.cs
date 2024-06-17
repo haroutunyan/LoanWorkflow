@@ -12,7 +12,7 @@ namespace LoanWorkflow.DAL.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name)
-                .HasMaxLength(50);
+                .HasMaxLength(250);
 
             builder.HasOne(x => x.LoanType)
               .WithMany(x => x.LoanProductTypes)

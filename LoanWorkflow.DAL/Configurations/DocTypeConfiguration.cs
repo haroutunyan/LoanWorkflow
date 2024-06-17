@@ -14,7 +14,7 @@ namespace LoanWorkflow.DAL.Configurations
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Name).HasMaxLength(30).IsRequired();
-            builder.Property(e => e.Description).HasMaxLength(50);
+            builder.Property(e => e.Description).HasMaxLength(250);
 
             builder.HasData(
                  new DocType { Id = DocumentType.IdCard, Name = "Նույնականացման քարտ", Description = "Նույնականացման քարտ" },

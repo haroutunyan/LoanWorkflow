@@ -22,7 +22,7 @@ namespace LoanWorkflow.DAL.Configurations
                 .HasMaxLength(25);
 
             builder.Property(x => x.AppraisalCompany)
-                .HasMaxLength(50);
+                .HasMaxLength(250);
 
             builder.HasOne(x=>x.Applicant)
                 .WithMany(x=>x.Pledges)

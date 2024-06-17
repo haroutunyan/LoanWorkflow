@@ -22,7 +22,6 @@ namespace LoanWorkflow.Api.Controllers
         : ApiControllerBase(apiContext)
     {
         [HttpPost]
-        [AllowAnonymous]
         public async Task<ApiResponse<PersonalInfoDTO>> AddApplicant(SSNRequest request)
         {
             var data = await personalInfoService.GetAllPersonalInfos(request.SSN);
@@ -91,7 +90,7 @@ namespace LoanWorkflow.Api.Controllers
                 .ToList();
 
             await applicantPersonalInfoService.AddRange(applicantPersonalInfos);
-            await SaveChangesAsync(0);
+            await SaveChangesAsync(UserContext.UserId);
 
             data.ApplicantId = applicant.Id;
 

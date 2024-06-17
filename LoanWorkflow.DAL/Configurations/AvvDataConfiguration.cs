@@ -54,7 +54,7 @@ namespace LoanWorkflow.DAL.Configurations
                         .HasMaxLength(20)
                         .IsRequired(false);
                     bd.Property(c => c.CountryName)
-                        .HasMaxLength(50)
+                        .HasMaxLength(250)
                         .IsRequired(false);
                     bd.Property(c => c.CountryCode)
                         .HasMaxLength(3)

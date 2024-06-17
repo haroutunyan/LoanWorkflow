@@ -104,7 +104,7 @@ namespace LoanWorkflow.Api.Controllers
 
             var personalInfo = await personalInfoService.GetAllPersonalInfos(request.SSN);
             var avv = ApiContext.Mapper.Map<AvvData>(personalInfo.Avv);
-           // var acra = ApiContext.Mapper.Map<AvvData>(personalInfo.Acra);
+            var acra = ApiContext.Mapper.Map<AvvData>(personalInfo.Acra);
             var acts = new ECivilData 
             {
                 
