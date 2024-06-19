@@ -3,11 +3,6 @@ using LoanWorkflow.DAL.Entities.Users;
 using LoanWorkflow.Services.Abstractions;
 using LoanWorkflow.Services.Interfaces.Users;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LoanWorkflow.Services.Users
 {
@@ -22,6 +17,6 @@ namespace LoanWorkflow.Services.Users
             => await Repository
             .Include(x => x.UserRoles)
             .ThenInclude(x => x.Role)
-            .FirstOrDefaultAsync(x => x.NormalizedUserName == username.Normalize());
+            .FirstOrDefaultAsync(x => x.NormalizedUserName == username.ToUpper());
     }
 }

@@ -15,5 +15,11 @@ namespace LoanWorkflow.Services.PersonalInfo
             => await Repository
                 .Include(e => e.PersonalInfo)
                 .FirstOrDefaultAsync(predicate);
+
+        public override async Task<IEnumerable< ApplicantPersonalInfo>> GetAllAsNoTracking(Expression<Func<ApplicantPersonalInfo, bool>> predicate) 
+            => await Repository
+                .Include(e => e.PersonalInfo)
+                .Where(predicate)
+                .ToListAsync();
     }
 }

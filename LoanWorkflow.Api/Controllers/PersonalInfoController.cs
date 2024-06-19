@@ -3,6 +3,7 @@ using LoanWorkflow.Api.Models.Common;
 using LoanWorkflow.Api.Models.Personallnfo;
 using LoanWorkflow.Api.Models.Personallnfo.Acts;
 using LoanWorkflow.Api.Models.Personallnfo.Avv;
+using LoanWorkflow.Api.Models.Personallnfo.Ces;
 using LoanWorkflow.Core.Enums;
 using LoanWorkflow.Core.Exceptions;
 using LoanWorkflow.DAL.Entities.PersonalInfo;
@@ -67,16 +68,38 @@ namespace LoanWorkflow.Api.Controllers
 
                 return new ApiResponse<IEnumerable<ActDetailedResponse>>(ApiContext.Mapper.Map<IEnumerable<ActDetailedResponse>>(entities));
             }
-
+             
             var response = applicantPersonalInfo.Select(e => ApiContext.Mapper.Map<ActDetailedResponse>(e.PersonalInfo as ECivilData));
             return new ApiResponse<IEnumerable<ActDetailedResponse>>(response);
         }
 
-        //[HttpPost]
-        //public async Task<ApiResponse<CesResult>> GetCesData(IdRequest<long> request)
-        //{
-        //    return new ApiResponse<CesResult>(await ekengService.GetCesData(request.SSN));
-        //}
+        [HttpPost]
+        public async Task<ApiResponse<IEnumerable<CesDetailedResponse>>> GetCesData(IdRequest<long> request)
+        {
+            var applicant = await applicantService.Get(e => e.Id == request.Id)
+                ?? throw new ApplicantNotFoundException();
+
+            var applicantPersonalInfo = await applicantPersonalInfoService
+                .GetAllAsNoTracking(e => e.ApplicantId == request.Id && e.PersonalInfo.PersonalInfoType == PersonalInfoType.Ces);
+
+            if (!applicantPersonalInfo.Any())
+            {
+                var ces = await ekengService.GetCesData(applicant.Client.SSN);
+                var entities = ApiContext.Mapper.Map<ICollection<EInquest>>(ces);
+
+                await applicantPersonalInfoService.Add(new ApplicantPersonalInfo
+                {
+                    Applicant = applicant,
+                    PersonalInfo = new CesData { Inquests = entities }
+                });
+                await SaveChangesAsync(UserContext.UserId);
+
+                return new ApiResponse<IEnumerable<CesDetailedResponse>>(ApiContext.Mapper.Map<IEnumerable<CesDetailedResponse>>(entities));
+            }
+
+            var response = applicantPersonalInfo.Select(e => ApiContext.Mapper.Map<CesDetailedResponse>(e.PersonalInfo as CesData));
+            return new ApiResponse<IEnumerable<CesDetailedResponse>>(response);
+        }
 
         //[HttpPost]
         //public async Task<ApiResponse<PhysicalPersonBusinessResult>> GetBusinessRegisterData(IdRequest<long> request)
@@ -85,6 +108,7 @@ namespace LoanWorkflow.Api.Controllers
         //}
 
         //[HttpPost]
+
         //public async Task<ApiResponse<VehiclesResult>> GetVehicle(IdRequest<long> request)
         //{
         //    return new ApiResponse<VehiclesResult>(await ekengService.GetVehicleData(request.SSN));

@@ -11,10 +11,10 @@
         public DateTime? CertDate { get; set; }
         public string TrackingId { get; set; }
         public ChildResponse Child { get; set; }
-        public CivilDeathResponse Death { get; set; }
-        public CivilPersonResponse Presenter { get; set; }
-        public CivilPersonResponse Person { get; set; }
-        public CivilPersonResponse Person2 { get; set; }
+        //public CivilDeathResponse Death { get; set; }
+        //public CivilPersonResponse Presenter { get; set; }
+        //public CivilPersonResponse Person { get; set; }
+        //public CivilPersonResponse Person2 { get; set; }
     }
 
     public class ChildResponse

@@ -21,7 +21,11 @@ namespace LoanWorkflow.DAL.Core
                     contextOptions.EnableSensitiveDataLogging();
                     contextOptions.EnableDetailedErrors();
                     contextOptions.UseSqlServer(options.ConnectionString,
-                    ma => ma.MigrationsAssembly("LoanWorkflow.DAL"));
+                    ma =>
+                    {
+                        ma.MigrationsAssembly("LoanWorkflow.DAL");
+                        ma.CommandTimeout(100);
+                    });
                 }, ServiceLifetime.Scoped);
             services.AddIdentity<User, Role>(identityOptions =>
             {

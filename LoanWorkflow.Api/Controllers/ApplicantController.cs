@@ -36,7 +36,7 @@ namespace LoanWorkflow.Api.Controllers
             var dataList = new List<PersonalInfoBase>
             {
                 ApiContext.Mapper.Map<AvvData>(data.Avv),
-                ApiContext.Mapper.Map<AcraData>(data.Acra),
+                //ApiContext.Mapper.Map<AcraData>(data.Acra),
                 new CesData
                 {
                     Inquests = ApiContext.Mapper.Map<ICollection<EInquest>>(data.Ces)
