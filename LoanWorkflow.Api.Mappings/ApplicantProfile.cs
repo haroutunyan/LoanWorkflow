@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LoanWorkflow.Api.Models.Personallnfo.Acts;
 using LoanWorkflow.Api.Models.Personallnfo.Avv;
+using LoanWorkflow.Api.Models.Personallnfo.Ces;
 using LoanWorkflow.DAL.Entities.PersonalInfo;
 using LoanWorkflow.Services.DTO.Acra;
 using LoanWorkflow.Services.DTO.Ekeng.AVV;
@@ -62,7 +63,7 @@ namespace LoanWorkflow.Api.Mappings
             CreateMap<RegistrationDataResponse, RegistrationData>().ReverseMap();
             CreateMap<CitizenshipResponse, Citizenship>().ReverseMap();
 
-            CreateMap<EVehicleDTO, EVehicle>();
+            CreateMap<EVehicleDTO, EVehicle>().ReverseMap();
             CreateMap<LenderDTO, Lender>();
             CreateMap<InsuranceInfoDTO, InsuranceInfo>();
             CreateMap<EPolicePersonBaseDTO, EPolicePersonBase>();
@@ -87,6 +88,12 @@ namespace LoanWorkflow.Api.Mappings
             CreateMap<YearDTO, Year>();
             CreateMap<MonthDTO, Month>();
             CreateMap<InterrelatedLoanDTO, InterrelatedLoan>();
+
+            CreateMap<CesDetailedResponse, EInquest>().ReverseMap();
+            CreateMap<VehiclesResultResponseModel, EVehicle>().ReverseMap();
+            CreateMap<LenderResponse, Lender>().ReverseMap();
+            CreateMap<InsuranceInfoResponse, InsuranceInfo>().ReverseMap();
+            CreateMap<EPolicePersonBaseResponse, EPolicePersonBase>().ReverseMap();
         }
     }
 }
