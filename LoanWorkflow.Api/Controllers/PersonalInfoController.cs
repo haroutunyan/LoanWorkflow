@@ -1,23 +1,17 @@
 ﻿using LoanWorkflow.Api.Abstractions;
 using LoanWorkflow.Api.Models.Common;
-using LoanWorkflow.Api.Models.Personallnfo;
 using LoanWorkflow.Api.Models.Personallnfo.Acts;
 using LoanWorkflow.Api.Models.Personallnfo.Avv;
 using LoanWorkflow.Api.Models.Personallnfo.Ces;
 using LoanWorkflow.Core.Enums;
 using LoanWorkflow.Core.Exceptions;
 using LoanWorkflow.DAL.Entities.PersonalInfo;
-using LoanWorkflow.Services.DTO.Acra;
-using LoanWorkflow.Services.DTO.Ekeng.AVV;
-using LoanWorkflow.Services.DTO.Ekeng.BusinessRegister;
-using LoanWorkflow.Services.DTO.Ekeng.Ces;
-using LoanWorkflow.Services.DTO.Ekeng.ECivil;
 using LoanWorkflow.Services.DTO.Ekeng.Police;
-using LoanWorkflow.Services.DTO.Ekeng.TaxInfo;
 using LoanWorkflow.Services.Interfaces.Acra;
 using LoanWorkflow.Services.Interfaces.Ekeng;
 using LoanWorkflow.Services.Interfaces.PersonalInfo;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.Intrinsics.X86;
 
 namespace LoanWorkflow.Api.Controllers
 {
@@ -68,7 +62,7 @@ namespace LoanWorkflow.Api.Controllers
 
                 return new ApiResponse<IEnumerable<ActDetailedResponse>>(ApiContext.Mapper.Map<IEnumerable<ActDetailedResponse>>(entities));
             }
-             
+
             var response = applicantPersonalInfo.Select(e => ApiContext.Mapper.Map<ActDetailedResponse>(e.PersonalInfo as ECivilData));
             return new ApiResponse<IEnumerable<ActDetailedResponse>>(response);
         }
@@ -80,49 +74,78 @@ namespace LoanWorkflow.Api.Controllers
                 ?? throw new ApplicantNotFoundException();
 
             var applicantPersonalInfo = await applicantPersonalInfoService
-                .GetAllAsNoTracking(e => e.ApplicantId == request.Id && e.PersonalInfo.PersonalInfoType == PersonalInfoType.Ces);
+                .GetAsNoTracking(e => e.ApplicantId == request.Id && e.PersonalInfo.PersonalInfoType == PersonalInfoType.Ces);
 
-            if (!applicantPersonalInfo.Any())
+            if (applicantPersonalInfo is not null)
             {
-                var ces = await ekengService.GetCesData(applicant.Client.SSN);
-                var entities = ApiContext.Mapper.Map<ICollection<EInquest>>(ces);
-
-                await applicantPersonalInfoService.Add(new ApplicantPersonalInfo
-                {
-                    Applicant = applicant,
-                    PersonalInfo = new CesData { Inquests = entities }
-                });
-                await SaveChangesAsync(UserContext.UserId);
-
-                return new ApiResponse<IEnumerable<CesDetailedResponse>>(ApiContext.Mapper.Map<IEnumerable<CesDetailedResponse>>(entities));
+                var cesData = applicantPersonalInfo.PersonalInfo as CesData;
+                if (cesData.Inquests.Any())
+                    return new ApiResponse<IEnumerable<CesDetailedResponse>>(ApiContext.Mapper.Map<IEnumerable<CesDetailedResponse>>(cesData.Inquests));
             }
 
-            var response = applicantPersonalInfo.Select(e => ApiContext.Mapper.Map<CesDetailedResponse>(e.PersonalInfo as CesData));
-            return new ApiResponse<IEnumerable<CesDetailedResponse>>(response);
+            var ces = await ekengService.GetCesData(applicant.Client.SSN);
+            var entities = ApiContext.Mapper.Map<ICollection<EInquest>>(ces);
+
+            await applicantPersonalInfoService.Add(new ApplicantPersonalInfo
+            {
+                Applicant = applicant,
+                PersonalInfo = new CesData { Inquests = entities }
+            });
+            await SaveChangesAsync(UserContext.UserId);
+
+            return new ApiResponse<IEnumerable<CesDetailedResponse>>(ApiContext.Mapper.Map<IEnumerable<CesDetailedResponse>>(entities));
         }
 
-        //[HttpPost]
-        //public async Task<ApiResponse<PhysicalPersonBusinessResult>> GetBusinessRegisterData(IdRequest<long> request)
-        //{
-        //    return new ApiResponse<PhysicalPersonBusinessResult>(await ekengService.GetBusinessRegisterData(request.SSN));
-        //}
 
-        //[HttpPost]
+        [HttpPost]
+        public async Task<ApiResponse<IEnumerable<VehiclesResultResponseModel>>> GetVehicle(IdRequest<long> request)
+        {
+            var applicant = await applicantService.Get(e => e.Id == request.Id)
+              ?? throw new ApplicantNotFoundException();
 
-        //public async Task<ApiResponse<VehiclesResult>> GetVehicle(IdRequest<long> request)
-        //{
-        //    return new ApiResponse<VehiclesResult>(await ekengService.GetVehicleData(request.SSN));
-        //}
+            var applicantPersonalInfo = await applicantPersonalInfoService
+               .GetAsNoTracking(e => e.ApplicantId == request.Id && e.PersonalInfo.PersonalInfoType == PersonalInfoType.Vehicle);
 
-        //[HttpPost]
-        //public async Task<ApiResponse<AcraResult>> GetAcraData(SSNRequest request)
-        //    => new ApiResponse<AcraResult>(
-        //        acraService.GetAcraData());
+            if (applicantPersonalInfo is not null)
+            {
+                var vehicleData = applicantPersonalInfo.PersonalInfo as VehicleData;
+                if (vehicleData.Vehicles.Any())
+                    return new ApiResponse<IEnumerable<VehiclesResultResponseModel>>(ApiContext.Mapper.Map<IEnumerable<VehiclesResultResponseModel>>(vehicleData.Vehicles));
+            }
 
-        //[HttpPost]
-        //public async Task<ApiResponse<TaxInfoResult>> GetTaxData(IdRequest<long> request)
-        //{
-        //    return new ApiResponse<TaxInfoResult>(await ekengService.GetTaxData(request.SSN, request.StartDate, request.EndDate));
-        //}
+            var vehicles = await ekengService.GetVehicleData(applicant.Client.SSN);
+            var entities = ApiContext.Mapper.Map<ICollection<EVehicle>>(vehicles);
+
+            await applicantPersonalInfoService.Add(new ApplicantPersonalInfo
+            {
+                Applicant = applicant,
+                PersonalInfo = new VehicleData { Vehicles = entities }
+            });
+            await SaveChangesAsync(UserContext.UserId);
+
+            return new ApiResponse<IEnumerable<VehiclesResultResponseModel>>(ApiContext.Mapper.Map<IEnumerable<VehiclesResultResponseModel>>(entities));
+        }
+
     }
+
+    //[HttpPost]
+    //public async Task<ApiResponse<PhysicalPersonBusinessResult>> GetBusinessRegisterData(IdRequest<long> request)
+    //{
+    //    return new ApiResponse<PhysicalPersonBusinessResult>(await ekengService.GetBusinessRegisterData(request.SSN));
+    //}
+
+    //[HttpPost]
+
+
+    //[HttpPost]
+    //public async Task<ApiResponse<AcraResult>> GetAcraData(SSNRequest request)
+    //    => new ApiResponse<AcraResult>(
+    //        acraService.GetAcraData());
+
+    //[HttpPost]
+    //public async Task<ApiResponse<TaxInfoResult>> GetTaxData(IdRequest<long> request)
+    //{
+    //    return new ApiResponse<TaxInfoResult>(await ekengService.GetTaxData(request.SSN, request.StartDate, request.EndDate));
+    //}
+
 }
