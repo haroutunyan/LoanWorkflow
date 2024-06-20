@@ -33,7 +33,7 @@ namespace LoanWorkflow.Services.Ekeng
                 JsonRPC = "2.0",
                 Params = new RequestSsn { SSN = ssn }
             });
-            if (result is null || result.Status != "ok")
+            if (result is null)
                 return null;
 
             return result.Result;
