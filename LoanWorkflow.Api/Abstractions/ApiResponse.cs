@@ -1,14 +1,9 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace LoanWorkflow.Api.Abstractions
+﻿namespace LoanWorkflow.Api.Abstractions
 {
     public class ApiResponse<TData> : ApiResponse
     {
-        public static ApiResponse<T> FromValue<T>(T data) => new ApiResponse<T>(data);
-        public ApiResponse(TData data)
-        {
-            this.Data = data;
-        }
+        public static ApiResponse<T> FromValue<T>(T data) => new(data);
+        public ApiResponse(TData data) => Data = data;
         public TData Data { get; set; }
     }
 
@@ -26,5 +21,16 @@ namespace LoanWorkflow.Api.Abstractions
         }
 
         public bool Success => Errors == null;
+    }
+
+    public class Error
+    {
+        public string Key { get; set; }
+        public IDictionary<string, string> Params { get; set; } = new Dictionary<string, string>();
+        public class Param
+        {
+            public string Name { get; set; }
+            public object Value { get; set; }
+        }
     }
 }

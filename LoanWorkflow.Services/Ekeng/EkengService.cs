@@ -81,7 +81,7 @@ namespace LoanWorkflow.Services.Ekeng
                     EndDate = end.ToString("yyyy-MM-dd"),
                     StartDate = start.ToString("yyyy-MM-dd")
                 });
-            if (result is null || result.ResponseStatus.StatusText != "ok" || result.TaxPayersInfo is null)
+            if (result is null || result.ResponseStatus.StatusCode != 1 || result.TaxPayersInfo is null)
                 return null;
 
             return result.TaxPayersInfo.TaxPayerInfo;

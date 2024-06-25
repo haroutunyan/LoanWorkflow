@@ -18,9 +18,10 @@ namespace LoanWorkflow.Api.ExceptionHandler
                 Status = exception switch
                 {
                     UnauthorizedException => (int)HttpStatusCode.Unauthorized,
-                    LoanWorkflowException => (int)HttpStatusCode.OK,
-                    _ => (int?)(int)HttpStatusCode.InternalServerError,
-                }
+                    LoanWorkflowException => (int)HttpStatusCode.BadRequest,
+                    _ => (int)HttpStatusCode.InternalServerError,
+                },
+                Detail = exception.InnerException is not null ? exception.InnerException.Message : exception.Message
             };
 
             httpContext.Response.StatusCode = errorResponse.Status.Value;

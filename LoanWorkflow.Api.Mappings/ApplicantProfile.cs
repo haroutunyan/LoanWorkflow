@@ -2,6 +2,7 @@
 using LoanWorkflow.Api.Models.Personallnfo.Acts;
 using LoanWorkflow.Api.Models.Personallnfo.Avv;
 using LoanWorkflow.Api.Models.Personallnfo.Ces;
+using LoanWorkflow.Api.Models.Personallnfo.Tax;
 using LoanWorkflow.DAL.Entities.PersonalInfo;
 using LoanWorkflow.Services.DTO.Acra;
 using LoanWorkflow.Services.DTO.Ekeng.AVV;
@@ -19,6 +20,10 @@ namespace LoanWorkflow.Api.Mappings
             CreateMap<PersonInfoDTO, PersonInfo>();
             CreateMap<TaxPayerInfoDTO, TaxPayerInfo>()
                 .ForMember(x => x.PersonInfoPeriods, dest => dest.MapFrom(m => m.PersonInfoPeriods.PersonInfoPeriod));
+
+            CreateMap<PersonInfoPeriod, PersonInfoPeriodResponse>();
+            CreateMap<PersonInfo, PersonInfoResponse>();
+            CreateMap<TaxPayerInfo, TaxDetailedResponse>();
 
             CreateMap<ECivilAct, ECivilData>();
             CreateMap<ChildDTO, Child>();

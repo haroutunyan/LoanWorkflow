@@ -3,6 +3,7 @@ using LoanWorkflow.Api.Models.Common;
 using LoanWorkflow.Api.Models.Personallnfo.Acts;
 using LoanWorkflow.Api.Models.Personallnfo.Avv;
 using LoanWorkflow.Api.Models.Personallnfo.Ces;
+using LoanWorkflow.Api.Models.Personallnfo.Tax;
 using LoanWorkflow.Core.Enums;
 using LoanWorkflow.Core.Exceptions;
 using LoanWorkflow.DAL.Entities.PersonalInfo;
@@ -12,6 +13,7 @@ using LoanWorkflow.Services.Interfaces.Ekeng;
 using LoanWorkflow.Services.Interfaces.PersonalInfo;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.Intrinsics.X86;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LoanWorkflow.Api.Controllers
 {
@@ -96,7 +98,6 @@ namespace LoanWorkflow.Api.Controllers
             return new ApiResponse<IEnumerable<CesDetailedResponse>>(ApiContext.Mapper.Map<IEnumerable<CesDetailedResponse>>(entities));
         }
 
-
         [HttpPost]
         public async Task<ApiResponse<IEnumerable<VehiclesResultResponseModel>>> GetVehicle(IdRequest<long> request)
         {
@@ -109,8 +110,9 @@ namespace LoanWorkflow.Api.Controllers
             if (applicantPersonalInfo is not null)
             {
                 var vehicleData = applicantPersonalInfo.PersonalInfo as VehicleData;
-                if (vehicleData.Vehicles.Any())
-                    return new ApiResponse<IEnumerable<VehiclesResultResponseModel>>(ApiContext.Mapper.Map<IEnumerable<VehiclesResultResponseModel>>(vehicleData.Vehicles));
+                if (vehicleData.Vehicles.Count != 0)
+                    return new ApiResponse<IEnumerable<VehiclesResultResponseModel>>(
+                        ApiContext.Mapper.Map<IEnumerable<VehiclesResultResponseModel>>(vehicleData.Vehicles));
             }
 
             var vehicles = await ekengService.GetVehicleData(applicant.Client.SSN);
@@ -123,9 +125,40 @@ namespace LoanWorkflow.Api.Controllers
             });
             await SaveChangesAsync(UserContext.UserId);
 
-            return new ApiResponse<IEnumerable<VehiclesResultResponseModel>>(ApiContext.Mapper.Map<IEnumerable<VehiclesResultResponseModel>>(entities));
+            return new ApiResponse<IEnumerable<VehiclesResultResponseModel>>(
+                ApiContext.Mapper.Map<IEnumerable<VehiclesResultResponseModel>>(entities));
         }
 
+        [HttpPost]
+        public async Task<ApiResponse<IEnumerable<TaxDetailedResponse>>> GetTaxInfo(IdRequest<long> request)
+        {
+            var applicant = await applicantService.Get(e => e.Id == request.Id)
+              ?? throw new ApplicantNotFoundException();
+
+            var applicantPersonalInfo = await applicantPersonalInfoService
+               .GetAsNoTracking(e => e.ApplicantId == request.Id && e.PersonalInfo.PersonalInfoType == PersonalInfoType.Tax);
+            if (applicantPersonalInfo is not null)
+            {
+                var taxData = applicantPersonalInfo.PersonalInfo as TaxData;
+                if (taxData.TaxPayerInfo.Count != 0)
+                    return new ApiResponse<IEnumerable<TaxDetailedResponse>>(
+                        ApiContext.Mapper.Map<IEnumerable<TaxDetailedResponse>>(taxData.TaxPayerInfo));
+            }
+
+            var result = await ekengService.GetTaxData(applicant.Client.SSN, DateTime.UtcNow.AddYears(-1), DateTime.UtcNow);
+            if (result is null)
+                return null;
+
+            await applicantPersonalInfoService.Add(new ApplicantPersonalInfo
+            {
+                Applicant = applicant,
+                PersonalInfo = new TaxData { TaxPayerInfo = ApiContext.Mapper.Map<ICollection<TaxPayerInfo>>(result) }
+            });
+            await SaveChangesAsync(UserContext.UserId);
+
+            return new ApiResponse<IEnumerable<TaxDetailedResponse>>(
+                ApiContext.Mapper.Map<IEnumerable<TaxDetailedResponse>>(result));
+        }
     }
 
     //[HttpPost]
