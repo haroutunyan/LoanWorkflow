@@ -12,8 +12,6 @@ using LoanWorkflow.Services.Interfaces.Acra;
 using LoanWorkflow.Services.Interfaces.Ekeng;
 using LoanWorkflow.Services.Interfaces.PersonalInfo;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.Intrinsics.X86;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LoanWorkflow.Api.Controllers
 {
@@ -149,36 +147,37 @@ namespace LoanWorkflow.Api.Controllers
             if (result is null)
                 return null;
 
+            var entities = ApiContext.Mapper.Map<ICollection<TaxPayerInfo>>(result);
             await applicantPersonalInfoService.Add(new ApplicantPersonalInfo
             {
                 Applicant = applicant,
-                PersonalInfo = new TaxData { TaxPayerInfo = ApiContext.Mapper.Map<ICollection<TaxPayerInfo>>(result) }
+                PersonalInfo = new TaxData { TaxPayerInfo = entities }
             });
             await SaveChangesAsync(UserContext.UserId);
 
             return new ApiResponse<IEnumerable<TaxDetailedResponse>>(
-                ApiContext.Mapper.Map<IEnumerable<TaxDetailedResponse>>(result));
+                ApiContext.Mapper.Map<IEnumerable<TaxDetailedResponse>>(entities));
         }
+
+
+        //[HttpPost]
+        //public async Task<ApiResponse<PhysicalPersonBusinessResult>> GetBusinessRegisterData(IdRequest<long> request)
+        //{
+        //    return new ApiResponse<PhysicalPersonBusinessResult>(await ekengService.GetBusinessRegisterData(request.SSN));
+        //}
+
+        //[HttpPost]
+
+
+        //[HttpPost]
+        //public async Task<ApiResponse<AcraResult>> GetAcraData(SSNRequest request)
+        //    => new ApiResponse<AcraResult>(
+        //        acraService.GetAcraData());
+
+        //[HttpPost]
+        //public async Task<ApiResponse<TaxInfoResult>> GetTaxData(IdRequest<long> request)
+        //{
+        //    return new ApiResponse<TaxInfoResult>(await ekengService.GetTaxData(request.SSN, request.StartDate, request.EndDate));
+        //}
     }
-
-    //[HttpPost]
-    //public async Task<ApiResponse<PhysicalPersonBusinessResult>> GetBusinessRegisterData(IdRequest<long> request)
-    //{
-    //    return new ApiResponse<PhysicalPersonBusinessResult>(await ekengService.GetBusinessRegisterData(request.SSN));
-    //}
-
-    //[HttpPost]
-
-
-    //[HttpPost]
-    //public async Task<ApiResponse<AcraResult>> GetAcraData(SSNRequest request)
-    //    => new ApiResponse<AcraResult>(
-    //        acraService.GetAcraData());
-
-    //[HttpPost]
-    //public async Task<ApiResponse<TaxInfoResult>> GetTaxData(IdRequest<long> request)
-    //{
-    //    return new ApiResponse<TaxInfoResult>(await ekengService.GetTaxData(request.SSN, request.StartDate, request.EndDate));
-    //}
-
 }
