@@ -5,12 +5,6 @@ using LoanWorkflow.Services.DTO.Ekeng.Ces;
 using LoanWorkflow.Services.DTO.Ekeng.ECivil;
 using LoanWorkflow.Services.DTO.Ekeng.Police;
 using LoanWorkflow.Services.DTO.Ekeng.TaxInfo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace LoanWorkflow.Services.DTO.PersonalInfo
 {
     public record PersonalInfoDTO

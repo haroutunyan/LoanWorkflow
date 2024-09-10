@@ -1,5 +1,8 @@
 ﻿using LoanWorkflow.Api.Abstractions;
 using LoanWorkflow.Api.Models.Personallnfo;
+using LoanWorkflow.Api.Models.Personallnfo.Avv;
+using LoanWorkflow.Api.Models.Personallnfo.Business;
+using LoanWorkflow.Api.Models.Personallnfo.Police;
 using LoanWorkflow.Core.Enums;
 using LoanWorkflow.Core.Exceptions;
 using LoanWorkflow.Core.Helpers;
@@ -22,7 +25,7 @@ namespace LoanWorkflow.Api.Controllers
         : ApiControllerBase(apiContext)
     {
         [HttpPost]
-        public async Task<ApiResponse<PersonalInfoDTO>> AddApplicant(SSNRequest request)
+        public async Task<ApiResponse<PersonalInfoMainResponse>> AddApplicant(SSNRequest request)
         {
             var data = await personalInfoService.GetAllPersonalInfos(request.SSN);
             var document = data.Avv.AvvDocuments.Document.FirstOrDefault(e => e.DocumentStatus == "PRIMARY_VALID")
@@ -36,7 +39,7 @@ namespace LoanWorkflow.Api.Controllers
             var dataList = new List<PersonalInfoBase>
             {
                 ApiContext.Mapper.Map<AvvData>(data.Avv),
-                //ApiContext.Mapper.Map<AcraData>(data.Acra),
+                ApiContext.Mapper.Map<AcraData>(data.Acra),
                 new CesData
                 {
                     Inquests = ApiContext.Mapper.Map<ICollection<EInquest>>(data.Ces)
@@ -94,15 +97,55 @@ namespace LoanWorkflow.Api.Controllers
 
             data.ApplicantId = applicant.Id;
 
-            return new ApiResponse<PersonalInfoDTO>(data);
+            var avvDocResponse = data.Avv.AvvDocuments.Document
+                .Where(e => e.DocumentStatus != "INVALID")
+                .Select(e => new DocumentMainResponse
+                {
+                    BirthDate = DateOnly.FromDateTime(e.Person.BirthDate.Value),
+                    EnglishFullName = $"{e.Person.EnglishFirstName} {e.Person.EnglishLastName} {e.Person.EnglishPatronymicName}",
+                    FullName = $"{e.Person.FirstName} {e.Person.LastName} {e.Person.PatronymicName}",
+                    IssuedBy = e.DocumentDepartment,
+                    IssuedDate = DateOnly.FromDateTime(e.PassportData.IssuanceDate.Value),
+                    ValidityDate = DateOnly.FromDateTime(e.PassportData.ValidityDate.Value),
+                    Number = e.DocumentNumber,
+                    //PhotoPath = e.Photo,
+                    Ssn = request.SSN,
+                    Type = e.DocumentType
+                });
+            var avvAddressResponse = data.Avv.AvvAddresses.Address
+                .Where(e => e.RegistrationData.RegistrationType == "CURRENT")
+                .Select(e => new AddressMainResponse
+                {
+                    Address = ToAddressLine(e.RegistrationAddress)
+                });
+
+            var response = new PersonalInfoMainResponse
+            {
+                Avv = new AvvMainResponse
+                {
+                    Documents = avvDocResponse,
+                    Addresses = avvAddressResponse
+                },
+                Business = data.BusinessRegister is not null ? new SoleBusinessMainResponse {
+                    Names = data.BusinessRegister.Person.Companies.Select(e => $"{e.NameAm} {e.CompanyType}")
+                } : null,
+                DriverLicense = new DriverLicenseMainResponse
+                {
+                    GivenDate = DateOnly.ParseExact( data.DrivingLicense.Released, "yyyy-MM-dd"),
+                    LicenseClasses = data.DrivingLicense.Classes,
+                    Status = data.DrivingLicense.Inactive == 0 ? DriverLicenseStatus.Active : DriverLicenseStatus.NotActive
+                }
+            };
+
+            return new ApiResponse<PersonalInfoMainResponse>(response);
         }
 
         private static string ToAddressLine(RegistrationAddressDTO registrationAddress)
         {
             return $"{registrationAddress.Apartment}" +
                 $" {registrationAddress.Building}" +
-                $" {registrationAddress.BuildingType} " +
-                $"{registrationAddress.Residence}" +
+                $" {registrationAddress.BuildingType}" +
+                $" {registrationAddress.Residence}" +
                 $" {registrationAddress.Region}";
         }
 
